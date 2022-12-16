@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:visibility="visible"
+    app:layout_constraintWidth_percent="0.3"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10sp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="10sp"
+        android:layout_marginBottom="10sp"
+
+        android:background="@drawable/bg_round_corner"
+        android:padding="1sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/string_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:shadowColor="@color/white_shadow"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="6"
+        android:text="@string/logo"
+        android:textColor="@color/white"
+        android:textSize="23sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="74dp"
+        android:layout_marginTop="44dp"
+        android:baselineAligned="false"
+        android:gravity="center"
+        android:isScrollContainer="true"
+        android:orientation="horizontal"
+        android:overScrollMode="always"
+        android:persistentDrawingCache="scrolling"
+        android:scrollbars="horizontal"
+        android:verticalScrollbarPosition="left"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:duplicateParentState="false"
+                android:orientation="horizontal"
+                android:paddingStart="10sp"
+                android:paddingEnd="10sp">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="10sp"
+                    android:background="@drawable/days_round_corner"
+                    android:gravity="center"
+                    android:text="@string/day1"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textIsSelectable="false" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="10sp"
+                    android:background="@drawable/days_round_corner"
+                    android:gravity="center"
+                    android:text="@string/day2"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textIsSelectable="false" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="10sp"
+                    android:background="@drawable/days_round_corner"
+                    android:gravity="center"
+                    android:text="@string/day3"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textIsSelectable="false" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="10sp"
+                    android:background="@drawable/days_round_corner"
+                    android:gravity="center"
+                    android:text="@string/day4"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textIsSelectable="false" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="10sp"
+                    android:background="@drawable/days_round_corner"
+                    android:gravity="center"
+                    android:text="@string/day5"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textIsSelectable="false" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="10sp"
+                    android:background="@drawable/days_round_corner"
+                    android:gravity="center"
+                    android:text="@string/day7"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textIsSelectable="false" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="10sp"
+                    android:background="@drawable/days_round_corner"
+                    android:gravity="center"
+                    android:text="@string/day6"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textIsSelectable="false" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

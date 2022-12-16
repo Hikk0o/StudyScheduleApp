@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Schedule App</string>
+    <string name="app_main_button">Button</string>
+    <string name="logo">Расписание</string>
+    <string name="day1">ПН</string>
+    <string name="day2">ВТ</string>
+    <string name="day3">СР</string>
+    <string name="day4">ЧТ</string>
+    <string name="day5">ПТ</string>
+    <string name="day6">СБ</string>
+    <string name="day7">ВС</string>
+</resources>
