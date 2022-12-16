@@ -7,10 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#F5F5F8</color>
+    <color name="gray">#CECECF</color>
     <color name="white_shadow">#59F5F5F8</color>
 
     <color name="topBar">#202020</color>
     <color name="bg">#2B2B2B</color>
-    <color name="days">#5DBDFF</color>
+    <color name="week">#2FA2F0</color>
+    <color name="active_week">#71C5FF</color>
 
 </resources>
