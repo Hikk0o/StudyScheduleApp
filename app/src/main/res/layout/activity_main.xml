@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="5sp"
+        android:layout_marginTop="6dp"
         android:fontFamily="@font/montserrat_medium"
         android:shadowColor="@color/white_shadow"
         android:shadowDx="0"
@@ -24,6 +24,7 @@
         android:textColor="@color/white"
         android:textSize="23sp"
         android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/horizontalScrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.056"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,21 +34,23 @@
         android:id="@+id/horizontalScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:baselineAligned="false"
+        android:layout_marginTop="1dp"
+        android:baselineAligned="true"
         android:fillViewport="true"
         android:gravity="center"
-        android:isScrollContainer="true"
+        android:isScrollContainer="false"
         android:orientation="horizontal"
-        android:overScrollMode="always"
+        android:overScrollMode="ifContentScrolls"
         android:persistentDrawingCache="scrolling"
         android:scrollbars="none"
-        android:verticalScrollbarPosition="left"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/string_logo">
 
         <LinearLayout
+            android:id="@+id/scrollLinear"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:duplicateParentState="false"
@@ -99,7 +102,8 @@
                 android:text="@string/day3"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textIsSelectable="false" />
+                android:textIsSelectable="false"
+                tools:ignore="TextContrastCheck" />
 
             <TextView
                 android:id="@+id/day4"
@@ -144,7 +148,8 @@
                 android:text="@string/day6"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textIsSelectable="false" />
+                android:textIsSelectable="false"
+                tools:ignore="TextContrastCheck" />
 
             <TextView
                 android:id="@+id/day7"
@@ -168,7 +173,7 @@
         android:layout_height="0dp"
 
         android:layout_marginStart="5dp"
-        android:layout_marginTop="10sp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:background="@drawable/bg_round_corner"
@@ -182,6 +187,21 @@
             android:id="@+id/listView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:listSelector="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/no_activities_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/no_activities"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
