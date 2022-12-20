@@ -49,13 +49,13 @@ public class Utils {
         String json = gson.toJson(activitiesOfWeek);
 
         // Create file output stream
-        FileOutputStream fos;
+        FileOutputStream outputStream;
         try {
-            fos = new FileOutputStream(week);
+            outputStream = new FileOutputStream(week);
             // Write a line to the file
-            fos.write(json.getBytes(StandardCharsets.UTF_8));
+            outputStream.write(json.getBytes(StandardCharsets.UTF_8));
             // Close the file output stream
-            fos.close();
+            outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -13,8 +13,7 @@
         android:id="@+id/string_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginStart="24dp"
         android:fontFamily="@font/montserrat_medium"
         android:shadowColor="@color/white_shadow"
         android:shadowDx="0"
@@ -24,9 +23,7 @@
         android:textColor="@color/white"
         android:textSize="23sp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/horizontalScrollView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,7 +31,7 @@
         android:id="@+id/horizontalScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="4dp"
         android:baselineAligned="true"
         android:fillViewport="true"
         android:gravity="center"
@@ -61,8 +58,8 @@
 
             <TextView
                 android:id="@+id/day1"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
                 android:layout_margin="10sp"
                 android:background="@drawable/day_of_week_round_corner"
                 android:fontFamily="@font/montserrat_medium"
@@ -76,8 +73,8 @@
 
             <TextView
                 android:id="@+id/day2"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
                 android:layout_margin="10sp"
                 android:background="@drawable/day_of_week_round_corner"
                 android:fontFamily="@font/montserrat_medium"
@@ -91,8 +88,8 @@
 
             <TextView
                 android:id="@+id/day3"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
                 android:layout_margin="10sp"
                 android:background="@drawable/day_of_week_round_corner"
                 android:fontFamily="@font/montserrat_medium"
@@ -107,8 +104,8 @@
 
             <TextView
                 android:id="@+id/day4"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
                 android:layout_margin="10sp"
                 android:background="@drawable/day_of_week_round_corner"
                 android:fontFamily="@font/montserrat_medium"
@@ -122,8 +119,8 @@
 
             <TextView
                 android:id="@+id/day5"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
                 android:layout_margin="10sp"
                 android:background="@drawable/day_of_week_round_corner"
                 android:fontFamily="@font/montserrat_medium"
@@ -137,8 +134,8 @@
 
             <TextView
                 android:id="@+id/day6"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
                 android:layout_margin="10sp"
                 android:background="@drawable/day_of_week_round_corner"
                 android:fontFamily="@font/montserrat_medium"
@@ -153,8 +150,8 @@
 
             <TextView
                 android:id="@+id/day7"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
                 android:layout_margin="10sp"
                 android:background="@drawable/day_of_week_round_corner"
                 android:fontFamily="@font/montserrat_medium"
@@ -184,7 +181,7 @@
         app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView">
 
         <ListView
-            android:id="@+id/listView"
+            android:id="@+id/ActivitiesListView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:listSelector="@android:color/transparent"
@@ -207,5 +204,22 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:contentDescription="@string/app_main_button"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:onClick="openEditActivitiesOfDay"
+        android:padding="4sp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_edit_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.hikko.scheduleapp;
 
+// Пара
 public class Activity {
     public String start;
     public String end;
