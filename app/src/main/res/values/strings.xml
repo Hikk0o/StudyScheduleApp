@@ -10,6 +10,7 @@
     <string name="day6">СБ</string>
     <string name="day7">ВС</string>
     <string name="no_activities">Нет пар</string>
+    <string name="activity_name_AutoCompleteText">Введите название пары</string>
     <string-array name="activityType">
         <item>ПР</item>
         <item>ЛК</item>

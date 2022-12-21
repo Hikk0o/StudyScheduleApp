@@ -14,8 +14,13 @@
     <color name="bg">#2B2B2B</color>
     <color name="week">#2FA2F0</color>
     <color name="active_week">#71C5FF</color>
-    <style name="spinner" parent="android:style/Widget.Material.Light.Spinner">
-        <item name="textFillColor">@color/white</item>
+    <style name="spinner_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
     </style>
 
 </resources>

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.hikko.scheduleapp.adapters.ListAdapter;
 
@@ -36,7 +37,6 @@ public class EditActivitiesOfDay extends AppCompatActivity {
                 new String[]{},
                 new int[]{});
         activitiesListView.setAdapter(adapter);
-
 
 
     }
