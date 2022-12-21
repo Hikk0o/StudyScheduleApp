@@ -1,16 +1,13 @@
 package com.hikko.scheduleapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.hikko.scheduleapp.adapters.ListAdapter;
 
@@ -44,9 +41,12 @@ public class EditActivitiesOfDay extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+//        DialogFragment newFragment = new TimePickerFragment();
+//        newFragment.show(getSupportFragmentManager(), "timePicker");
 
     }
+
+
 
     @Override
     protected void onResume() {

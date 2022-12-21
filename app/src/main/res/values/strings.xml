@@ -10,6 +10,9 @@
     <string name="day6">СБ</string>
     <string name="day7">ВС</string>
     <string name="no_activities">Нет пар</string>
+    <string name="activity_create_start_time">Начало в</string>
+    <string name="activity_create_end_time">Конец в</string>
+    <string name="selected_time_format">%1$s:%2$s</string>
     <string name="activity_name_AutoCompleteText">Введите название пары</string>
     <string-array name="activityType">
         <item>ПР</item>
