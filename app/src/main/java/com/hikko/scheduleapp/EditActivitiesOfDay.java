@@ -1,20 +1,26 @@
 package com.hikko.scheduleapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Gallery;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.hikko.scheduleapp.adapters.ListAdapter;
+import com.hikko.scheduleapp.adapters.EditActivityAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EditActivitiesOfDay extends AppCompatActivity {
+
+    ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,17 +29,16 @@ public class EditActivitiesOfDay extends AppCompatActivity {
 
         ListView activitiesListView = findViewById(R.id.EditActivitiesListView);
 
-        ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
         HashMap<String, String> map = new HashMap<>();
 
         map.put("123", "123");
         arrayList.add(map);
-        arrayList.add(map);
 
-        SimpleAdapter adapter = new ListAdapter(this, arrayList, R.layout.edit_activities_item,
-                new String[]{},
-                new int[]{});
-        activitiesListView.setAdapter(adapter);
+        updateActivitiesListView();
+
+        // Add button to footer
+        View addActivityButton = View.inflate(this.getLayoutInflater().getContext(), R.layout.edit_activities_button, null);
+        activitiesListView.addFooterView(addActivityButton);
 
 
     }
@@ -56,5 +61,22 @@ public class EditActivitiesOfDay extends AppCompatActivity {
     public void goBackActivities(View v) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public void createNewActivity(View v) {
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put("123", "123");
+        arrayList.add(map);
+        updateActivitiesListView();
+    }
+
+    private void updateActivitiesListView() {
+        ListView activitiesListView = findViewById(R.id.EditActivitiesListView);
+        // Creating layouts from an array
+        SimpleAdapter adapter = new EditActivityAdapter(this, arrayList, R.layout.edit_activities_item,
+                new String[]{},
+                new int[]{});
+        activitiesListView.setAdapter(adapter);
     }
 }

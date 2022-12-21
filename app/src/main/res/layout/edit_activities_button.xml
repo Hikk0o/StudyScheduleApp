@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/topBar"
+    android:persistentDrawingCache="animation">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/buttom_gray_corner"
+        android:clickable="true"
+        android:fontFamily="@font/montserrat_medium"
+        android:layoutAnimation="@null"
+        android:listSelector="@null"
+        android:minHeight="48dp"
+        android:onClick="createNewActivity"
+        android:paddingHorizontal="25sp"
+        android:paddingVertical="10sp"
+        android:text="@string/activity_create_add_button"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
