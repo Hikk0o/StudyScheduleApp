@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         filesDir = getFilesDir();
+//        Utils.saveWeekToJsonFile(filesDir);
         Utils.loadAllActivities(filesDir);
 
         View view = findViewById(activeDayOfWeekId);

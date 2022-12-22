@@ -4,17 +4,14 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
@@ -94,29 +91,20 @@ public class EditActivityAdapter extends SimpleAdapter {
 
         activityNameText.setFilters(fArray);
 
-        TextWatcher decorationActivityNameText = new TextWatcher() {
-
-            public void afterTextChanged(Editable s) {
-//                HashMap<String, String> temp = EditActivitiesOfDay.activitiesOfDayList.get(position);
-//                temp.put("Name", s.toString());
-//                EditActivitiesOfDay.activitiesOfDayList.set(position, temp);
-//                System.out.println(s + " " + position);
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-        };
-
-        activityNameText.addTextChangedListener(decorationActivityNameText);
         activityNameText.setOnFocusChangeListener((v1, hasFocus) -> {
-            if (!hasFocus) {
-//                System.out.println(false);
-//                System.out.println(position+1);
-                System.out.println(activityNameText.getText());
-                HashMap<String, String> temp = EditActivitiesOfDay.activitiesOfDayList.get(position);
-                temp.put("Name", activityNameText.getText().toString());
-                EditActivitiesOfDay.activitiesOfDayList.set(position, temp);
+            if (hasFocus) {
+                activityNameText.addTextChangedListener(new TextWatcher() {
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        HashMap<String, String> temp = EditActivitiesOfDay.activitiesOfDayList.get(position);
+                        temp.put("Name", s.toString());
+                        EditActivitiesOfDay.activitiesOfDayList.set(position, temp);
+                    }
+                });
+
             }
         });
 
@@ -194,6 +182,15 @@ public class EditActivityAdapter extends SimpleAdapter {
 
         input_start_time.addTextChangedListener(decorationTimeTextWatcher);
         input_end_time.addTextChangedListener(decorationTimeTextWatcher);
+
+        input_start_time.setOnFocusChangeListener((v1, hasFocus) -> {
+            if (hasFocus) input_start_time.addTextChangedListener(saveInputTimeInList("Start", position));
+
+        });
+
+        input_end_time.setOnFocusChangeListener((v1, hasFocus) -> {
+            if (hasFocus) input_end_time.addTextChangedListener(saveInputTimeInList("End", position));
+        });
         return v;
     }
 
@@ -203,8 +200,21 @@ public class EditActivityAdapter extends SimpleAdapter {
                 return i;
             }
         }
-
         return 0;
+    }
+
+    private TextWatcher saveInputTimeInList(String key, int position) {
+        return new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                HashMap<String, String> temp = EditActivitiesOfDay.activitiesOfDayList.get(position);
+                temp.put(key, s.toString());
+                EditActivitiesOfDay.activitiesOfDayList.set(position, temp);
+            }
+        };
     }
 
 }

@@ -10,6 +10,7 @@
     <color name="gray">#CECECF</color>
     <color name="dark_gray">#8A8A8A</color>
     <color name="white_shadow">#59F5F5F8</color>
+    <color name="red">#E4F34444</color>
 
     <color name="topBar">#202020</color>
     <color name="bg">#2B2B2B</color>
