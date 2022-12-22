@@ -63,6 +63,7 @@
         android:background="@drawable/buttom_black_corner"
         android:clickable="true"
         android:fontFamily="@font/montserrat_medium"
+        android:onClick="saveActivitiesList"
         android:paddingHorizontal="25sp"
         android:paddingVertical="10sp"
         android:text="@string/save"

@@ -13,4 +13,8 @@ public class Activity {
         this.start = start;
         this.end = end;
     }
+
+    public static Activity convertToClass(String name, String type, String start, String end) {
+        return new Activity(name, type, start, end);
+    }
 }

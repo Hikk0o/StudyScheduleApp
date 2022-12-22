@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import java.io.File;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,10 +18,11 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int activeDayOfWeek = getLocaleDayOfWeek();
-    private int activeDayOfWeekId = Utils.getIdByDay(activeDayOfWeek);
+    private static int activeDayOfWeek = getLocaleDayOfWeek();
+    private static int activeDayOfWeekId = Utils.getIdByDay(activeDayOfWeek);
+    public static File filesDir;
 
-    private int getLocaleDayOfWeek() {
+    private static int getLocaleDayOfWeek() {
         LocalDate today = LocalDate.now();
         DayOfWeek dayOfWeek = today.getDayOfWeek();
         return dayOfWeek.getValue();
@@ -30,9 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Utils.saveWeekToJsonFile(getFilesDir());
-        Utils.loadAllActivities(getFilesDir());
+        filesDir = getFilesDir();
+        Utils.loadAllActivities(filesDir);
 
         View view = findViewById(activeDayOfWeekId);
         changeCurrentWeek(view);
@@ -68,11 +69,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public int getActiveDayOfWeekId() {
+    public static int getActiveDayOfWeekId() {
         return activeDayOfWeekId;
     }
 
-    public int getActiveDayOfWeek() {
+    public static int getActiveDayOfWeek() {
         return activeDayOfWeek;
     }
 

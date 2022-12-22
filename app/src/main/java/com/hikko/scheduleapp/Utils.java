@@ -1,5 +1,7 @@
 package com.hikko.scheduleapp;
 
+import android.content.res.Resources;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -26,13 +28,12 @@ public class Utils {
 
         List<List<Activity>> activitiesOfWeek = new ArrayList<>();
 
-        List<Activity> activitiesOfDay = new ArrayList<>();
-        // todo
         if (loadedActivities != null) {
             activitiesOfWeek = loadedActivities;
         } else {
+            List<Activity> activitiesOfDay = new ArrayList<>();
 
-            Activity activity1 = new Activity("Нет пары", null, null, null);
+            Activity activity1 = new Activity("loadedActivities == null", null, null, null);
             Activity activity2 = new Activity("Методы анализа данных", "ПР", "15:13", "16:14");
             Activity activity3 = new Activity("Теория алгоритмов и рекурсивных функций", "ПР", "17:13", "18:14");
             Activity activity4 = new Activity("ТРПП", "ЛК", "19:13", "20:14");
@@ -70,11 +71,22 @@ public class Utils {
         try {
             byte[] content = Files.readAllBytes(file.toPath());
             String str = new String(content, StandardCharsets.UTF_8);
-            Type arrType = new TypeToken<List<List<Activity>>>() {}.getType();
+            Type arrType = new TypeToken<List<List<Activity>>>(){}.getType();
+            int maxEditActivities = Resources.getSystem().getInteger(R.integer.max_EditActivities);
+            loadedActivities = new ArrayList<>(maxEditActivities);
             loadedActivities = g.fromJson(str, arrType);
+            System.out.println(loadedActivities);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<List<Activity>> getLoadedActivities() {
+        return loadedActivities;
+    }
+
+    public static void setLoadedActivities(List<List<Activity>> editedActivities) {
+        loadedActivities = editedActivities;
     }
 
     public static ArrayList<HashMap<String, String>> getActivitiesDayOfWeek(int dayOfWeek) {

@@ -4,9 +4,12 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.SimpleAdapter;
@@ -15,10 +18,12 @@ import android.widget.TextView;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 
+import com.hikko.scheduleapp.EditActivitiesOfDay;
 import com.hikko.scheduleapp.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,56 +31,94 @@ public class EditActivityAdapter extends SimpleAdapter {
 
     private final int resourceLayout;
     private final Context mContext;
+    private final List<String> typeSpinner = new ArrayList<>();
 
     public EditActivityAdapter(Context context, List<? extends Map<String, ?>> data,
                                @LayoutRes int resource, String[] from, @IdRes int[] to) {
         super(context, data, resource, from, to);
         this.resourceLayout = resource;
         this.mContext = context;
+        data.forEach(activity -> {
+            String type = (String) activity.get("Type");
+            System.out.println(type);
+            typeSpinner.add(type);
+        });
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        View v;
 
-        View v = convertView;
-
-        if (v == null) {
+        if (convertView == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(mContext);
-            v = vi.inflate(resourceLayout, null);
+            convertView = vi.inflate(resourceLayout, null);
+        }
+        v = super.getView(position, convertView, parent);
+
+        Spinner spinner = v.findViewById(R.id.edit_activity_type_spinner);
+        if (spinner.getAdapter() == null) {
+            ArrayAdapter<CharSequence> s_adapter = ArrayAdapter.createFromResource(v.getContext(),
+                    R.array.activityType, R.layout.spinner_item);
+            s_adapter.setDropDownViewResource(R.layout.spinner_item_dropdown);
+            spinner.setAdapter(s_adapter);
         }
 
-        Spinner spinner = v.findViewById(R.id.activity_type_spinner);
-        ArrayAdapter<CharSequence> s_adapter = ArrayAdapter.createFromResource(v.getContext(),
-                R.array.activityType, R.layout.spinner_item);
-        s_adapter.setDropDownViewResource(R.layout.spinner_item_dropdown);
-        spinner.setAdapter(s_adapter);
+        spinner.setSelection(getSpinnerIndex(spinner, typeSpinner.get(position)));
 
-        TextView activityNameAutoCompleteText = v.findViewById(R.id.ActivityNameAutoCompleteText);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position1, long id) {
+                HashMap<String, String> temp = EditActivitiesOfDay.activitiesOfDayList.get(position);
+                temp.put("Type", (String) spinner.getItemAtPosition(position1));
+                EditActivitiesOfDay.activitiesOfDayList.set(position, temp);
+            }
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        EditText activityNameText = v.findViewById(R.id.ActivityNameAutoCompleteText);
         int maxLength = v.getResources().getInteger(R.integer.max_ActivityNameAutoCompleteText);
         InputFilter[] fArray = new InputFilter[2];
 
         fArray[0] = new InputFilter.LengthFilter(maxLength);
-
         fArray[1] = (source, start, end, dest, dstart, dend) -> {
             if (source.length() == 0) {
                 return null;
             }
             String result = source.toString();
-//            result = result.concat(dest.toString().substring(0, dstart));
-//            result = result.concat(source.toString().substring(start, end));
-//            result = result.concat(dest.toString().substring(dend, dest.length()));
 
-            boolean allowEdit;
-            char c;
+            char c = result.charAt(result.length()-1);
 
-            c = result.charAt(result.length()-1);
-            allowEdit = c != '\n';
-
-            return allowEdit ? null : result.replace("\n", "");
+            return c != '\n' ? null : result.replace("\n", "");
         };
 
-        activityNameAutoCompleteText.setFilters(fArray);
+        activityNameText.setFilters(fArray);
+
+        TextWatcher decorationActivityNameText = new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+//                HashMap<String, String> temp = EditActivitiesOfDay.activitiesOfDayList.get(position);
+//                temp.put("Name", s.toString());
+//                EditActivitiesOfDay.activitiesOfDayList.set(position, temp);
+//                System.out.println(s + " " + position);
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        };
+
+        activityNameText.addTextChangedListener(decorationActivityNameText);
+        activityNameText.setOnFocusChangeListener((v1, hasFocus) -> {
+            if (!hasFocus) {
+//                System.out.println(false);
+//                System.out.println(position+1);
+                System.out.println(activityNameText.getText());
+                HashMap<String, String> temp = EditActivitiesOfDay.activitiesOfDayList.get(position);
+                temp.put("Name", activityNameText.getText().toString());
+                EditActivitiesOfDay.activitiesOfDayList.set(position, temp);
+            }
+        });
 
         EditText input_start_time = v.findViewById(R.id.input_time_start_of_activity);
         EditText input_end_time = v.findViewById(R.id.input_time_end_of_activity);
@@ -101,7 +144,11 @@ public class EditActivityAdapter extends SimpleAdapter {
             }
             if (result.length() > 1) {
                 c = result.charAt(1);
-                allowEdit &= (c >= '0' && c <= '9');
+                if (Integer.parseInt(String.valueOf(result.charAt(0))) > 1) {
+                    allowEdit &= (c >= '0' && c <= '3');
+                } else {
+                    allowEdit &= (c >= '0' && c <= '9');
+                }
             }
             if (result.length() > 2) {
                 c = result.charAt(2);
@@ -147,8 +194,17 @@ public class EditActivityAdapter extends SimpleAdapter {
 
         input_start_time.addTextChangedListener(decorationTimeTextWatcher);
         input_end_time.addTextChangedListener(decorationTimeTextWatcher);
-
         return v;
+    }
+
+    private int getSpinnerIndex(Spinner spinner, String myString){
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+
+        return 0;
     }
 
 }
