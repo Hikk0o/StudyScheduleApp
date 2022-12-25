@@ -72,8 +72,7 @@ public class Utils {
             byte[] content = Files.readAllBytes(file.toPath());
             String str = new String(content, StandardCharsets.UTF_8);
             Type arrType = new TypeToken<List<List<Activity>>>(){}.getType();
-            int maxEditActivities = Resources.getSystem().getInteger(R.integer.max_EditActivities);
-            loadedActivities = new ArrayList<>(maxEditActivities);
+            loadedActivities = new ArrayList<>();
             loadedActivities = g.fromJson(str, arrType);
             System.out.println(loadedActivities);
         } catch (IOException e) {

@@ -2,18 +2,14 @@ package com.hikko.scheduleapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.hikko.scheduleapp.adapters.EditActivityAdapter;
-import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
-import com.wdullaer.swipeactionadapter.SwipeDirection;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +26,7 @@ public class EditActivitiesOfDay extends AppCompatActivity {
 
         ListView activitiesListView = findViewById(R.id.EditActivitiesListView);
         activitiesOfDayList = Utils.getActivitiesDayOfWeek(MainActivity.getActiveDayOfWeek());
+        System.out.println("Utils.getActivitiesDayOfWeek");
         updateActivitiesListView();
 
         // Add button to footer
@@ -65,6 +62,7 @@ public class EditActivitiesOfDay extends AppCompatActivity {
 
     private void updateActivitiesListView() {
         ListView activitiesListView = findViewById(R.id.EditActivitiesListView);
+        System.out.println(activitiesOfDayList + " updateActivitiesListView");
 
         // Creating layouts from an array
         EditActivityAdapter adapter = new EditActivityAdapter(
@@ -81,61 +79,10 @@ public class EditActivitiesOfDay extends AppCompatActivity {
                         R.id.input_time_end_of_activity
                 });
 
-        SwipeActionAdapter mAdapter = new SwipeActionAdapter(adapter);
-        mAdapter.setListView(activitiesListView);
-        // todo Не вписывает в input
-        activitiesListView.setAdapter(mAdapter);
-        mAdapter.addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.activity_edit_delete_item);
-        mAdapter.setNormalSwipeFraction(0.5F);
+        activitiesListView.setAdapter(adapter);
+        activitiesListView.setDivider(null);
+        activitiesListView.setVerticalScrollBarEnabled(false);
 
-        Context context = this.getApplicationContext();
-
-        // Listen to swipes
-        mAdapter.setSwipeActionListener(new SwipeActionAdapter.SwipeActionListener(){
-            @Override
-            public boolean hasActions(int position, SwipeDirection direction){
-                return direction.isLeft(); // Change this to false to disable left swipes
-            }
-
-            @Override
-            public boolean shouldDismiss(int position, SwipeDirection direction){
-                // Only dismiss an item when swiping normal left
-                return direction == SwipeDirection.DIRECTION_NORMAL_LEFT;
-            }
-
-            @Override
-            public void onSwipe(int[] positionList, SwipeDirection[] directionList){
-                for(int i=0;i<positionList.length;i++) {
-                    SwipeDirection direction = directionList[i];
-                    int position = positionList[i];
-                    String dir = "";
-//
-//                    switch (direction) {
-//                        case SwipeDirection.DIRECTION_FAR_LEFT:
-//                            dir = "Far left";
-//                            break;
-//                        case SwipeDirection.DIRECTION_NORMAL_LEFT:
-//                            dir = "Left";
-//                            break;
-//                        case SwipeDirection.DIRECTION_FAR_RIGHT:
-//                            dir = "Far right";
-//                            break;
-//                        case SwipeDirection.DIRECTION_NORMAL_RIGHT:
-//                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                            builder.setTitle("Test Dialog").setMessage("You swiped right").create().show();
-//                            dir = "Right";
-//                            break;
-//                    }
-
-                    Toast.makeText(context,
-                            dir + " swipe Action triggered on " + mAdapter.getItem(position),
-                            Toast.LENGTH_SHORT
-                    ).show();
-
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
-        });
     }
 
     public void saveActivitiesList(View v) {
@@ -157,6 +104,10 @@ public class EditActivitiesOfDay extends AppCompatActivity {
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public static void setActivitiesOfDayList(ArrayList<HashMap<String, String>> activities) {
+        activitiesOfDayList = activities;
     }
 
 }

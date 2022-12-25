@@ -32,13 +32,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        filesDir = getFilesDir();
-//        Utils.saveWeekToJsonFile(filesDir);
-        Utils.loadAllActivities(filesDir);
 
         View view = findViewById(activeDayOfWeekId);
         changeCurrentWeek(view);
 
+    }
+
+    @Override
+    protected void onStart() {
+        filesDir = getFilesDir();
+
+//        Utils.saveWeekToJsonFile(filesDir);
+        Utils.loadAllActivities(filesDir);
+
+        super.onStart();
     }
 
     public void changeCurrentWeek(View v) {
@@ -63,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
                 new int[]{R.id.activity_name, R.id.activity_start, R.id.activity_end, R.id.activity_type});
 
         activitiesListView.setAdapter(adapter);
+        activitiesListView.setDivider(null);
+        activitiesListView.setVerticalScrollBarEnabled(false);
     }
 
     public void openEditActivitiesOfDay(View v) {

@@ -7,132 +7,155 @@
     android:orientation="horizontal"
     android:paddingBottom="8sp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@drawable/activity_round_corner"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingBottom="8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingHorizontal="10sp">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <Spinner
-                android:id="@+id/edit_activity_type_spinner"
-                style="@style/spinner_style"
-                android:layout_width="85sp"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:contentDescription="@string/app_main_button"
-                android:minHeight="48dp"
-                android:spinnerMode="dropdown"
-                android:textAlignment="center"
-                tools:ignore="TouchTargetSizeCheck" />
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="8sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <MultiAutoCompleteTextView
-                android:id="@+id/ActivityNameAutoCompleteText"
-                android:layout_width="200sp"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/dark_gray"
-                android:fontFamily="@font/montserrat_medium"
-                android:hint="@string/activity_name_AutoCompleteText"
-                android:inputType="textMultiLine"
-                android:minHeight="48dp"
-                android:scrollHorizontally="false"
-                android:textColor="@color/white"
-                android:textColorHint="#9E9E9E"
-                android:textSize="16sp" />
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="10sp">
+
+                    <Spinner
+                        android:id="@+id/edit_activity_type_spinner"
+                        style="@style/spinner_style"
+                        android:layout_width="85sp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/white"
+                        android:contentDescription="@string/app_main_button"
+                        android:minHeight="48dp"
+                        android:spinnerMode="dropdown"
+                        android:textAlignment="center"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <MultiAutoCompleteTextView
+                        android:id="@+id/ActivityNameAutoCompleteText"
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/dark_gray"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:hint="@string/activity_name_AutoCompleteText"
+                        android:inputType="textMultiLine"
+                        android:minHeight="48dp"
+                        android:scrollHorizontally="false"
+                        android:textColor="@color/white"
+                        android:textColorHint="#9E9E9E"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10sp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="8sp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/edit_activity_start_time_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="@string/activity_create_start_time"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/input_time_start_of_activity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5sp"
+                            android:layout_weight="1"
+                            android:autofillHints="10:30"
+                            android:backgroundTint="@color/dark_gray"
+                            android:defaultFocusHighlightEnabled="true"
+                            android:ems="3"
+                            android:focusableInTouchMode="true"
+                            android:hint="10:30"
+                            android:inputType="time"
+                            android:maxLength="5"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textColorHint="#9E9E9E"
+                            tools:ignore="TouchTargetSizeCheck" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="8sp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/edit_activity_end_time_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="@string/activity_create_end_time"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/input_time_end_of_activity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5sp"
+                            android:layout_weight="1"
+                            android:autofillHints="10:30"
+                            android:backgroundTint="@color/dark_gray"
+                            android:ems="3"
+                            android:hint="10:30"
+                            android:inputType="time"
+                            android:maxLength="5"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textColorHint="#9E9E9E"
+                            tools:ignore="TouchTargetSizeCheck" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingBottom="10sp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="8sp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/edit_activity_start_time_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:text="@string/activity_create_start_time"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/input_time_start_of_activity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="5sp"
-                    android:layout_weight="1"
-                    android:autofillHints="10:30"
-                    android:backgroundTint="@color/dark_gray"
-                    android:defaultFocusHighlightEnabled="true"
-                    android:ems="3"
-                    android:focusableInTouchMode="true"
-                    android:hint="10:30"
-                    android:inputType="time"
-                    android:maxLength="5"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textColorHint="#9E9E9E"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="8sp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/edit_activity_end_time_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:text="@string/activity_create_end_time"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/input_time_end_of_activity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="5sp"
-                    android:layout_weight="1"
-                    android:autofillHints="10:30"
-                    android:backgroundTint="@color/dark_gray"
-                    android:ems="3"
-                    android:hint="10:30"
-                    android:inputType="time"
-                    android:maxLength="5"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textColorHint="#9E9E9E"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
