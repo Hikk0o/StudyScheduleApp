@@ -1,13 +1,23 @@
 package com.hikko.scheduleapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
+import android.animation.LayoutTransition;
+import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.Transformation;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.hikko.scheduleapp.adapters.EditActivityAdapter;
 
 import java.io.Console;
@@ -20,6 +30,7 @@ public class EditActivitiesOfDay extends AppCompatActivity {
     static public ArrayList<HashMap<String, String>> activitiesOfDayList = new ArrayList<>();
     View addActivityButton;
 
+    @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +38,6 @@ public class EditActivitiesOfDay extends AppCompatActivity {
 
         ListView activitiesListView = findViewById(R.id.EditActivitiesListView);
         activitiesOfDayList = Utils.getActivitiesDayOfWeek(MainActivity.getActiveDayOfWeek());
-        System.out.println("Utils.getActivitiesDayOfWeek");
         updateActivitiesListView();
 
         // Add button to footer
@@ -36,6 +46,9 @@ public class EditActivitiesOfDay extends AppCompatActivity {
                 R.layout.edit_activities_button,
                 null);
         activitiesListView.addFooterView(addActivityButton);
+
+        findViewById(R.id.backround).setOnTouchListener((v, event) -> Utils.clearInputFocus(activitiesListView, activitiesListView.getContext()));
+
 
     }
 
@@ -63,30 +76,17 @@ public class EditActivitiesOfDay extends AppCompatActivity {
 
     private void updateActivitiesListView() {
         ListView activitiesListView = findViewById(R.id.EditActivitiesListView);
-        System.out.println(activitiesOfDayList + " updateActivitiesListView");
         List<Activity> activities = new ArrayList<>();
         for (HashMap<String, String> map:
-        activitiesOfDayList) {
-            Activity activity = Activity.convertToClass(map.get("Name"), map.get("Type"), map.get("Start"), map.get("End"));
-            activities.add(activity);
-        }
+            activitiesOfDayList) {
+                Activity activity = new Activity(map.get("Name"), map.get("Type"), map.get("Start"), map.get("End"));
+                activities.add(activity);
+            }
 
-        ArrayAdapter<Activity> adapter = new EditActivityAdapter(
+        EditActivityAdapter adapter = new EditActivityAdapter(
                 this, R.layout.edit_activities_item, activities);
-        // Creating layouts from an array
-//        EditActivityAdapter adapter = new EditActivityAdapter(
-//                this,
-//                activitiesOfDayList,
-//                R.layout.edit_activities_item,
-//                new String[]{
-//                        "Name",
-//                        "Start",
-//                        "End"},
-//                new int[]{
-//                        R.id.ActivityNameAutoCompleteText,
-//                        R.id.input_time_start_of_activity,
-//                        R.id.input_time_end_of_activity
-//                });
+
+
 
         activitiesListView.setAdapter(adapter);
         activitiesListView.setDivider(null);
@@ -98,13 +98,13 @@ public class EditActivitiesOfDay extends AppCompatActivity {
         List<List<Activity>> editedActivitiesOfWeek = Utils.getLoadedActivities();
         List<Activity> activities = new ArrayList<>();
 
-        for (HashMap<String, String> activity : activitiesOfDayList) {
-            String name = activity.get("Name");
-            String start = activity.get("Start");
-            String end = activity.get("End");
-            String type = activity.get("Type");
-            Activity classActivity = Activity.convertToClass(name, type, start, end);
-            activities.add(classActivity);
+        for (HashMap<String, String> listActivity : activitiesOfDayList) {
+            String name = listActivity.get("Name");
+            String start = listActivity.get("Start");
+            String end = listActivity.get("End");
+            String type = listActivity.get("Type");
+            Activity activity = new Activity(name, type, start, end);
+            activities.add(activity);
         }
         // todo Вылеты при сохранении для пустых дней
         editedActivitiesOfWeek.set(MainActivity.getActiveDayOfWeek() - 1, activities);
@@ -115,8 +115,8 @@ public class EditActivitiesOfDay extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public static void setActivitiesOfDayList(ArrayList<HashMap<String, String>> activities) {
-        activitiesOfDayList = activities;
-    }
+    public static void deleteActivity(int pos) {
+        activitiesOfDayList.remove(pos);
 
+    }
 }

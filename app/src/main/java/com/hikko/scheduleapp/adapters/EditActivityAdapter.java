@@ -1,5 +1,7 @@
 package com.hikko.scheduleapp.adapters;
 
+import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -12,10 +14,15 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.hikko.scheduleapp.Activity;
 import com.hikko.scheduleapp.EditActivitiesOfDay;
 import com.hikko.scheduleapp.R;
 import com.daimajia.swipe.adapters.ArraySwipeAdapter;
+import com.hikko.scheduleapp.Utils;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,10 +33,10 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
 
     public EditActivityAdapter(EditActivitiesOfDay context, int edit_activities_item, List<Activity> activities) {
         super(context, edit_activities_item, activities);
-        this.resourceLayout = edit_activities_item;
-        this.mContext = context;
+        resourceLayout = edit_activities_item;
+        mContext = context;
     }
-
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -40,6 +47,14 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
         }
 
         Activity activity = (Activity) getItem(position);
+
+        View finalConvertView = convertView;
+
+        convertView.findViewById(R.id.SwipeLayout).setOnTouchListener((v, event) -> Utils.clearInputFocus(finalConvertView, mContext));
+        convertView.findViewById(R.id.buttonDeleteActivity).setOnTouchListener((v, event) -> {
+            deleteActivity(finalConvertView, position, (Activity) getItem(position));
+            return false;
+        });
 
         Spinner spinner = convertView.findViewById(R.id.edit_activity_type_spinner);
         if (spinner.getAdapter() == null) {
@@ -213,4 +228,26 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
     public int getSwipeLayoutResourceId(int position) {
         return 0;
     }
+
+    public void deleteActivity(View v, int pos, Activity activity) {
+        remove(activity);
+        EditActivitiesOfDay.deleteActivity(pos);
+        ConstraintLayout finalV = v.findViewById(R.id.rootEditActivity);
+        finalV.animate()
+                .translationX(v.getWidth() * -1)
+                .alpha(0.0f)
+                .setDuration(150)
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationEnd(@NonNull Animator animation) {
+                        finalV.getLayoutTransition().setDuration(30000);
+                        finalV.setMaxHeight(0);
+                        finalV.setPadding(0,0,0,0);
+                    }
+                    public void onAnimationStart(@NonNull Animator animation) {}
+                    public void onAnimationCancel(@NonNull Animator animation) {}
+                    public void onAnimationRepeat(@NonNull Animator animation) {}
+                });
+    }
+
 }

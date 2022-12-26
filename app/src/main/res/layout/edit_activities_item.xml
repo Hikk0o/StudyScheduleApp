@@ -2,18 +2,51 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootEditActivity"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
     android:orientation="horizontal"
     android:paddingBottom="8sp">
 
     <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/SwipeLayout"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="5sp">
+
+            <LinearLayout
+                android:id="@+id/buttonDeleteActivity"
+                android:layout_width="100sp"
+                android:layout_height="0dp"
+                android:background="@drawable/buttom_red_corner"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/img_delete"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginVertical="52sp"
+                    android:contentDescription="@string/cancel"
+                    android:src="@drawable/ic_baseline_delete_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@android:color/white" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -54,7 +87,7 @@
                         android:minHeight="48dp"
                         android:spinnerMode="dropdown"
                         android:textAlignment="center"
-                        tools:ignore="TouchTargetSizeCheck" />
+                        tools:ignore="TouchTargetSizeCheck,RedundantDescriptionCheck" />
 
                     <MultiAutoCompleteTextView
                         android:id="@+id/ActivityNameAutoCompleteText"
@@ -104,7 +137,7 @@
                             android:layout_weight="1"
                             android:autofillHints="10:30"
                             android:backgroundTint="@color/dark_gray"
-                            android:defaultFocusHighlightEnabled="true"
+                            android:defaultFocusHighlightEnabled="false"
                             android:ems="3"
                             android:focusableInTouchMode="true"
                             android:hint="10:30"
@@ -113,7 +146,7 @@
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textColorHint="#9E9E9E"
-                            tools:ignore="TouchTargetSizeCheck" />
+                            tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -140,6 +173,7 @@
                             android:layout_weight="1"
                             android:autofillHints="10:30"
                             android:backgroundTint="@color/dark_gray"
+                            android:defaultFocusHighlightEnabled="false"
                             android:ems="3"
                             android:hint="10:30"
                             android:inputType="time"
@@ -156,26 +190,6 @@
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/red"
-            android:orientation="horizontal"
-            tools:visibility="visible">
-
-            <ImageView
-                android:id="@+id/img_delete"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentTop="false"
-                android:layout_marginStart="24dp"
-                android:contentDescription="@string/cancel"
-                android:src="@drawable/ic_baseline_delete_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@android:color/white" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.daimajia.swipe.SwipeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

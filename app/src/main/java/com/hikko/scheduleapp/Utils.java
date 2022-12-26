@@ -1,6 +1,9 @@
 package com.hikko.scheduleapp;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,23 +33,13 @@ public class Utils {
 
         if (loadedActivities != null) {
             activitiesOfWeek = loadedActivities;
-        } else {
-            List<Activity> activitiesOfDay = new ArrayList<>();
-
-            Activity activity1 = new Activity("loadedActivities == null", null, null, null);
-            Activity activity2 = new Activity("Методы анализа данных", "ПР", "15:13", "16:14");
-            Activity activity3 = new Activity("Теория алгоритмов и рекурсивных функций", "ПР", "17:13", "18:14");
-            Activity activity4 = new Activity("ТРПП", "ЛК", "19:13", "20:14");
-            Activity activity5 = new Activity("ТРПП", "ПР", "21:13", "22:14");
-            activitiesOfDay.add(activity1);
-            activitiesOfDay.add(activity2);
-            activitiesOfDay.add(activity3);
-            activitiesOfDay.add(activity4);
-            activitiesOfDay.add(activity5);
-
-            activitiesOfWeek.add(activitiesOfDay);
         }
 
+        if (activitiesOfWeek.size() < 7) {
+            while (activitiesOfWeek.size() < 7) {
+                activitiesOfWeek.add(new ArrayList<>());
+            }
+        }
         String json = gson.toJson(activitiesOfWeek);
 
         // Create file output stream
@@ -68,15 +61,24 @@ public class Utils {
 
         Gson g = new Gson();
         File file = new File(filesDir, "week.json");
-        try {
-            byte[] content = Files.readAllBytes(file.toPath());
-            String str = new String(content, StandardCharsets.UTF_8);
-            Type arrType = new TypeToken<List<List<Activity>>>(){}.getType();
-            loadedActivities = new ArrayList<>();
-            loadedActivities = g.fromJson(str, arrType);
-            System.out.println(loadedActivities);
-        } catch (IOException e) {
-            e.printStackTrace();
+        System.out.println(file.exists());
+        if (!file.exists()) {
+            saveWeekToJsonFile(filesDir);
+            loadAllActivities(filesDir);
+        } else {
+            try {
+                byte[] content = Files.readAllBytes(file.toPath());
+                String str = new String(content, StandardCharsets.UTF_8);
+                Type arrType = new TypeToken<List<List<Activity>>>(){}.getType();
+                loadedActivities = new ArrayList<>();
+                loadedActivities = g.fromJson(str, arrType);
+                if (loadedActivities.size() == 0) {
+                    saveWeekToJsonFile(filesDir);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -114,6 +116,13 @@ public class Utils {
         }
 
         return arrayList;
+    }
+
+    public static boolean clearInputFocus(View v, Context context) {
+        v.clearFocus();
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        return false;
     }
 
     public static int getIdByDay(int id) {

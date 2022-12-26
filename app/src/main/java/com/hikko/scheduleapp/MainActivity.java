@@ -32,20 +32,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        filesDir = getFilesDir();
+        Utils.loadAllActivities(filesDir);
 
         View view = findViewById(activeDayOfWeekId);
         changeCurrentWeek(view);
 
-    }
-
-    @Override
-    protected void onStart() {
-        filesDir = getFilesDir();
-
-//        Utils.saveWeekToJsonFile(filesDir);
-        Utils.loadAllActivities(filesDir);
-
-        super.onStart();
     }
 
     public void changeCurrentWeek(View v) {
