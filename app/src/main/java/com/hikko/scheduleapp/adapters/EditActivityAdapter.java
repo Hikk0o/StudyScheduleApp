@@ -12,58 +12,44 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import androidx.annotation.IdRes;
-import androidx.annotation.LayoutRes;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
-
-import com.daimajia.swipe.adapters.SimpleCursorSwipeAdapter;
 import com.hikko.scheduleapp.Activity;
 import com.hikko.scheduleapp.EditActivitiesOfDay;
 import com.hikko.scheduleapp.R;
-
-import java.util.ArrayList;
+import com.daimajia.swipe.adapters.ArraySwipeAdapter;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class EditActivityAdapter extends ArrayAdapter<Activity> {
+public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
 
     private final int resourceLayout;
     private final Context mContext;
-    private final List<String> typeSpinner = new ArrayList<>();
 
-    public EditActivityAdapter(Context context, List<? extends Map<String, ?>> data,
-                               @LayoutRes int resource, String[] from, @IdRes int[] to) {
-        super(context, resource, null, from, to, 0);
-        this.resourceLayout = resource;
+    public EditActivityAdapter(EditActivitiesOfDay context, int edit_activities_item, List<Activity> activities) {
+        super(context, edit_activities_item, activities);
+        this.resourceLayout = edit_activities_item;
         this.mContext = context;
-        data.forEach(activity -> {
-            String type = (String) activity.get("Type");
-            System.out.println(type);
-            typeSpinner.add(type);
-        });
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v;
 
         if (convertView == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(mContext);
             convertView = vi.inflate(resourceLayout, null);
         }
-        v = super.getView(position, convertView, parent);
 
-        Spinner spinner = v.findViewById(R.id.edit_activity_type_spinner);
+        Activity activity = (Activity) getItem(position);
+
+        Spinner spinner = convertView.findViewById(R.id.edit_activity_type_spinner);
         if (spinner.getAdapter() == null) {
-            ArrayAdapter<CharSequence> s_adapter = ArrayAdapter.createFromResource(v.getContext(),
+            ArrayAdapter<CharSequence> s_adapter = ArrayAdapter.createFromResource(convertView.getContext(),
                     R.array.activityType, R.layout.spinner_item);
             s_adapter.setDropDownViewResource(R.layout.spinner_item_dropdown);
             spinner.setAdapter(s_adapter);
         }
 
-        spinner.setSelection(getSpinnerIndex(spinner, typeSpinner.get(position)));
+        spinner.setSelection(getSpinnerIndex(spinner, activity.type));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -75,8 +61,8 @@ public class EditActivityAdapter extends ArrayAdapter<Activity> {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        EditText activityNameText = v.findViewById(R.id.ActivityNameAutoCompleteText);
-        int maxLength = v.getResources().getInteger(R.integer.max_ActivityNameAutoCompleteText);
+        EditText activityNameText = convertView.findViewById(R.id.ActivityNameAutoCompleteText);
+        int maxLength = convertView.getResources().getInteger(R.integer.max_ActivityNameAutoCompleteText);
         InputFilter[] fArray = new InputFilter[2];
 
         fArray[0] = new InputFilter.LengthFilter(maxLength);
@@ -110,8 +96,12 @@ public class EditActivityAdapter extends ArrayAdapter<Activity> {
             }
         });
 
-        EditText input_start_time = v.findViewById(R.id.input_time_start_of_activity);
-        EditText input_end_time = v.findViewById(R.id.input_time_end_of_activity);
+        activityNameText.setText(activity.name);
+
+        EditText input_start_time = convertView.findViewById(R.id.input_time_start_of_activity);
+        input_start_time.setText(activity.start);
+        EditText input_end_time = convertView.findViewById(R.id.input_time_end_of_activity);
+        input_end_time.setText(activity.end);
 
         InputFilter[] timeFilter = new InputFilter[1];
         timeFilter[0] = (source, start, end, dest, dstart, dend) -> {
@@ -193,7 +183,7 @@ public class EditActivityAdapter extends ArrayAdapter<Activity> {
         input_end_time.setOnFocusChangeListener((v1, hasFocus) -> {
             if (hasFocus) input_end_time.addTextChangedListener(saveInputTimeInList("End", position));
         });
-        return v;
+        return convertView;
     }
 
     private int getSpinnerIndex(Spinner spinner, String myString){
@@ -219,4 +209,8 @@ public class EditActivityAdapter extends ArrayAdapter<Activity> {
         };
     }
 
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        return 0;
+    }
 }

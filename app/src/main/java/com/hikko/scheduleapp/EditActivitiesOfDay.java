@@ -64,23 +64,29 @@ public class EditActivitiesOfDay extends AppCompatActivity {
     private void updateActivitiesListView() {
         ListView activitiesListView = findViewById(R.id.EditActivitiesListView);
         System.out.println(activitiesOfDayList + " updateActivitiesListView");
+        List<Activity> activities = new ArrayList<>();
+        for (HashMap<String, String> map:
+        activitiesOfDayList) {
+            Activity activity = Activity.convertToClass(map.get("Name"), map.get("Type"), map.get("Start"), map.get("End"));
+            activities.add(activity);
+        }
 
-        ArrayAdapter<Activity> adapter = new ArrayAdapter<>(
-                this, R.layout.edit_activities_item, new Activity[]{"Рыжик", "Барсик", "Мурзик"});
+        ArrayAdapter<Activity> adapter = new EditActivityAdapter(
+                this, R.layout.edit_activities_item, activities);
         // Creating layouts from an array
-        EditActivityAdapter adapter = new EditActivityAdapter(
-                this,
-                activitiesOfDayList,
-                R.layout.edit_activities_item,
-                new String[]{
-                        "Name",
-                        "Start",
-                        "End"},
-                new int[]{
-                        R.id.ActivityNameAutoCompleteText,
-                        R.id.input_time_start_of_activity,
-                        R.id.input_time_end_of_activity
-                });
+//        EditActivityAdapter adapter = new EditActivityAdapter(
+//                this,
+//                activitiesOfDayList,
+//                R.layout.edit_activities_item,
+//                new String[]{
+//                        "Name",
+//                        "Start",
+//                        "End"},
+//                new int[]{
+//                        R.id.ActivityNameAutoCompleteText,
+//                        R.id.input_time_start_of_activity,
+//                        R.id.input_time_end_of_activity
+//                });
 
         activitiesListView.setAdapter(adapter);
         activitiesListView.setDivider(null);
