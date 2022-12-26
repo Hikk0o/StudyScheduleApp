@@ -26,6 +26,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion '33.0.1'
+    ndkVersion '25.1.8937393'
 }
 
 dependencies {
@@ -37,5 +39,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
     implementation 'com.google.code.gson:gson:2.10'
-    implementation 'com.wdullaer:swipeactionadapter:2.1.0'
+
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
 }

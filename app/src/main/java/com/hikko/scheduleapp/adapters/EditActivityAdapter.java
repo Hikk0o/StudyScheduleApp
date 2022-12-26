@@ -10,12 +10,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
+import com.daimajia.swipe.adapters.SimpleCursorSwipeAdapter;
+import com.hikko.scheduleapp.Activity;
 import com.hikko.scheduleapp.EditActivitiesOfDay;
 import com.hikko.scheduleapp.R;
 
@@ -24,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EditActivityAdapter extends SimpleAdapter {
+public class EditActivityAdapter extends ArrayAdapter<Activity> {
 
     private final int resourceLayout;
     private final Context mContext;
@@ -32,7 +34,7 @@ public class EditActivityAdapter extends SimpleAdapter {
 
     public EditActivityAdapter(Context context, List<? extends Map<String, ?>> data,
                                @LayoutRes int resource, String[] from, @IdRes int[] to) {
-        super(context, data, resource, from, to);
+        super(context, resource, null, from, to, 0);
         this.resourceLayout = resource;
         this.mContext = context;
         data.forEach(activity -> {

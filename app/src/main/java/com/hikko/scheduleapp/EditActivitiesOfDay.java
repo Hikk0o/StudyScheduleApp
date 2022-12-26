@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.hikko.scheduleapp.adapters.EditActivityAdapter;
@@ -64,6 +65,8 @@ public class EditActivitiesOfDay extends AppCompatActivity {
         ListView activitiesListView = findViewById(R.id.EditActivitiesListView);
         System.out.println(activitiesOfDayList + " updateActivitiesListView");
 
+        ArrayAdapter<Activity> adapter = new ArrayAdapter<>(
+                this, R.layout.edit_activities_item, new Activity[]{"Рыжик", "Барсик", "Мурзик"});
         // Creating layouts from an array
         EditActivityAdapter adapter = new EditActivityAdapter(
                 this,
