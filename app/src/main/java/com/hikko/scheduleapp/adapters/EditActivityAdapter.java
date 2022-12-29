@@ -30,11 +30,13 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
 
     private final int resourceLayout;
     private final Context mContext;
+    private List<Activity> activities;
 
     public EditActivityAdapter(EditActivitiesOfDay context, int edit_activities_item, List<Activity> activities) {
         super(context, edit_activities_item, activities);
         resourceLayout = edit_activities_item;
         mContext = context;
+        this.activities = activities;
     }
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -52,7 +54,7 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
 
         convertView.findViewById(R.id.SwipeLayout).setOnTouchListener((v, event) -> Utils.clearInputFocus(finalConvertView, mContext));
         convertView.findViewById(R.id.buttonDeleteActivity).setOnTouchListener((v, event) -> {
-            deleteActivity(finalConvertView, position, (Activity) getItem(position));
+            deleteActivity(finalConvertView, position);
             return false;
         });
 
@@ -96,15 +98,16 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
 
         activityNameText.setOnFocusChangeListener((v1, hasFocus) -> {
             if (hasFocus) {
+                HashMap<String, String> temp = EditActivitiesOfDay.activitiesOfDayList.get(position);
                 activityNameText.addTextChangedListener(new TextWatcher() {
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
                     public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        HashMap<String, String> temp = EditActivitiesOfDay.activitiesOfDayList.get(position);
                         temp.put("Name", s.toString());
                         EditActivitiesOfDay.activitiesOfDayList.set(position, temp);
+                        System.out.println(EditActivitiesOfDay.activitiesOfDayList.get(position));
                     }
                 });
 
@@ -229,25 +232,29 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
         return 0;
     }
 
-    public void deleteActivity(View v, int pos, Activity activity) {
-        remove(activity);
+    public void deleteActivity(View v, int pos) {
+
         EditActivitiesOfDay.deleteActivity(pos);
         ConstraintLayout finalV = v.findViewById(R.id.rootEditActivity);
         finalV.animate()
                 .translationX(v.getWidth() * -1)
                 .alpha(0.0f)
-                .setDuration(150)
+                .setDuration(200)
                 .setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationEnd(@NonNull Animator animation) {
-                        finalV.getLayoutTransition().setDuration(30000);
                         finalV.setMaxHeight(0);
                         finalV.setPadding(0,0,0,0);
+                        System.out.println(pos);
+//                        activities.remove(pos);
+//                        notifyDataSetChanged();
                     }
                     public void onAnimationStart(@NonNull Animator animation) {}
                     public void onAnimationCancel(@NonNull Animator animation) {}
                     public void onAnimationRepeat(@NonNull Animator animation) {}
                 });
+        activities.remove(pos);
+        notifyDataSetChanged();
     }
 
 }

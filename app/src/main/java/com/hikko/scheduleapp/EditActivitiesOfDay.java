@@ -30,7 +30,7 @@ public class EditActivitiesOfDay extends AppCompatActivity {
     static public ArrayList<HashMap<String, String>> activitiesOfDayList = new ArrayList<>();
     View addActivityButton;
 
-    @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,9 +77,11 @@ public class EditActivitiesOfDay extends AppCompatActivity {
     private void updateActivitiesListView() {
         ListView activitiesListView = findViewById(R.id.EditActivitiesListView);
         List<Activity> activities = new ArrayList<>();
+        int count = 0;
         for (HashMap<String, String> map:
             activitiesOfDayList) {
-                Activity activity = new Activity(map.get("Name"), map.get("Type"), map.get("Start"), map.get("End"));
+                Activity activity = new Activity(map.get("Name"), map.get("Type"), map.get("Start"), map.get("End"), count++);
+                System.out.println(activity);
                 activities.add(activity);
             }
 
@@ -117,6 +119,5 @@ public class EditActivitiesOfDay extends AppCompatActivity {
 
     public static void deleteActivity(int pos) {
         activitiesOfDayList.remove(pos);
-
     }
 }
