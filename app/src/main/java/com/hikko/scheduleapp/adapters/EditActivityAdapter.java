@@ -30,7 +30,7 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
 
     private final int resourceLayout;
     private final Context mContext;
-    private List<Activity> activities;
+    private final List<Activity> activities;
 
     public EditActivityAdapter(EditActivitiesOfDay context, int edit_activities_item, List<Activity> activities) {
         super(context, edit_activities_item, activities);
@@ -246,8 +246,6 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
                         finalV.setMaxHeight(0);
                         finalV.setPadding(0,0,0,0);
                         System.out.println(pos);
-//                        activities.remove(pos);
-//                        notifyDataSetChanged();
                     }
                     public void onAnimationStart(@NonNull Animator animation) {}
                     public void onAnimationCancel(@NonNull Animator animation) {}

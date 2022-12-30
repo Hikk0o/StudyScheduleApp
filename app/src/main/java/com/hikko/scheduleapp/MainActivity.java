@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.hikko.scheduleapp.adapters.ActivitiesListAdapter;
+
 import java.io.File;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -57,9 +59,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ListView activitiesListView = findViewById(R.id.ActivitiesListView);
-        SimpleAdapter adapter = new SimpleAdapter(this, arrayList, R.layout.day_item,
+        SimpleAdapter adapter = new ActivitiesListAdapter(this, arrayList, R.layout.day_item,
                 new String[]{"Name", "Start", "End", "Type"},
-                new int[]{R.id.activity_name, R.id.activity_start, R.id.activity_end, R.id.activity_type});
+                new int[]{R.id.activity_name, R.id.activity_start, R.id.activity_end, R.id.activity_type},
+                this.getResources());
 
         activitiesListView.setAdapter(adapter);
         activitiesListView.setDivider(null);
@@ -69,10 +72,6 @@ public class MainActivity extends AppCompatActivity {
     public void openEditActivitiesOfDay(View v) {
         Intent intent = new Intent(this, EditActivitiesOfDay.class);
         startActivity(intent);
-    }
-
-    public static int getActiveDayOfWeekId() {
-        return activeDayOfWeekId;
     }
 
     public static int getActiveDayOfWeek() {

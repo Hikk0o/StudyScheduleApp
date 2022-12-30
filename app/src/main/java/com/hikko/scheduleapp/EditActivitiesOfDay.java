@@ -1,26 +1,15 @@
 package com.hikko.scheduleapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.Animator;
-import android.animation.LayoutTransition;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.Transformation;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.daimajia.swipe.SwipeLayout;
 import com.hikko.scheduleapp.adapters.EditActivityAdapter;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -108,7 +97,6 @@ public class EditActivitiesOfDay extends AppCompatActivity {
             Activity activity = new Activity(name, type, start, end);
             activities.add(activity);
         }
-        // todo Вылеты при сохранении для пустых дней
         editedActivitiesOfWeek.set(MainActivity.getActiveDayOfWeek() - 1, activities);
         Utils.setLoadedActivities(editedActivitiesOfWeek);
         Utils.saveWeekToJsonFile(MainActivity.filesDir);
