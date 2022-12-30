@@ -108,8 +108,8 @@ public class Utils {
         for (Activity value : activity.get(dayOfWeek)) {
             map = new HashMap<>();
             map.put("Name", value.name);
-            map.put("Start",  value.start);
-            map.put("End", value.end);
+            map.put("Start",  value.start_time);
+            map.put("End", value.end_time);
             map.put("Type", value.type);
             arrayList.add(map);
         }

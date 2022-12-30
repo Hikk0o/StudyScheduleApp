@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.hikko.scheduleapp.adapters.EditActivityAdapter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -93,10 +95,25 @@ public class EditActivitiesOfDay extends AppCompatActivity {
             String name = listActivity.get("Name");
             String start = listActivity.get("Start");
             String end = listActivity.get("End");
+            if (start == null || end == null || start.length() < 4 || end.length() < 4) {
+                Toast.makeText(
+                        this,
+                        "Сначала заполните время для пар",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
             String type = listActivity.get("Type");
             Activity activity = new Activity(name, type, start, end);
             activities.add(activity);
         }
+        activities.sort(Comparator.comparing(o -> {
+            if (o.start_time != null) {
+                return o.start_time;
+            }
+            return "";
+        }));
+
         editedActivitiesOfWeek.set(MainActivity.getActiveDayOfWeek() - 1, activities);
         Utils.setLoadedActivities(editedActivitiesOfWeek);
         Utils.saveWeekToJsonFile(MainActivity.filesDir);

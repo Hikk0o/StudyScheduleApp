@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -23,6 +24,7 @@ import com.hikko.scheduleapp.R;
 import com.daimajia.swipe.adapters.ArraySwipeAdapter;
 import com.hikko.scheduleapp.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,12 +33,23 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
     private final int resourceLayout;
     private final Context mContext;
     private final List<Activity> activities;
+    private final List<String> autofillHints = new ArrayList<>();
 
     public EditActivityAdapter(EditActivitiesOfDay context, int edit_activities_item, List<Activity> activities) {
         super(context, edit_activities_item, activities);
         resourceLayout = edit_activities_item;
         mContext = context;
         this.activities = activities;
+        for (List<Activity> week : Utils.getLoadedActivities()) {
+            for (Activity activity : week) {
+                String nameActivity = activity.name;
+                if (nameActivity != null) {
+                    if (nameActivity.length() != 0 && !autofillHints.contains(nameActivity)) {
+                        autofillHints.add(nameActivity);
+                    }
+                }
+            }
+        }
     }
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -78,7 +91,7 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        EditText activityNameText = convertView.findViewById(R.id.ActivityNameAutoCompleteText);
+        AutoCompleteTextView activityNameText = convertView.findViewById(R.id.ActivityNameAutoCompleteText);
         int maxLength = convertView.getResources().getInteger(R.integer.max_ActivityNameAutoCompleteText);
         InputFilter[] fArray = new InputFilter[2];
 
@@ -110,16 +123,20 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
                         System.out.println(EditActivitiesOfDay.activitiesOfDayList.get(position));
                     }
                 });
-
+            } else {
+                System.out.println("False");
             }
         });
 
         activityNameText.setText(activity.name);
 
+        activityNameText.setAdapter(new ArrayAdapter<>(this.getContext(),
+                android.R.layout.simple_dropdown_item_1line, autofillHints));
+
         EditText input_start_time = convertView.findViewById(R.id.input_time_start_of_activity);
-        input_start_time.setText(activity.start);
+        input_start_time.setText(activity.start_time);
         EditText input_end_time = convertView.findViewById(R.id.input_time_end_of_activity);
-        input_end_time.setText(activity.end);
+        input_end_time.setText(activity.end_time);
 
         InputFilter[] timeFilter = new InputFilter[1];
         timeFilter[0] = (source, start, end, dest, dstart, dend) -> {
