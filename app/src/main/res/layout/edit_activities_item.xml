@@ -138,16 +138,17 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="5sp"
                             android:layout_weight="1"
-                            android:autofillHints="10:30"
                             android:backgroundTint="@color/dark_gray"
                             android:defaultFocusHighlightEnabled="false"
                             android:ems="3"
                             android:focusableInTouchMode="true"
                             android:inputType="time"
                             android:maxLength="5"
+                            android:hint="@string/example_start_activity"
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textColorHint="#9E9E9E"
+                            android:autofillHints=""
                             tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
                     </LinearLayout>
 
@@ -173,16 +174,17 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="5sp"
                             android:layout_weight="1"
-                            android:autofillHints="10:30"
                             android:backgroundTint="@color/dark_gray"
                             android:defaultFocusHighlightEnabled="false"
                             android:ems="3"
+                            android:hint="@string/example_end_activity"
                             android:inputType="time"
                             android:maxLength="5"
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textColorHint="#9E9E9E"
-                            tools:ignore="TouchTargetSizeCheck" />
+                            tools:ignore="TouchTargetSizeCheck"
+                            android:autofillHints="" />
 
                     </LinearLayout>
 

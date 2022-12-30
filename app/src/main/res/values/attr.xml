@@ -2,4 +2,6 @@
 <resources>
     <integer name="max_ActivityNameAutoCompleteText">40</integer>
     <integer name="max_EditActivities">7</integer>
+    <string name="example_start_activity" translatable="false">10:30</string>
+    <string name="example_end_activity" translatable="false">12:00</string>
 </resources>

@@ -15,7 +15,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.hikko.scheduleapp.Activity;
@@ -67,7 +66,7 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
 
         convertView.findViewById(R.id.SwipeLayout).setOnTouchListener((v, event) -> Utils.clearInputFocus(finalConvertView, mContext));
         convertView.findViewById(R.id.buttonDeleteActivity).setOnTouchListener((v, event) -> {
-            deleteActivity(finalConvertView, position);
+            deleteActivity((ConstraintLayout) finalConvertView, position);
             return false;
         });
 
@@ -249,25 +248,26 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
         return 0;
     }
 
-    public void deleteActivity(View v, int pos) {
-
+    // todo
+    public void deleteActivity(ConstraintLayout v, int pos) {
+        long delay = 200L;
         EditActivitiesOfDay.deleteActivity(pos);
-        ConstraintLayout finalV = v.findViewById(R.id.rootEditActivity);
-        finalV.animate()
-                .translationX(v.getWidth() * -1)
-                .alpha(0.0f)
-                .setDuration(200)
-                .setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationEnd(@NonNull Animator animation) {
-                        finalV.setMaxHeight(0);
-                        finalV.setPadding(0,0,0,0);
-                        System.out.println(pos);
-                    }
-                    public void onAnimationStart(@NonNull Animator animation) {}
-                    public void onAnimationCancel(@NonNull Animator animation) {}
-                    public void onAnimationRepeat(@NonNull Animator animation) {}
-                });
+
+//        v.animate()
+//                .translationX(v.getWidth() * -1)
+//                .alpha(0.0f)
+//                .setDuration(delay)
+//                .setListener(new Animator.AnimatorListener() {
+//                    @Override
+//                    public void onAnimationEnd(@NonNull Animator animation) {
+//                        v.setMaxHeight(0);
+//                        v.setPadding(0,0,0,0);
+//                        System.out.println(pos);
+//                    }
+//                    public void onAnimationStart(@NonNull Animator animation) {}
+//                    public void onAnimationCancel(@NonNull Animator animation) {}
+//                    public void onAnimationRepeat(@NonNull Animator animation) {}
+//                });
         activities.remove(pos);
         notifyDataSetChanged();
     }
