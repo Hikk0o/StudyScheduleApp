@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     private static int activeDayOfWeek = getLocaleDayOfWeek();
-    private static int activeDayOfWeekId = Utils.getIdByDay(2);
+    private static int activeDayOfWeekId = Utils.getIdByDay(activeDayOfWeek);
     public static File filesDir;
 
     private static int getLocaleDayOfWeek() {
