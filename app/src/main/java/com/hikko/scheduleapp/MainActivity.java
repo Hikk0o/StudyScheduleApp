@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         activeDayOfWeek = Utils.getDayById(activeDayOfWeekId);
 
         HorizontalScrollView horizontalScrollView = findViewById(R.id.horizontalScrollView);
-        horizontalScrollView.post(() -> horizontalScrollView.smoothScrollTo((int) v.getX() - 50, 0));
+        horizontalScrollView.post(() -> horizontalScrollView.smoothScrollTo((int) v.getX() - 300, 0));
 
         ArrayList<HashMap<String, String>> arrayList = Utils.getActivitiesDayOfWeek(activeDayOfWeek);
 
