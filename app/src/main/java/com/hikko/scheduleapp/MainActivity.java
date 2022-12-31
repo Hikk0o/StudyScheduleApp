@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     private static int activeDayOfWeek = getLocaleDayOfWeek();
-    private static int activeDayOfWeekId = Utils.getIdByDay(activeDayOfWeek);
+    private static int activeDayOfWeekId = Utils.getIdByDay(2);
     public static File filesDir;
 
     private static int getLocaleDayOfWeek() {
@@ -48,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
         activeDayOfWeekId = v.getId();
         activeDayOfWeek = Utils.getDayById(activeDayOfWeekId);
+
+        HorizontalScrollView horizontalScrollView = findViewById(R.id.horizontalScrollView);
+        horizontalScrollView.post(() -> horizontalScrollView.smoothScrollTo((int) v.getX() - 50, 0));
 
         ArrayList<HashMap<String, String>> arrayList = Utils.getActivitiesDayOfWeek(activeDayOfWeek);
 

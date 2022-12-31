@@ -119,11 +119,8 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
                     public void afterTextChanged(Editable s) {
                         temp.put("Name", s.toString());
                         EditActivitiesOfDay.activitiesOfDayList.set(position, temp);
-                        System.out.println(EditActivitiesOfDay.activitiesOfDayList.get(position));
                     }
                 });
-            } else {
-                System.out.println("False");
             }
         });
 

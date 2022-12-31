@@ -35,7 +35,7 @@
         android:baselineAligned="true"
         android:fillViewport="true"
         android:gravity="center"
-        android:isScrollContainer="false"
+        android:isScrollContainer="true"
         android:orientation="horizontal"
         android:overScrollMode="ifContentScrolls"
         android:persistentDrawingCache="scrolling"

@@ -72,7 +72,6 @@ public class EditActivitiesOfDay extends AppCompatActivity {
         for (HashMap<String, String> map:
             activitiesOfDayList) {
                 Activity activity = new Activity(map.get("Name"), map.get("Type"), map.get("Start"), map.get("End"), count++);
-                System.out.println(activity);
                 activities.add(activity);
             }
 

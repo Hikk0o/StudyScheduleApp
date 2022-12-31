@@ -60,7 +60,6 @@ public class Utils {
 
         Gson g = new Gson();
         File file = new File(filesDir, "week.json");
-        System.out.println(file.exists());
         if (!file.exists()) {
             saveWeekToJsonFile(filesDir);
             loadAllActivities(filesDir);
