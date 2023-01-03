@@ -14,22 +14,16 @@ import android.widget.TextView;
 import com.hikko.scheduleapp.adapters.ActivitiesListAdapter;
 
 import java.io.File;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static int activeDayOfWeek = getLocaleDayOfWeek();
+    private static int activeDayOfWeek = Utils.getLocaleDayOfWeek();
     private static int activeDayOfWeekId = Utils.getIdByDay(activeDayOfWeek);
     public static File filesDir;
 
-    private static int getLocaleDayOfWeek() {
-        LocalDate today = LocalDate.now();
-        DayOfWeek dayOfWeek = today.getDayOfWeek();
-        return dayOfWeek.getValue();
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

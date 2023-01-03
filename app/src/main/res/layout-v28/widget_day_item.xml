@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/activity_round_corner"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="15sp"
+    android:paddingVertical="10sp">
+
+    <TextView
+        android:id="@+id/activity_type"
+        android:layout_width="16sp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="13sp"
+        android:fontFamily="@font/montserrat_medium"
+        android:maxWidth="250sp"
+        android:text="ПР"
+        android:textColor="@color/gray"
+        android:textSize="11sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/activity_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_medium"
+        android:maxWidth="150sp"
+        android:text="Ntest ntest www western example"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|end"
+        android:minWidth="50sp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/activity_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/example_start_activity"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/activity_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/example_end_activity"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/gray"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</LinearLayout>
+

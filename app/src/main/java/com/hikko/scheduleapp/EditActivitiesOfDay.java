@@ -117,6 +117,8 @@ public class EditActivitiesOfDay extends AppCompatActivity {
         Utils.setLoadedActivities(editedActivitiesOfWeek);
         Utils.saveWeekToJsonFile(MainActivity.filesDir);
 
+
+        ActivitiesDayWidget.updateWidget(getApplicationContext());
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

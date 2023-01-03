@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -159,6 +161,12 @@ public class Utils {
             return 7;
         }
         return id;
+    }
+
+    public static int getLocaleDayOfWeek() {
+        LocalDate today = LocalDate.now();
+        DayOfWeek dayOfWeek = today.getDayOfWeek();
+        return dayOfWeek.getValue();
     }
 
 
