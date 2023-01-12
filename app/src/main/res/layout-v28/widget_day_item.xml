@@ -3,6 +3,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="2sp"
     android:layout_marginBottom="5dp"
     android:background="@drawable/activity_round_corner"
     android:gravity="center_vertical"

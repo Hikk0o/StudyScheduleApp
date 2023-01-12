@@ -23,18 +23,16 @@ public class MainActivity extends AppCompatActivity {
     private static int activeDayOfWeekId = Utils.getIdByDay(activeDayOfWeek);
     public static File filesDir;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         filesDir = getFilesDir();
         Utils.loadAllActivities(filesDir);
+        ActivitiesDayWidget.updateWidget(getApplicationContext());
 
         View view = findViewById(activeDayOfWeekId);
         changeCurrentWeek(view);
-
     }
 
     public void changeCurrentWeek(View v) {
@@ -47,13 +45,18 @@ public class MainActivity extends AppCompatActivity {
         HorizontalScrollView horizontalScrollView = findViewById(R.id.horizontalScrollView);
         horizontalScrollView.post(() -> horizontalScrollView.smoothScrollTo((int) v.getX() - 300, 0));
 
+        if (!Utils.activitiesIsLoaded()) {
+            Utils.loadAllActivities(getFilesDir());
+        }
         ArrayList<HashMap<String, String>> arrayList = Utils.getActivitiesDayOfWeek(activeDayOfWeek);
 
         TextView noActivitiesText = findViewById(R.id.no_activities_text);
-        if (arrayList.size() == 0) {
-            noActivitiesText.setVisibility(View.VISIBLE);
-        } else {
-            noActivitiesText.setVisibility(View.GONE);
+        if (arrayList != null) {
+            if (arrayList.size() == 0) {
+                noActivitiesText.setVisibility(View.VISIBLE);
+            } else {
+                noActivitiesText.setVisibility(View.GONE);
+            }
         }
 
         ListView activitiesListView = findViewById(R.id.ActivitiesListView);

@@ -1,6 +1,8 @@
 package com.hikko.scheduleapp;
 
+import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -20,10 +22,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Utils {
+public class Utils extends Application {
+    private static final String TAG = "Utils";
+    static public File savedFilesDir;
 
     public static void saveWeekToJsonFile(File filesDir) {
-
+        Log.i(TAG, "saveWeekToJsonFile");
+        savedFilesDir = filesDir;
         File week = new File(filesDir, "week.json");
 
         Gson gson = new GsonBuilder()
@@ -59,7 +64,8 @@ public class Utils {
     private static List<List<Activity>> loadedActivities = null;
 
     public static void loadAllActivities(File filesDir) {
-
+        savedFilesDir = filesDir;
+        Log.i(TAG, "loadAllActivities");
         Gson g = new Gson();
         File file = new File(filesDir, "week.json");
         if (!file.exists()) {
@@ -76,6 +82,7 @@ public class Utils {
                     saveWeekToJsonFile(filesDir);
                 }
             } catch (IOException e) {
+                loadedActivities = new ArrayList<>();
                 e.printStackTrace();
             }
 
@@ -97,12 +104,18 @@ public class Utils {
         dayOfWeek -= 1;
 
         if (loadedActivities == null) {
-            return new ArrayList<>();
+            if (savedFilesDir != null) {
+                loadAllActivities(savedFilesDir);
+            } else {
+                Log.w(TAG, "loadedActivities is null");
+                return null;
+            }
         }
 
         List<List<Activity>> activity = loadedActivities;
 
         if (dayOfWeek > activity.size()-1) {
+            Log.i(TAG, "dayOfWeek is > activity.size() - 1");
             return new ArrayList<>();
         }
 
@@ -167,6 +180,10 @@ public class Utils {
         LocalDate today = LocalDate.now();
         DayOfWeek dayOfWeek = today.getDayOfWeek();
         return dayOfWeek.getValue();
+    }
+
+    public static boolean activitiesIsLoaded() {
+        return loadedActivities != null;
     }
 
 

@@ -15,7 +15,7 @@ public class ActivitiesListAdapter extends SimpleAdapter {
     public ActivitiesListAdapter(Context context, List<HashMap<String, String>> data, int resource, String[] from, int[] to, Resources res) {
         super(context, data, resource, from, to);
         for (Map<String, String> map : data) {
-            String name = (String) map.get("Name");
+            String name = map.get("Name");
             if (name != null) {
                 if (name.length() == 0) {
                     map.put("Name", res.getString(R.string.empty_name_activity));

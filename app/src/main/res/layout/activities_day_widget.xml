@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/clickable_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/activity_round_corner_black"
@@ -20,6 +21,26 @@
         android:textColor="@color/white"
         android:textSize="18sp" />
 
+    <TextView
+        android:id="@+id/no_activities_text_widget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:gravity="center"
+        android:text="@string/no_activities"
+        android:textAlignment="gravity"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
     <ListView
         android:id="@+id/ActivitiesListView_widget"
         android:layout_width="match_parent"
@@ -31,16 +52,8 @@
         android:layout_marginTop="10sp"
         android:layout_marginEnd="0dp"
         android:divider="@null"
-        android:listSelector="@android:color/transparent" />
+        android:listSelector="@android:color/transparent">
 
-    <TextView
-        android:id="@+id/no_activities_text_widget"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_medium"
-        android:text="@string/no_activities"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:visibility="invisible" />
+    </ListView>
 
 </RelativeLayout>

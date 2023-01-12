@@ -3,8 +3,8 @@ package com.hikko.scheduleapp.adapters;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -26,13 +26,13 @@ public class WidgetService extends RemoteViewsService {
     static class WidgetViewsFactory implements RemoteViewsFactory {
 
         private final Context mContext;
+        private static final String TAG = "WidgetService";
         private int appWidgetId;
         private ArrayList<HashMap<String, String>> activities;
 
         WidgetViewsFactory(Context context, Intent intent) {
             mContext = context;
             appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            activities = Utils.getActivitiesDayOfWeek(Utils.getLocaleDayOfWeek());
         }
 
         @Override
@@ -41,11 +41,6 @@ public class WidgetService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-            View v = View.inflate(mContext, R.layout.activities_day_widget, null);
-            ListView activitiesListView = v.findViewById(R.id.ActivitiesListView_widget);
-
-            activitiesListView.setDivider(null);
-            activitiesListView.setVerticalScrollBarEnabled(false);
         }
 
         @Override
@@ -54,14 +49,14 @@ public class WidgetService extends RemoteViewsService {
 
         @Override
         public int getCount() {
+            activities = Utils.getActivitiesDayOfWeek(Utils.getLocaleDayOfWeek());
+            Log.i(TAG, "activities " + activities);
             return activities.size();
         }
 
         @Override
         public RemoteViews getViewAt(int position) {
             RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_day_item);
-
-            activities = Utils.getActivitiesDayOfWeek(Utils.getLocaleDayOfWeek());
             String name = activities.get(position).get("Name");
             views.setTextViewText(R.id.activity_start, activities.get(position).get("Start"));
             views.setTextViewText(R.id.activity_end, activities.get(position).get("End"));
@@ -74,7 +69,7 @@ public class WidgetService extends RemoteViewsService {
                 views.setTextViewText(R.id.activity_type, activities.get(position).get("Type"));
 
             }
-            System.out.println(views);
+            Log.i(TAG, String.valueOf(views));
             return views;
         }
 
