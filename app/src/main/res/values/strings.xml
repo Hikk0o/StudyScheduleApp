@@ -14,15 +14,17 @@
     <string name="activity_create_end_time">Конец в</string>
     <string name="selected_time_format">%1$s:%2$s</string>
     <string name="activity_name_AutoCompleteText">Введите название пары</string>
+    <string name="activity_cabinet_AutoCompleteText">Введите кабинет</string>
     <string-array name="activityType">
         <item>ПР</item>
         <item>ЛК</item>
+        <item>Д</item>
     </string-array>
     <string name="activity_create_add_button">Добавить пару</string>
     <string name="save">Save</string>
     <string name="cancel">Canel</string>
     <string name="empty_name_activity">Нет пары</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">This is an app widget description</string>
+    <string name="appwidget_text" translatable="false">EXAMPLE</string>
+    <string name="add_widget" translatable="false">Add widget</string>
+    <string name="app_widget_description" translatable="false">This is an app widget description</string>
 </resources>

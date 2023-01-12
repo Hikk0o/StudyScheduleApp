@@ -1,6 +1,5 @@
 package com.hikko.scheduleapp.adapters;
 
-import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Editable;
@@ -14,8 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.hikko.scheduleapp.Activity;
 import com.hikko.scheduleapp.EditActivitiesOfDay;
@@ -41,11 +38,9 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
         this.activities = activities;
         for (List<Activity> week : Utils.getLoadedActivities()) {
             for (Activity activity : week) {
-                String nameActivity = activity.name;
-                if (nameActivity != null) {
-                    if (nameActivity.length() != 0 && !autofillHints.contains(nameActivity)) {
-                        autofillHints.add(nameActivity);
-                    }
+                String nameActivity = activity.getName();
+                if (nameActivity.length() != 0 && !autofillHints.contains(nameActivity)) {
+                    autofillHints.add(nameActivity);
                 }
             }
         }
@@ -66,7 +61,7 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
 
         convertView.findViewById(R.id.SwipeLayout).setOnTouchListener((v, event) -> Utils.clearInputFocus(finalConvertView, mContext));
         convertView.findViewById(R.id.buttonDeleteActivity).setOnTouchListener((v, event) -> {
-            deleteActivity((ConstraintLayout) finalConvertView, position);
+            deleteActivity(position);
             return false;
         });
 
@@ -78,7 +73,7 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
             spinner.setAdapter(s_adapter);
         }
 
-        spinner.setSelection(getSpinnerIndex(spinner, activity.type));
+        spinner.setSelection(getSpinnerIndex(spinner, activity.getType()));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -124,15 +119,15 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
             }
         });
 
-        activityNameText.setText(activity.name);
+        activityNameText.setText(activity.getName());
 
         activityNameText.setAdapter(new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_dropdown_item_1line, autofillHints));
 
         EditText input_start_time = convertView.findViewById(R.id.input_time_start_of_activity);
-        input_start_time.setText(activity.start_time);
+        input_start_time.setText(activity.getStartTime());
         EditText input_end_time = convertView.findViewById(R.id.input_time_end_of_activity);
-        input_end_time.setText(activity.end_time);
+        input_end_time.setText(activity.getEndTime());
 
         InputFilter[] timeFilter = new InputFilter[1];
         timeFilter[0] = (source, start, end, dest, dstart, dend) -> {
@@ -246,25 +241,9 @@ public class EditActivityAdapter extends ArraySwipeAdapter<Activity> {
     }
 
     // todo
-    public void deleteActivity(ConstraintLayout v, int pos) {
-        long delay = 200L;
+    public void deleteActivity(int pos) {
         EditActivitiesOfDay.deleteActivity(pos);
 
-//        v.animate()
-//                .translationX(v.getWidth() * -1)
-//                .alpha(0.0f)
-//                .setDuration(delay)
-//                .setListener(new Animator.AnimatorListener() {
-//                    @Override
-//                    public void onAnimationEnd(@NonNull Animator animation) {
-//                        v.setMaxHeight(0);
-//                        v.setPadding(0,0,0,0);
-//                        System.out.println(pos);
-//                    }
-//                    public void onAnimationStart(@NonNull Animator animation) {}
-//                    public void onAnimationCancel(@NonNull Animator animation) {}
-//                    public void onAnimationRepeat(@NonNull Animator animation) {}
-//                });
         activities.remove(pos);
         notifyDataSetChanged();
     }

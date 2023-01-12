@@ -115,16 +115,16 @@ public class Utils extends Application {
         List<List<Activity>> activity = loadedActivities;
 
         if (dayOfWeek > activity.size()-1) {
-            Log.i(TAG, "dayOfWeek is > activity.size() - 1");
+            Log.w(TAG, "dayOfWeek is > activity.size() - 1");
             return new ArrayList<>();
         }
 
         for (Activity value : activity.get(dayOfWeek)) {
             map = new HashMap<>();
-            map.put("Name", value.name);
-            map.put("Start",  value.start_time);
-            map.put("End", value.end_time);
-            map.put("Type", value.type);
+            map.put("Name", value.getName());
+            map.put("Start",  value.getStartTime());
+            map.put("End", value.getEndTime());
+            map.put("Type", value.getType());
             arrayList.add(map);
         }
 

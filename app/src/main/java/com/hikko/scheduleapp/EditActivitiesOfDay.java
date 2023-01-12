@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -71,6 +72,7 @@ public class EditActivitiesOfDay extends AppCompatActivity {
         int count = 0;
         for (HashMap<String, String> map:
             activitiesOfDayList) {
+                Log.i("updateActivitiesListView", String.valueOf(map));
                 Activity activity = new Activity(map.get("Name"), map.get("Type"), map.get("Start"), map.get("End"), count++);
                 activities.add(activity);
             }
@@ -106,12 +108,7 @@ public class EditActivitiesOfDay extends AppCompatActivity {
             Activity activity = new Activity(name, type, start, end);
             activities.add(activity);
         }
-        activities.sort(Comparator.comparing(o -> {
-            if (o.start_time != null) {
-                return o.start_time;
-            }
-            return "";
-        }));
+        activities.sort(Comparator.comparing(Activity::getStartTime));
 
         editedActivitiesOfWeek.set(MainActivity.getActiveDayOfWeek() - 1, activities);
         Utils.setLoadedActivities(editedActivitiesOfWeek);

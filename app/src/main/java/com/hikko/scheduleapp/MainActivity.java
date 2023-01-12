@@ -29,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         filesDir = getFilesDir();
         Utils.loadAllActivities(filesDir);
-        ActivitiesDayWidget.updateWidget(getApplicationContext());
 
         View view = findViewById(activeDayOfWeekId);
         changeCurrentWeek(view);
+        ActivitiesDayWidget.updateWidget(getApplicationContext());
     }
 
     public void changeCurrentWeek(View v) {
