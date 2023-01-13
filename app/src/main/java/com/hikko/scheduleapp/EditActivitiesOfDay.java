@@ -89,7 +89,7 @@ public class EditActivitiesOfDay extends AppCompatActivity {
     }
 
     public void saveActivitiesList(View v) {
-        List<List<Activity>> editedActivitiesOfWeek = Utils.getLoadedActivities();
+        ArrayList<List<Activity>> editedActivitiesOfWeek = Utils.getLoadedActivities();
         List<Activity> activities = new ArrayList<>();
 
         for (HashMap<String, String> listActivity : activitiesOfDayList) {
@@ -112,8 +112,7 @@ public class EditActivitiesOfDay extends AppCompatActivity {
 
         editedActivitiesOfWeek.set(MainActivity.getActiveDayOfWeek() - 1, activities);
         Utils.setLoadedActivities(editedActivitiesOfWeek);
-        Utils.saveWeekToJsonFile(MainActivity.filesDir);
-
+        Utils.saveWeekToJsonFile(v.getContext().getFilesDir());
 
         ActivitiesDayWidget.updateWidget(getApplicationContext());
         Intent intent = new Intent(this, MainActivity.class);

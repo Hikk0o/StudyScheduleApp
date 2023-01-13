@@ -1,191 +1,199 @@
-package com.hikko.scheduleapp;
+package com.hikko.scheduleapp
 
-import android.app.Application;
-import android.content.Context;
-import android.util.Log;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.content.Context
+import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.time.LocalDate
+import java.util.ArrayList
+import java.util.HashMap
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+object Utils {
+    private const val TAG = "Utils"
+    private var savedFilesDir: File? = null
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-public class Utils extends Application {
-    private static final String TAG = "Utils";
-    static public File savedFilesDir;
-
-    public static void saveWeekToJsonFile(File filesDir) {
-        Log.i(TAG, "saveWeekToJsonFile");
-        savedFilesDir = filesDir;
-        File week = new File(filesDir, "week.json");
-
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .create();
-
-        List<List<Activity>> activitiesOfWeek = new ArrayList<>();
-
+    @JvmStatic
+    fun saveWeekToJsonFile(filesDir: File) {
+        Log.i(TAG, "saveWeekToJsonFile")
+        savedFilesDir = filesDir
+        val week = File(filesDir, "week.json")
+        val gson = GsonBuilder()
+            .setPrettyPrinting()
+            .create()
+        var activitiesOfWeek: ArrayList<List<Activity>>? = ArrayList()
         if (loadedActivities != null) {
-            activitiesOfWeek = loadedActivities;
+            activitiesOfWeek = loadedActivities
         }
-
-        if (activitiesOfWeek.size() < 7) {
-            while (activitiesOfWeek.size() < 7) {
-                activitiesOfWeek.add(new ArrayList<>());
+        if (activitiesOfWeek!!.size < 7) {
+            while (activitiesOfWeek.size < 7) {
+                activitiesOfWeek.add(ArrayList())
             }
         }
-        String json = gson.toJson(activitiesOfWeek);
+        val json = gson.toJson(activitiesOfWeek)
 
         // Create file output stream
-        FileOutputStream outputStream;
+        val outputStream: FileOutputStream
         try {
-            outputStream = new FileOutputStream(week);
+            outputStream = FileOutputStream(week)
             // Write a line to the file
-            outputStream.write(json.getBytes(StandardCharsets.UTF_8));
+            outputStream.write(json.toByteArray(StandardCharsets.UTF_8))
             // Close the file output stream
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            outputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 
-    private static List<List<Activity>> loadedActivities = null;
+    private var loadedActivities: ArrayList<List<Activity>>? = null
 
-    public static void loadAllActivities(File filesDir) {
-        savedFilesDir = filesDir;
-        Log.i(TAG, "loadAllActivities");
-        Gson g = new Gson();
-        File file = new File(filesDir, "week.json");
+    @JvmStatic
+    fun loadAllActivities(filesDir: File) {
+        savedFilesDir = filesDir
+        Log.i(TAG, "loadAllActivities")
+        val g = Gson()
+        val file = File(filesDir, "week.json")
         if (!file.exists()) {
-            saveWeekToJsonFile(filesDir);
-            loadAllActivities(filesDir);
+            saveWeekToJsonFile(filesDir)
+            loadAllActivities(filesDir)
         } else {
             try {
-                byte[] content = Files.readAllBytes(file.toPath());
-                String str = new String(content, StandardCharsets.UTF_8);
-                Type arrType = new TypeToken<List<List<Activity>>>(){}.getType();
-                loadedActivities = new ArrayList<>();
-                loadedActivities = g.fromJson(str, arrType);
-                if (loadedActivities.size() == 0) {
-                    saveWeekToJsonFile(filesDir);
-                }
-            } catch (IOException e) {
-                loadedActivities = new ArrayList<>();
-                e.printStackTrace();
-            }
+                val content = Files.readAllBytes(file.toPath())
+                val str = String(content, StandardCharsets.UTF_8)
+                val arrType = object : TypeToken<ArrayList<List<Activity?>?>?>() {}.type
 
+                loadedActivities = g.fromJson(str, arrType)
+                if (loadedActivities?.size == 0) {
+                    saveWeekToJsonFile(filesDir)
+                }
+            } catch (e: IOException) {
+                loadedActivities = ArrayList()
+                e.printStackTrace()
+            }
         }
     }
 
-    public static List<List<Activity>> getLoadedActivities() {
-        return loadedActivities;
+    @JvmStatic
+    fun getLoadedActivities(): ArrayList<List<Activity>>? {
+        return loadedActivities
     }
 
-    public static void setLoadedActivities(List<List<Activity>> editedActivities) {
-        loadedActivities = editedActivities;
+    @JvmStatic
+    fun setLoadedActivities(editedActivities: ArrayList<List<Activity>>?) {
+        loadedActivities = editedActivities
     }
 
-    public static ArrayList<HashMap<String, String>> getActivitiesDayOfWeek(int dayOfWeek) {
-        ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
-        HashMap<String, String> map;
-
-        dayOfWeek -= 1;
-
+    @JvmStatic
+    fun getActivitiesDayOfWeek(day: Int): ArrayList<HashMap<String, String?>>? {
+        var dayOfWeek = day
+        val arrayList = ArrayList<HashMap<String, String?>>()
+        var map: HashMap<String, String?>
+        dayOfWeek -= 1
         if (loadedActivities == null) {
             if (savedFilesDir != null) {
-                loadAllActivities(savedFilesDir);
+                loadAllActivities(savedFilesDir!!)
             } else {
-                Log.w(TAG, "loadedActivities is null");
-                return null;
+                Log.w(TAG, "loadedActivities is null")
+                return null
             }
         }
+        val activitiesOfWeek: List<List<Activity>>? = loadedActivities
+        if (dayOfWeek > activitiesOfWeek!!.size - 1) {
+            Log.w(TAG, "dayOfWeek is > activity.size() - 1")
+            return ArrayList()
+        }
+        for (value in activitiesOfWeek[dayOfWeek]) {
+            map = HashMap()
+            map["Name"] = value.name
+            map["Start"] = value.startTime
+            map["End"] = value.endTime
+            map["Type"] = value.type
+            arrayList.add(map)
+        }
+        return arrayList
+    }
 
-        List<List<Activity>> activity = loadedActivities;
+    @JvmStatic
+    fun clearInputFocus(v: View, context: Context): Boolean {
+        v.clearFocus()
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(v.windowToken, 0)
+        return false
+    }
 
-        if (dayOfWeek > activity.size()-1) {
-            Log.w(TAG, "dayOfWeek is > activity.size() - 1");
-            return new ArrayList<>();
+    @JvmStatic
+    fun getIdByDay(id: Int): Int {
+        return when (id) {
+            1 -> {
+                R.id.day1
+            }
+            2 -> {
+                R.id.day2
+            }
+            3 -> {
+                R.id.day3
+            }
+            4 -> {
+                R.id.day4
+            }
+            5 -> {
+                R.id.day5
+            }
+            6 -> {
+                R.id.day6
+            }
+            7 -> {
+                R.id.day7
+            }
+            else -> id
+        }
+    }
+
+    @JvmStatic
+    fun getDayById(id: Int): Int {
+        when (id) {
+            R.id.day1 -> {
+                return 1
+            }
+            R.id.day2 -> {
+                return 2
+            }
+            R.id.day3 -> {
+                return 3
+            }
+            R.id.day4 -> {
+                return 4
+            }
+            R.id.day5 -> {
+                return 5
+            }
+            R.id.day6 -> {
+                return 6
+            }
+            R.id.day7 -> {
+                return 7
+            }
+            else -> return id
+        }
+    }
+
+    @JvmStatic
+    val localeDayOfWeek: Int
+        get() {
+            val today = LocalDate.now()
+            val dayOfWeek = today.dayOfWeek
+            return dayOfWeek.value
         }
 
-        for (Activity value : activity.get(dayOfWeek)) {
-            map = new HashMap<>();
-            map.put("Name", value.getName());
-            map.put("Start",  value.getStartTime());
-            map.put("End", value.getEndTime());
-            map.put("Type", value.getType());
-            arrayList.add(map);
-        }
-
-        return arrayList;
+    @JvmStatic
+    fun activitiesIsLoaded(): Boolean {
+        return loadedActivities != null
     }
-
-    public static boolean clearInputFocus(View v, Context context) {
-        v.clearFocus();
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        return false;
-    }
-
-    public static int getIdByDay(int id) {
-        if (id == 1) {
-            return R.id.day1;
-        } else if (id == 2) {
-            return R.id.day2;
-        } else if (id == 3) {
-            return R.id.day3;
-        } else if (id == 4) {
-            return R.id.day4;
-        } else if (id == 5) {
-            return R.id.day5;
-        } else if (id == 6) {
-            return R.id.day6;
-        } else if (id == 7) {
-            return R.id.day7;
-        }
-        return id;
-    }
-
-    public static int getDayById(int id) {
-        if (id == R.id.day1) {
-            return 1;
-        } else if (id == R.id.day2) {
-            return 2;
-        } else if (id == R.id.day3) {
-            return 3;
-        } else if (id == R.id.day4) {
-            return 4;
-        } else if (id == R.id.day5) {
-            return 5;
-        } else if (id == R.id.day6) {
-            return 6;
-        } else if (id == R.id.day7) {
-            return 7;
-        }
-        return id;
-    }
-
-    public static int getLocaleDayOfWeek() {
-        LocalDate today = LocalDate.now();
-        DayOfWeek dayOfWeek = today.getDayOfWeek();
-        return dayOfWeek.getValue();
-    }
-
-    public static boolean activitiesIsLoaded() {
-        return loadedActivities != null;
-    }
-
-
 }
-

@@ -21,18 +21,14 @@ public class MainActivity extends AppCompatActivity {
 
     private static int activeDayOfWeek = Utils.getLocaleDayOfWeek();
     private static int activeDayOfWeekId = Utils.getIdByDay(activeDayOfWeek);
-    public static File filesDir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        filesDir = getFilesDir();
-        Utils.loadAllActivities(filesDir);
 
         View view = findViewById(activeDayOfWeekId);
         changeCurrentWeek(view);
-        ActivitiesDayWidget.updateWidget(getApplicationContext());
     }
 
     public void changeCurrentWeek(View v) {
