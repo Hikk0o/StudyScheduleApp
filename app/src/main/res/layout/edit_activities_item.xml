@@ -19,35 +19,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="75dp"
             android:layout_height="match_parent"
-            android:paddingStart="5sp"
-            android:paddingEnd="0sp">
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/buttonDeleteActivity"
-                android:layout_width="100sp"
-                android:layout_height="0dp"
-                android:background="@drawable/buttom_red_corner"
-                android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="5sp"
+                android:paddingVertical="20sp">
 
                 <ImageView
                     android:id="@+id/img_delete"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginVertical="52sp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:contentDescription="@string/cancel"
                     android:src="@drawable/ic_baseline_delete_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@android:color/white" />
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:tint="@color/red" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -79,9 +76,9 @@
                     android:paddingHorizontal="5sp">
 
                     <AutoCompleteTextView
-                        android:id="@+id/activityNameAutoCompleteText"
+                        android:id="@+id/ActivityCabinetAutoCompleteText"
                         android:layout_width="85dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@color/dark_gray"
                         android:completionThreshold="0"
@@ -99,7 +96,7 @@
                     <AutoCompleteTextView
                         android:id="@+id/ActivityNameAutoCompleteText"
                         android:layout_width="200dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:backgroundTint="@color/dark_gray"
                         android:completionThreshold="0"
                         android:dropDownWidth="200dp"

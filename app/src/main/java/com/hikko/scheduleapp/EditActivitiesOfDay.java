@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -14,12 +13,11 @@ import com.hikko.scheduleapp.adapters.EditActivityAdapter;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 public class EditActivitiesOfDay extends AppCompatActivity {
 
-    static public ArrayList<HashMap<String, String>> activitiesOfDayList = new ArrayList<>();
+    static public List<Activity> activitiesOfDayList = new ArrayList<>();
     View addActivityButton;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -29,7 +27,14 @@ public class EditActivitiesOfDay extends AppCompatActivity {
         setContentView(R.layout.activity_edit_activities_of_day);
 
         ListView activitiesListView = findViewById(R.id.EditActivitiesListView);
-        activitiesOfDayList = Utils.getActivitiesDayOfWeek(MainActivity.getActiveDayOfWeek());
+
+        ArrayList<Activity> tempList = ActivityUtils.getActivitiesDayOfWeek(MainActivity.getActiveDayOfWeek());
+        activitiesOfDayList.clear();
+        if (tempList != null) {
+            for (Activity activity : tempList) {
+                activitiesOfDayList.add(activity.clone());
+            }
+        }
         updateActivitiesListView();
 
         // Add button to footer
@@ -39,23 +44,28 @@ public class EditActivitiesOfDay extends AppCompatActivity {
                 null);
         activitiesListView.addFooterView(addActivityButton);
 
-        findViewById(R.id.backround).setOnTouchListener((v, event) -> Utils.clearInputFocus(activitiesListView, activitiesListView.getContext()));
+        findViewById(R.id.backround).setOnTouchListener((v, event) -> ActivityUtils.clearInputFocus(activitiesListView, activitiesListView.getContext()));
 
 
     }
 
-    public void goBackActivities(View v) {
+    public void goBackActivities(View view) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
-    public void createNewActivity(View v) {
-        HashMap<String, String> map = new HashMap<>();
+    @Override
+    public void onBackPressed() {
+        goBackActivities(new View(getApplicationContext()));
+    }
 
-        activitiesOfDayList.add(map);
+    public void createNewActivity(View view) {
+
+        activitiesOfDayList.add(new Activity());
         updateActivitiesListView();
 
-        int maxActivities = v.getResources().getInteger(R.integer.max_EditActivities);
+        int maxActivities = view.getResources().getInteger(R.integer.max_EditActivities);
         if (activitiesOfDayList.size() >= maxActivities) {
             ListView activitiesListView = findViewById(R.id.EditActivitiesListView);
             activitiesListView.removeFooterView(addActivityButton);
@@ -68,19 +78,16 @@ public class EditActivitiesOfDay extends AppCompatActivity {
 
     private void updateActivitiesListView() {
         ListView activitiesListView = findViewById(R.id.EditActivitiesListView);
-        List<Activity> activities = new ArrayList<>();
+        ArrayList<Activity> activities = new ArrayList<>();
         int count = 0;
-        for (HashMap<String, String> map:
+        for (Activity activity:
             activitiesOfDayList) {
-                Log.i("updateActivitiesListView", String.valueOf(map));
-                Activity activity = new Activity(map.get("Name"), map.get("Type"), map.get("Start"), map.get("End"), count++);
+                activity.setId(count++);
                 activities.add(activity);
-            }
+        }
 
         EditActivityAdapter adapter = new EditActivityAdapter(
                 this, R.layout.edit_activities_item, activities);
-
-
 
         activitiesListView.setAdapter(adapter);
         activitiesListView.setDivider(null);
@@ -88,14 +95,14 @@ public class EditActivitiesOfDay extends AppCompatActivity {
 
     }
 
-    public void saveActivitiesList(View v) {
-        ArrayList<List<Activity>> editedActivitiesOfWeek = Utils.getLoadedActivities();
-        List<Activity> activities = new ArrayList<>();
+    public void saveActivitiesList(View view) {
+        ArrayList<ArrayList<Activity>> editedActivitiesOfWeek = ActivityUtils.getLoadedActivities();
+        ArrayList<Activity> activities = new ArrayList<>();
 
-        for (HashMap<String, String> listActivity : activitiesOfDayList) {
-            String name = listActivity.get("Name");
-            String start = listActivity.get("Start");
-            String end = listActivity.get("End");
+        for (Activity activity : activitiesOfDayList) {
+            System.out.println(activity);
+            String start = activity.getStartTime();
+            String end = activity.getEndTime();
             if (start == null || end == null || start.length() < 4 || end.length() < 4) {
                 Toast.makeText(
                         this,
@@ -104,19 +111,17 @@ public class EditActivitiesOfDay extends AppCompatActivity {
                 ).show();
                 return;
             }
-            String type = listActivity.get("Type");
-            Activity activity = new Activity(name, type, start, end);
             activities.add(activity);
         }
         activities.sort(Comparator.comparing(Activity::getStartTime));
 
-        editedActivitiesOfWeek.set(MainActivity.getActiveDayOfWeek() - 1, activities);
-        Utils.setLoadedActivities(editedActivitiesOfWeek);
-        Utils.saveWeekToJsonFile(v.getContext().getFilesDir());
+        editedActivitiesOfWeek.set(MainActivity.getActiveDayOfWeek(), activities);
+        ActivityUtils.setLoadedActivities(editedActivitiesOfWeek);
+        ActivityUtils.saveWeekToJsonFile(view.getContext().getFilesDir());
 
         ActivitiesDayWidget.updateWidget(getApplicationContext());
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+
+        goBackActivities(view);
     }
 
     public static void deleteActivity(int pos) {

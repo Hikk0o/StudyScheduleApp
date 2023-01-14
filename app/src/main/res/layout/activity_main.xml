@@ -204,7 +204,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/editActivitiesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -213,7 +213,6 @@
         android:contentDescription="@string/app_main_button"
         android:minWidth="48dp"
         android:minHeight="48dp"
-        android:onClick="openEditActivitiesOfDay"
         android:padding="4sp"
         app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
         app:layout_constraintEnd_toEndOf="parent"

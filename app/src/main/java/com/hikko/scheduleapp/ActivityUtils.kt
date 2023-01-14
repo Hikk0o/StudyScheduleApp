@@ -13,22 +13,21 @@ import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.time.LocalDate
-import java.util.ArrayList
-import java.util.HashMap
+import kotlin.collections.ArrayList
 
-object Utils {
-    private const val TAG = "Utils"
+object ActivityUtils {
+    private const val TAG = "ActivityUtils"
     private var savedFilesDir: File? = null
 
     @JvmStatic
     fun saveWeekToJsonFile(filesDir: File) {
-        Log.i(TAG, "saveWeekToJsonFile")
+        Log.i(TAG, "Save week to Json file...")
         savedFilesDir = filesDir
         val week = File(filesDir, "week.json")
         val gson = GsonBuilder()
             .setPrettyPrinting()
             .create()
-        var activitiesOfWeek: ArrayList<List<Activity>>? = ArrayList()
+        var activitiesOfWeek: ArrayList<ArrayList<Activity>>? = ArrayList()
         if (loadedActivities != null) {
             activitiesOfWeek = loadedActivities
         }
@@ -52,12 +51,12 @@ object Utils {
         }
     }
 
-    private var loadedActivities: ArrayList<List<Activity>>? = null
+    private var loadedActivities: ArrayList<ArrayList<Activity>>? = null
 
     @JvmStatic
     fun loadAllActivities(filesDir: File) {
         savedFilesDir = filesDir
-        Log.i(TAG, "loadAllActivities")
+        Log.i(TAG, "Load all activities...")
         val g = Gson()
         val file = File(filesDir, "week.json")
         if (!file.exists()) {
@@ -81,21 +80,19 @@ object Utils {
     }
 
     @JvmStatic
-    fun getLoadedActivities(): ArrayList<List<Activity>>? {
-        return loadedActivities
+    fun getLoadedActivities(): ArrayList<ArrayList<Activity>> {
+        return loadedActivities!!
     }
 
     @JvmStatic
-    fun setLoadedActivities(editedActivities: ArrayList<List<Activity>>?) {
+    fun setLoadedActivities(editedActivities: ArrayList<ArrayList<Activity>>?) {
         loadedActivities = editedActivities
     }
 
     @JvmStatic
-    fun getActivitiesDayOfWeek(day: Int): ArrayList<HashMap<String, String?>>? {
-        var dayOfWeek = day
-        val arrayList = ArrayList<HashMap<String, String?>>()
-        var map: HashMap<String, String?>
-        dayOfWeek -= 1
+    fun getActivitiesDayOfWeek(day: Int): ArrayList<Activity>? {
+        val dayOfWeek = day
+
         if (loadedActivities == null) {
             if (savedFilesDir != null) {
                 loadAllActivities(savedFilesDir!!)
@@ -104,20 +101,13 @@ object Utils {
                 return null
             }
         }
-        val activitiesOfWeek: List<List<Activity>>? = loadedActivities
+
+        val activitiesOfWeek: ArrayList<ArrayList<Activity>>? = loadedActivities
         if (dayOfWeek > activitiesOfWeek!!.size - 1) {
             Log.w(TAG, "dayOfWeek is > activity.size() - 1")
             return ArrayList()
         }
-        for (value in activitiesOfWeek[dayOfWeek]) {
-            map = HashMap()
-            map["Name"] = value.name
-            map["Start"] = value.startTime
-            map["End"] = value.endTime
-            map["Type"] = value.type
-            arrayList.add(map)
-        }
-        return arrayList
+        return activitiesOfWeek[dayOfWeek]
     }
 
     @JvmStatic
@@ -131,56 +121,28 @@ object Utils {
     @JvmStatic
     fun getIdByDay(id: Int): Int {
         return when (id) {
-            1 -> {
-                R.id.day1
-            }
-            2 -> {
-                R.id.day2
-            }
-            3 -> {
-                R.id.day3
-            }
-            4 -> {
-                R.id.day4
-            }
-            5 -> {
-                R.id.day5
-            }
-            6 -> {
-                R.id.day6
-            }
-            7 -> {
-                R.id.day7
-            }
+            1 -> R.id.day1
+            2 -> R.id.day2
+            3 -> R.id.day3
+            4 -> R.id.day4
+            5 -> R.id.day5
+            6 -> R.id.day6
+            7 -> R.id.day7
             else -> id
         }
     }
 
     @JvmStatic
     fun getDayById(id: Int): Int {
-        when (id) {
-            R.id.day1 -> {
-                return 1
-            }
-            R.id.day2 -> {
-                return 2
-            }
-            R.id.day3 -> {
-                return 3
-            }
-            R.id.day4 -> {
-                return 4
-            }
-            R.id.day5 -> {
-                return 5
-            }
-            R.id.day6 -> {
-                return 6
-            }
-            R.id.day7 -> {
-                return 7
-            }
-            else -> return id
+        return when (id) {
+            R.id.day1 -> 1
+            R.id.day2 -> 2
+            R.id.day3 -> 3
+            R.id.day4 -> 4
+            R.id.day5 -> 5
+            R.id.day6 -> 6
+            R.id.day7 -> 7
+            else -> id
         }
     }
 
@@ -193,7 +155,10 @@ object Utils {
         }
 
     @JvmStatic
-    fun activitiesIsLoaded(): Boolean {
-        return loadedActivities != null
-    }
+    val activitiesIsLoaded: Boolean
+        get() {
+            return loadedActivities != null
+        }
+
+
 }
