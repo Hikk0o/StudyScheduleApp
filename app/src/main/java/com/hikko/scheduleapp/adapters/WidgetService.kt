@@ -42,7 +42,7 @@ class WidgetService : RemoteViewsService() {
             val cabinet = activities!![position].cabinet
             views.setTextViewText(R.id.activity_start, activities!![position].startTime)
             views.setTextViewText(R.id.activity_end, activities!![position].endTime)
-            if (name == null || name.isEmpty()) {
+            if (name.isEmpty()) {
                 val v = View.inflate(mContext, R.layout.activities_day_widget, null)
                 views.setTextViewText(
                     R.id.activity_name,
@@ -52,7 +52,7 @@ class WidgetService : RemoteViewsService() {
             } else {
                 views.setTextViewText(R.id.activity_name, name)
                 views.setTextViewText(R.id.activity_type, activities!![position].type)
-                if (cabinet == null || cabinet.isEmpty()) {
+                if (cabinet.isEmpty()) {
                     views.setViewVisibility(R.id.activity_cabinet, View.GONE)
                 } else {
                     views.setTextViewText(R.id.activity_cabinet, cabinet)

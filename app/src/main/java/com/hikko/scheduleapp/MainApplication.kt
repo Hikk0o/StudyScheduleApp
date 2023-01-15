@@ -8,7 +8,7 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Log.i("MainApplication", "Init application...")
-        Config.loadConfig(filesDir)
+        Settings.loadConfigFromStorage(filesDir)
         ActivityUtils.loadAllActivities(filesDir)
         ActivitiesDayWidget.updateWidget(applicationContext)
     }

@@ -147,6 +147,10 @@ object ActivityUtils {
         }
     }
 
+    fun getIdsDaysOfWeek(): IntArray {
+        return intArrayOf(R.id.day1, R.id.day2, R.id.day3, R.id.day4, R.id.day5, R.id.day6, R.id.day7)
+    }
+
     @JvmStatic
     val localeDayOfWeek: Int
         get() {

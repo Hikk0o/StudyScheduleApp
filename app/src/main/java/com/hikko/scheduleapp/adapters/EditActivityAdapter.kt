@@ -40,16 +40,16 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
                 val activityCabinet = activity.cabinet
                 val startTime = activity.startTime
                 val endTime = activity.endTime
-                if (activityName!!.isNotEmpty() && !nameAutofillHints.contains(activityName)) {
+                if (activityName.isNotEmpty() && !nameAutofillHints.contains(activityName)) {
                     nameAutofillHints.add(activityName)
                 }
-                if (activityCabinet!!.isNotEmpty() && !cabinetAutofillHints.contains(activityCabinet)) {
+                if (activityCabinet.isNotEmpty() && !cabinetAutofillHints.contains(activityCabinet)) {
                     cabinetAutofillHints.add(activityCabinet)
                 }
-                if (startTime!!.isNotEmpty() && !startTimeAutofillHints.contains(startTime)) {
+                if (startTime.isNotEmpty() && !startTimeAutofillHints.contains(startTime)) {
                     startTimeAutofillHints.add(startTime)
                 }
-                if (endTime!!.isNotEmpty() && !endTimeAutofillHints.contains(endTime)) {
+                if (endTime.isNotEmpty() && !endTimeAutofillHints.contains(endTime)) {
                     endTimeAutofillHints.add(endTime)
                 }
             }

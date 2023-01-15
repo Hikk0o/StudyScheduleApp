@@ -3,6 +3,7 @@ package com.hikko.scheduleapp
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ListView
@@ -19,6 +20,7 @@ import com.hikko.scheduleapp.adapters.EditActivityAdapter
 
 class EditActivitiesOfDay : AppCompatActivity() {
     private var addActivityButton: View? = null
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,13 +104,12 @@ class EditActivitiesOfDay : AppCompatActivity() {
     }
 
     private fun saveActivitiesList() {
-        val editedActivitiesOfWeek = getLoadedActivities()
+        val editedActivitiesOfWeek: ArrayList<ArrayList<Activity>> = getLoadedActivities()
         val activities = ArrayList<Activity>()
         for (activity in activitiesOfDayList) {
-            println(activity)
             val start = activity.startTime
             val end = activity.endTime
-            if (start == null || end == null || start.length < 4 || end.length < 4) {
+            if (start.length < 4 || end.length < 4) {
                 Toast.makeText(
                     this,
                     "Сначала заполните время для пар",
@@ -123,12 +124,15 @@ class EditActivitiesOfDay : AppCompatActivity() {
 
         editedActivitiesOfWeek[getActiveDayOfWeek()-1] = activities
         setLoadedActivities(editedActivitiesOfWeek)
+
+        Log.i(TAG, (editedActivitiesOfWeek[getActiveDayOfWeek()-1] == activities).toString())
         saveWeekToJsonFile(applicationContext.filesDir)
         updateWidget(applicationContext)
         goBackToMainActivity()
     }
 
     companion object {
+        private const val TAG = "EditActivitiesOfDay"
         var activitiesOfDayList: MutableList<Activity> = ArrayList()
         fun deleteActivity(pos: Int) {
             activitiesOfDayList.removeAt(pos)

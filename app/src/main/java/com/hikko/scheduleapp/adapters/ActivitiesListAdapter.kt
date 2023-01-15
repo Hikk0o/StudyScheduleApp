@@ -21,14 +21,9 @@ class ActivitiesListAdapter(
     init {
         for (activity in data) {
             val name = activity.name
-            if (name != null) {
-                if (name.isEmpty()) {
-                    activity.name = res.getString(R.string.empty_name_activity)
-                    activity.type = null
-                }
-            } else {
+            if (name.isEmpty()) {
                 activity.name = res.getString(R.string.empty_name_activity)
-                activity.type = null
+                activity.type = ""
             }
         }
     }
@@ -47,7 +42,7 @@ class ActivitiesListAdapter(
 
         // Кабинет
         val activityCabinet = view.findViewById<TextView>(R.id.activity_cabinet)
-        if (activity.cabinet!!.isNotEmpty()) {
+        if (activity.cabinet.isNotEmpty()) {
             activityCabinet.visibility = View.VISIBLE
             activityCabinet.text = activity.cabinet
         } else {

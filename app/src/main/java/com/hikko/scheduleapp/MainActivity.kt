@@ -1,13 +1,15 @@
 package com.hikko.scheduleapp
 
 import android.content.Intent
+import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.widget.HorizontalScrollView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.appcompat.content.res.AppCompatResources
 import com.hikko.scheduleapp.ActivityUtils.activitiesIsLoaded
 import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
 import com.hikko.scheduleapp.ActivityUtils.getDayById
@@ -17,17 +19,33 @@ import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
 import com.hikko.scheduleapp.adapters.ActivitiesListAdapter
 
 class MainActivity : AppCompatActivity() {
+    private var drawableDayOfWeek: Drawable? = null
+    private var drawableDayOfWeekActive: Drawable? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val view = findViewById<View>(activeDayOfWeekId)
-        changeCurrentWeek(view)
 
         val button = findViewById<View>(R.id.editActivitiesButton)
         button.setOnClickListener {
             val intent = Intent(this, EditActivitiesOfDay::class.java)
             startActivity(intent)
         }
+
+        drawableDayOfWeek = AppCompatResources.getDrawable(applicationContext, R.drawable.day_of_week_round_corner)
+        drawableDayOfWeekActive = AppCompatResources.getDrawable(applicationContext, R.drawable.day_of_week_round_corner_active)
+
+        // Color Theme
+        if (drawableDayOfWeek != null && drawableDayOfWeekActive != null) {
+            drawableDayOfWeek!!.colorFilter = LightingColorFilter(Color.parseColor("#FF000000"), Color.parseColor("#8d20a8"))
+            drawableDayOfWeekActive!!.colorFilter = LightingColorFilter(Color.parseColor("#FF000000") + 0x7777333, Color.parseColor("#8d20a8"))
+            val idsOfDaysLayouts: IntArray = ActivityUtils.getIdsDaysOfWeek()
+            for (id in idsOfDaysLayouts) {
+                findViewById<View>(id).background = drawableDayOfWeek
+            }
+        }
+        changeCurrentWeek(view)
     }
 
     @Deprecated("Deprecated in Java")
@@ -39,11 +57,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun changeCurrentWeek(v: View) {
-        findViewById<View>(activeDayOfWeekId).background = ContextCompat.getDrawable(v.context, R.drawable.day_of_week_round_corner)
-        v.background = ContextCompat.getDrawable(v.context, R.drawable.day_of_week_round_corner_active)
+        findViewById<View>(activeDayOfWeekId).background = drawableDayOfWeek
+        v.background = drawableDayOfWeekActive
+
         activeDayOfWeekId = v.id
         activeDayOfWeek = getDayById(activeDayOfWeekId)
-        println(activeDayOfWeek)
         val horizontalScrollView = findViewById<HorizontalScrollView>(R.id.horizontalScrollView)
         horizontalScrollView.post { horizontalScrollView.smoothScrollTo(v.x.toInt() - 300, 0) }
         if (!activitiesIsLoaded) {
