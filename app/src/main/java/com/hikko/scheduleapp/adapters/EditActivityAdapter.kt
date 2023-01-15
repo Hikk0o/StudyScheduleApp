@@ -1,29 +1,24 @@
 package com.hikko.scheduleapp.adapters
 
-import com.hikko.scheduleapp.ActivityUtils.getLoadedActivities
-import com.hikko.scheduleapp.ActivityUtils.clearInputFocus
-import com.hikko.scheduleapp.EditActivitiesOfDay
-import com.daimajia.swipe.adapters.ArraySwipeAdapter
 import android.annotation.SuppressLint
 import android.content.Context
-import android.view.ViewGroup
-import android.view.LayoutInflater
-import com.hikko.scheduleapp.R
-import android.view.MotionEvent
-import android.widget.Spinner
-import android.widget.ArrayAdapter
-import android.widget.AdapterView
-import android.widget.AutoCompleteTextView
-import android.view.View.OnFocusChangeListener
-import android.text.TextWatcher
 import android.text.Editable
 import android.text.InputFilter
-import android.widget.EditText
-import android.text.Spanned
 import android.text.InputFilter.LengthFilter
+import android.text.Spanned
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnFocusChangeListener
+import android.view.ViewGroup
+import android.widget.*
+import com.daimajia.swipe.adapters.ArraySwipeAdapter
 import com.hikko.scheduleapp.Activity
-import java.util.ArrayList
+import com.hikko.scheduleapp.ActivityUtils.clearInputFocus
+import com.hikko.scheduleapp.ActivityUtils.getLoadedActivities
+import com.hikko.scheduleapp.EditActivitiesOfDay
+import com.hikko.scheduleapp.R
 
 @Suppress("UNCHECKED_CAST")
 class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayout: Int, activities: ArrayList<Activity>) :
@@ -33,6 +28,8 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
     private val activities: ArrayList<Activity>
     private val nameAutofillHints: MutableList<String?> = ArrayList()
     private val cabinetAutofillHints: MutableList<String?> = ArrayList()
+    private val startTimeAutofillHints: MutableList<String?> = ArrayList()
+    private val endTimeAutofillHints: MutableList<String?> = ArrayList()
 
     init {
         mContext = context
@@ -41,11 +38,19 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
             for (activity in week) {
                 val activityName = activity.name
                 val activityCabinet = activity.cabinet
+                val startTime = activity.startTime
+                val endTime = activity.endTime
                 if (activityName!!.isNotEmpty() && !nameAutofillHints.contains(activityName)) {
                     nameAutofillHints.add(activityName)
                 }
                 if (activityCabinet!!.isNotEmpty() && !cabinetAutofillHints.contains(activityCabinet)) {
                     cabinetAutofillHints.add(activityCabinet)
+                }
+                if (startTime!!.isNotEmpty() && !startTimeAutofillHints.contains(startTime)) {
+                    startTimeAutofillHints.add(startTime)
+                }
+                if (endTime!!.isNotEmpty() && !endTimeAutofillHints.contains(endTime)) {
+                    endTimeAutofillHints.add(endTime)
                 }
             }
         }
@@ -56,14 +61,13 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
         var view = convertView
         if (view == null) {
             val vi: LayoutInflater = LayoutInflater.from(mContext)
-            view = vi.inflate(resourceLayout, null)
+            view = vi.inflate(resourceLayout, null)!!
         }
         val activity = getItem(position) as Activity?
-        val finalConvertView = view
-        view!!.findViewById<View>(R.id.SwipeLayout)
+        view.findViewById<View>(R.id.SwipeLayout)
             .setOnTouchListener { _: View?, _: MotionEvent? ->
                 clearInputFocus(
-                    finalConvertView!!, mContext
+                    view, mContext
                 )
             }
         view.findViewById<View>(R.id.buttonDeleteActivity)
@@ -156,10 +160,23 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
                 android.R.layout.simple_dropdown_item_1line, cabinetAutofillHints
             )
         )
-        val inputStartTime = view.findViewById<EditText>(R.id.input_time_start_of_activity)
+        val inputStartTime = view.findViewById<AutoCompleteTextView>(R.id.input_time_start_of_activity)
         inputStartTime.setText(activity.startTime)
-        val inputEndTime = view.findViewById<EditText>(R.id.input_time_end_of_activity)
+        inputStartTime.setAdapter(
+            ArrayAdapter(
+                this.context,
+                android.R.layout.simple_dropdown_item_1line, startTimeAutofillHints
+            )
+        )
+
+        val inputEndTime = view.findViewById<AutoCompleteTextView>(R.id.input_time_end_of_activity)
         inputEndTime.setText(activity.endTime)
+        inputEndTime.setAdapter(
+            ArrayAdapter(
+                this.context,
+                android.R.layout.simple_dropdown_item_1line, endTimeAutofillHints
+            )
+        )
 
         val timeFilter = arrayOfNulls<InputFilter>(1)
         timeFilter[0] =

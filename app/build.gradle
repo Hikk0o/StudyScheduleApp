@@ -31,14 +31,16 @@ android {
     }
     buildToolsVersion '33.0.1'
     ndkVersion '25.1.8937393'
+
     buildFeatures {
         viewBinding true
+//        compose true
     }
 }
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.20"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.21"
     implementation 'androidx.appcompat:appcompat:1.7.0-alpha01'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -48,4 +50,5 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.10'
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+//    implementation 'com.wdullaer:swipeactionadapter:2.1.0'
 }

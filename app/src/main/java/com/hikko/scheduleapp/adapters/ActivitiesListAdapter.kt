@@ -2,13 +2,13 @@ package com.hikko.scheduleapp.adapters
 
 import android.content.Context
 import android.content.res.Resources
-import android.widget.ArrayAdapter
-import com.hikko.scheduleapp.R
-import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.hikko.scheduleapp.Activity
+import com.hikko.scheduleapp.R
 
 class ActivitiesListAdapter(
     private val mContext: Context,

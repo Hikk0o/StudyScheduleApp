@@ -14,7 +14,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="12sp"
+        android:layout_marginEnd="10sp"
         android:gravity="center"
         android:minWidth="35sp"
         android:orientation="vertical">
@@ -47,15 +47,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_medium"
-        android:maxWidth="145sp"
-        android:text="Ntest ntest www western example"
+        android:maxWidth="120sp"
+        android:text="Ntest ntest www western example 1"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="normal" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="3sp"
+        android:layout_weight="1"
         android:gravity="center_horizontal|end"
         android:minWidth="50sp"
         android:orientation="vertical">
@@ -65,6 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_medium"
+            android:minWidth="50sp"
             android:text="@string/example_start_activity"
             android:textAlignment="viewEnd"
             android:textColor="@color/white"
@@ -75,6 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_medium"
+            android:minWidth="50sp"
             android:text="@string/example_end_activity"
             android:textAlignment="viewEnd"
             android:textColor="@color/gray"

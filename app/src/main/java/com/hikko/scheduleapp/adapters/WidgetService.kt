@@ -1,14 +1,14 @@
 package com.hikko.scheduleapp.adapters
 
-import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
-import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
-import android.widget.RemoteViewsService
-import android.content.Intent
 import android.appwidget.AppWidgetManager
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
+import android.widget.RemoteViewsService
 import com.hikko.scheduleapp.Activity
+import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
+import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
 import com.hikko.scheduleapp.R
 
 class WidgetService : RemoteViewsService() {
@@ -77,10 +77,6 @@ class WidgetService : RemoteViewsService() {
 
         override fun hasStableIds(): Boolean {
             return true
-        }
-
-        companion object {
-            private const val TAG = "WidgetService"
         }
     }
 }

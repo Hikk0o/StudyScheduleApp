@@ -1,19 +1,19 @@
 package com.hikko.scheduleapp
 
-import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
-import com.hikko.scheduleapp.ActivityUtils.getIdByDay
-import com.hikko.scheduleapp.ActivityUtils.getDayById
-import com.hikko.scheduleapp.ActivityUtils.activitiesIsLoaded
-import com.hikko.scheduleapp.ActivityUtils.loadAllActivities
-import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import android.widget.HorizontalScrollView
 import android.widget.ListView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.hikko.scheduleapp.ActivityUtils.activitiesIsLoaded
+import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
+import com.hikko.scheduleapp.ActivityUtils.getDayById
+import com.hikko.scheduleapp.ActivityUtils.getIdByDay
+import com.hikko.scheduleapp.ActivityUtils.loadAllActivities
+import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
 import com.hikko.scheduleapp.adapters.ActivitiesListAdapter
 
 class MainActivity : AppCompatActivity() {

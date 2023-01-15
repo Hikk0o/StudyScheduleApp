@@ -13,7 +13,6 @@ import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.time.LocalDate
-import kotlin.collections.ArrayList
 
 object ActivityUtils {
     private const val TAG = "ActivityUtils"
@@ -91,7 +90,7 @@ object ActivityUtils {
 
     @JvmStatic
     fun getActivitiesDayOfWeek(day: Int): ArrayList<Activity>? {
-        val dayOfWeek = day
+        val dayOfWeek = day - 1
 
         if (loadedActivities == null) {
             if (savedFilesDir != null) {
@@ -105,6 +104,8 @@ object ActivityUtils {
         val activitiesOfWeek: ArrayList<ArrayList<Activity>>? = loadedActivities
         if (dayOfWeek > activitiesOfWeek!!.size - 1) {
             Log.w(TAG, "dayOfWeek is > activity.size() - 1")
+            Log.w(TAG, "activitiesOfWeek.size ${activitiesOfWeek.size}")
+            Log.w(TAG, "dayOfWeek $dayOfWeek")
             return ArrayList()
         }
         return activitiesOfWeek[dayOfWeek]

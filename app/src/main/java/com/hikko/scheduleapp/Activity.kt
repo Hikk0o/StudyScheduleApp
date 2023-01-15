@@ -22,7 +22,7 @@ class Activity : Comparable<Activity>, Cloneable {
         return toString().compareTo(startTime)
     }
 
-    override fun clone(): Activity {
+    public override fun clone(): Activity {
         return super.clone() as Activity
     }
 

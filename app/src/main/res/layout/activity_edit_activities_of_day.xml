@@ -9,7 +9,7 @@
     tools:context=".EditActivitiesOfDay">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/cancel_button"
         android:layout_width="140sp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -17,7 +17,6 @@
         android:background="@drawable/buttom_blue_corner"
         android:clickable="true"
         android:fontFamily="@font/montserrat_medium"
-        android:onClick="goBackActivities"
         android:paddingHorizontal="25sp"
         android:paddingVertical="10sp"
         android:text="@string/cancel"
@@ -29,7 +28,7 @@
         tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/save_button"
         android:layout_width="140sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -37,7 +36,6 @@
         android:background="@drawable/buttom_blue_corner"
         android:clickable="true"
         android:fontFamily="@font/montserrat_medium"
-        android:onClick="saveActivitiesList"
         android:paddingHorizontal="25sp"
         android:paddingVertical="10sp"
         android:text="@string/save"
@@ -61,7 +59,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
+        app:layout_constraintTop_toBottomOf="@+id/save_button">
 
         <ListView
             android:id="@+id/EditActivitiesListView"

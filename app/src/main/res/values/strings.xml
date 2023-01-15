@@ -15,6 +15,7 @@
     <string name="selected_time_format">%1$s:%2$s</string>
     <string name="activity_name_AutoCompleteText">Название пары</string>
     <string name="activity_cabinet_AutoCompleteText">Кабинет</string>
+    <string name="type_of_activity">Тип занятия</string>
     <string-array name="activityType">
         <item>ПР</item>
         <item>ЛК</item>

@@ -1,23 +1,23 @@
 package com.hikko.scheduleapp
 
-import com.hikko.scheduleapp.ActivityUtils.activitiesIsLoaded
-import com.hikko.scheduleapp.ActivityUtils.loadAllActivities
-import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
-import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
-import com.hikko.scheduleapp.MainActivity.Companion.setActiveDayOfWeek
-import com.hikko.scheduleapp.MainActivity.Companion.setActiveDayOfWeekId
-import com.hikko.scheduleapp.ActivityUtils.getIdByDay
-import com.hikko.scheduleapp.MainActivity.Companion.getActiveDayOfWeek
-import android.appwidget.AppWidgetProvider
-import android.content.Intent
-import android.appwidget.AppWidgetManager
-import android.widget.RemoteViews
-import com.hikko.scheduleapp.adapters.WidgetService
 import android.app.PendingIntent
+import android.appwidget.AppWidgetManager
+import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.View
+import android.widget.RemoteViews
+import com.hikko.scheduleapp.ActivityUtils.activitiesIsLoaded
+import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
+import com.hikko.scheduleapp.ActivityUtils.getIdByDay
+import com.hikko.scheduleapp.ActivityUtils.loadAllActivities
+import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
+import com.hikko.scheduleapp.MainActivity.Companion.getActiveDayOfWeek
+import com.hikko.scheduleapp.MainActivity.Companion.setActiveDayOfWeek
+import com.hikko.scheduleapp.MainActivity.Companion.setActiveDayOfWeekId
+import com.hikko.scheduleapp.adapters.WidgetService
 
 /**
  * Implementation of App Widget functionality.
