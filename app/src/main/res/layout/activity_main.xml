@@ -47,7 +47,6 @@
         app:layout_constraintTop_toBottomOf="@id/string_logo">
 
         <LinearLayout
-            android:id="@+id/scrollLinear"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:duplicateParentState="false"

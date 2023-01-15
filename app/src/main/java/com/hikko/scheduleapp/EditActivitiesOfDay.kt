@@ -59,12 +59,13 @@ class EditActivitiesOfDay : AppCompatActivity() {
         }
     }
 
-    fun goBackToMainActivity() {
+    private fun goBackToMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         goBackToMainActivity()
     }
@@ -100,7 +101,7 @@ class EditActivitiesOfDay : AppCompatActivity() {
         activitiesListView.isVerticalScrollBarEnabled = false
     }
 
-    fun saveActivitiesList() {
+    private fun saveActivitiesList() {
         val editedActivitiesOfWeek = getLoadedActivities()
         val activities = ArrayList<Activity>()
         for (activity in activitiesOfDayList) {

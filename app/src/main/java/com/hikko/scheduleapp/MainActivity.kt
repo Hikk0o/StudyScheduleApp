@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val startMain = Intent(Intent.ACTION_MAIN)
         startMain.addCategory(Intent.CATEGORY_HOME)

@@ -12,7 +12,6 @@
     <string name="no_activities">Нет пар</string>
     <string name="activity_create_start_time">Начало в</string>
     <string name="activity_create_end_time">Конец в</string>
-    <string name="selected_time_format">%1$s:%2$s</string>
     <string name="activity_name_AutoCompleteText">Название пары</string>
     <string name="activity_cabinet_AutoCompleteText">Кабинет</string>
     <string name="type_of_activity">Тип занятия</string>
