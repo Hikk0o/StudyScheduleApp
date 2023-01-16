@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
 
         // Color Theme
         if (drawableDayOfWeek != null && drawableDayOfWeekActive != null) {
-            drawableDayOfWeek!!.colorFilter = LightingColorFilter(Color.parseColor("#FF000000"), Color.parseColor("#8d20a8"))
-            drawableDayOfWeekActive!!.colorFilter = LightingColorFilter(Color.parseColor("#FF000000") + 0x7777333, Color.parseColor("#8d20a8"))
+            drawableDayOfWeek!!.colorFilter = LightingColorFilter(Color.parseColor("#FF000000"), Settings.config.themeColor)
+            drawableDayOfWeekActive!!.colorFilter = LightingColorFilter(Color.parseColor("#FF000000") + 0x7777333, Settings.config.themeColor)
             val idsOfDaysLayouts: IntArray = ActivityUtils.getIdsDaysOfWeek()
             for (id in idsOfDaysLayouts) {
                 findViewById<View>(id).background = drawableDayOfWeek

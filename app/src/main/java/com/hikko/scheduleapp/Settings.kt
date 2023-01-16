@@ -1,5 +1,6 @@
 package com.hikko.scheduleapp
 
+import android.graphics.Color
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -34,6 +35,7 @@ object Settings {
         val storageConfig: Config = gson.fromJson(content, arrType)
 
         config = storageConfig
+        config.themeColor = Color.parseColor("#8d20a8")
         configLoaded = true
         Log.i(TAG, "Config loaded")
     }
