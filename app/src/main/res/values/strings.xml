@@ -24,5 +24,8 @@
     <string name="save">Save</string>
     <string name="cancel">Canel</string>
     <string name="empty_name_activity">Нет пары</string>
+    <string name="select_color_theme">Выберете цвет приложения</string>
+
+    <!--Widget-->
     <string name="app_widget_description" translatable="false">This is an app widget description</string>
 </resources>

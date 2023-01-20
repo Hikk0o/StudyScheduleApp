@@ -2,6 +2,9 @@ package com.hikko.scheduleapp
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.LightingColorFilter
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -9,6 +12,7 @@ import android.view.View
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import com.hikko.scheduleapp.ActivitiesDayWidget.Companion.updateWidget
 import com.hikko.scheduleapp.ActivityUtils.clearInputFocus
 import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
@@ -50,6 +54,7 @@ class EditActivitiesOfDay : AppCompatActivity() {
             )
         }
 
+
         val cancelButton = findViewById<View>(R.id.cancel_button)
         cancelButton.setOnClickListener {
             goBackToMainActivity()
@@ -59,6 +64,15 @@ class EditActivitiesOfDay : AppCompatActivity() {
         saveButton.setOnClickListener {
             saveActivitiesList()
         }
+
+        if (Settings.config.isCustomThemeColor) {
+            val mainColor = Settings.config.themeColor
+            val drawableButton: Drawable? = AppCompatResources.getDrawable(applicationContext, R.drawable.buttom_blue_corner)
+            drawableButton!!.colorFilter = LightingColorFilter(Color.parseColor("#FF000000"), mainColor)
+            cancelButton.background = drawableButton
+            saveButton.background = drawableButton
+        }
+
     }
 
     private fun goBackToMainActivity() {

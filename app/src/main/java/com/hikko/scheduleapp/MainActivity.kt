@@ -1,11 +1,13 @@
 package com.hikko.scheduleapp
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.widget.HorizontalScrollView
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,9 @@ import com.hikko.scheduleapp.ActivityUtils.getIdByDay
 import com.hikko.scheduleapp.ActivityUtils.loadAllActivities
 import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
 import com.hikko.scheduleapp.adapters.ActivitiesListAdapter
+import com.skydoves.colorpickerview.ColorEnvelope
+import com.skydoves.colorpickerview.ColorPickerDialog
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
 class MainActivity : AppCompatActivity() {
     private var drawableDayOfWeek: Drawable? = null
@@ -37,15 +42,13 @@ class MainActivity : AppCompatActivity() {
         drawableDayOfWeekActive = AppCompatResources.getDrawable(applicationContext, R.drawable.day_of_week_round_corner_active)
 
         // Color Theme
-        if (drawableDayOfWeek != null && drawableDayOfWeekActive != null) {
-            drawableDayOfWeek!!.colorFilter = LightingColorFilter(Color.parseColor("#FF000000"), Settings.config.themeColor)
-            drawableDayOfWeekActive!!.colorFilter = LightingColorFilter(Color.parseColor("#FF000000") + 0x7777333, Settings.config.themeColor)
-            val idsOfDaysLayouts: IntArray = ActivityUtils.getIdsDaysOfWeek()
-            for (id in idsOfDaysLayouts) {
-                findViewById<View>(id).background = drawableDayOfWeek
-            }
-        }
+        updateThemeColor()
+
         changeCurrentWeek(view)
+
+        findViewById<ImageView>(R.id.buttonRgbSelector).setOnClickListener {
+            showColorPickerDialog()
+        }
     }
 
     @Deprecated("Deprecated in Java")
@@ -103,5 +106,49 @@ class MainActivity : AppCompatActivity() {
         fun setActiveDayOfWeekId(dayOfWeekId: Int) {
             activeDayOfWeekId = dayOfWeekId
         }
+    }
+
+    private fun showColorPickerDialog() {
+        ColorPickerDialog.Builder(findViewById<View>(R.id.mainLayout).context)
+            .setPreferenceName("MyColorPickerDialog")
+            .setPositiveButton(("Confirm"), ColorEnvelopeListener { colorEnvelope: ColorEnvelope, _: Boolean ->
+                run {
+                    Settings.config.setThemeColor(Color.valueOf(colorEnvelope.color), true)
+                    Settings.config.isCustomThemeColor = true
+                    updateThemeColor()
+                }
+            })
+            .setNegativeButton(("Сбросить")) { _: DialogInterface, _: Int ->
+                run {
+                    Settings.config.isCustomThemeColor = false
+                    updateThemeColor()
+                }
+            }
+            .attachAlphaSlideBar(false)
+            .attachBrightnessSlideBar(true)
+            .setBottomSpace(12) // set a bottom space between the last slidebar and buttons.
+            .show()
+    }
+
+    private fun updateThemeColor() {
+        if (Settings.config.isCustomThemeColor && drawableDayOfWeek != null && drawableDayOfWeekActive != null) {
+            val mainColor = Settings.config.themeColor
+            val blackMainColor = Utils.colorBrighten(Color.valueOf(mainColor), Utils.colorFraction).toArgb()
+            drawableDayOfWeek!!.colorFilter = LightingColorFilter(Color.parseColor("#FF000000"), blackMainColor)
+            drawableDayOfWeekActive!!.colorFilter = LightingColorFilter(Color.parseColor("#FF000000"), mainColor)
+
+
+        } else {
+            drawableDayOfWeek = AppCompatResources.getDrawable(applicationContext, R.drawable.day_of_week_round_corner)
+            drawableDayOfWeekActive = AppCompatResources.getDrawable(applicationContext, R.drawable.day_of_week_round_corner_active)
+        }
+        val idsOfDaysLayouts: IntArray = ActivityUtils.getIdsDaysOfWeek()
+        for (id in idsOfDaysLayouts) {
+            findViewById<View>(id).background = drawableDayOfWeek
+            findViewById<View>(id).invalidate()
+        }
+
+        findViewById<View>(activeDayOfWeekId).background = drawableDayOfWeekActive
+        findViewById<View>(activeDayOfWeekId).invalidate()
     }
 }

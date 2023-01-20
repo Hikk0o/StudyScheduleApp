@@ -20,4 +20,5 @@
     <string name="cancel">Отменить</string>
     <string name="app_main_button">Button</string>
     <string name="empty_name_activity">Нет пары</string>
+    <string name="select_color_theme">Выберете цвет приложения</string>
 </resources>

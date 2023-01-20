@@ -35,13 +35,13 @@ object Settings {
         val storageConfig: Config = gson.fromJson(content, arrType)
 
         config = storageConfig
-        config.themeColor = Color.parseColor("#8d20a8")
+//        config.themeColor = Color.parseColor("#8d20a8")
         configLoaded = true
         Log.i(TAG, "Config loaded")
     }
 
-    fun saveConfigToStorage() {
-        Log.i(TAG, config.version)
+    private fun saveConfigToStorage() {
+        Log.i(TAG, config.themeColor.toString())
         val configFile = File(savedFilesDir, "config.json")
         val gson = GsonBuilder()
             .setPrettyPrinting()
@@ -61,5 +61,14 @@ object Settings {
         }
 
         var isCustomThemeColor: Boolean = false
+        set(value) {
+            field = value
+            saveConfigToStorage()
+        }
+
+        fun setThemeColor(color: Color, savedToStorage: Boolean) {
+            themeColor = color.toArgb()
+            if (savedToStorage) saveConfigToStorage()
+        }
     }
 }
