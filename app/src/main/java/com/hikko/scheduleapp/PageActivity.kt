@@ -19,15 +19,13 @@ abstract class PageActivity: AppCompatActivity() {
             Settings.config.themeColor
         }
 
+        val view = findViewById<View>(layout)
         if (Settings.config.isCustomThemeColor) {
-            val view = findViewById<View>(layout)
             view.background.colorFilter = LightingColorFilter(Color.parseColor("#FF000000"), color)
-            view.invalidate()
         } else {
-            val view = findViewById<View>(layout)
             view.background.clearColorFilter()
-            view.invalidate()
         }
+        view.invalidate()
     }
 
     private fun colorDarken(color: Color): Int {
