@@ -9,26 +9,7 @@ abstract class PageActivity: AppCompatActivity() {
     private val colorFraction = 0.27f
 
     fun updateThemeColor(layouts: IntArray, colorDarken: Boolean) {
-        println("AppActivity updateThemeColor")
-        val color: Int = if (colorDarken) {
-            colorDarken(Color.valueOf(Settings.config.themeColor))
-        } else {
-            Settings.config.themeColor
-        }
-        if (Settings.config.isCustomThemeColor) {
-
-            for (layout in layouts) {
-                val view = findViewById<View>(layout)
-                view.background.colorFilter = LightingColorFilter(Color.parseColor("#FF000000"), color)
-                view.invalidate()
-            }
-        } else {
-            for (layout in layouts) {
-                val view = findViewById<View>(layout)
-                view.background.clearColorFilter()
-                view.invalidate()
-            }
-        }
+        for (layout in layouts) updateThemeColor(layout, colorDarken)
     }
 
     fun updateThemeColor(layout: Int, colorDarken: Boolean) {
@@ -37,6 +18,7 @@ abstract class PageActivity: AppCompatActivity() {
         } else {
             Settings.config.themeColor
         }
+
         if (Settings.config.isCustomThemeColor) {
             val view = findViewById<View>(layout)
             view.background.colorFilter = LightingColorFilter(Color.parseColor("#FF000000"), color)
