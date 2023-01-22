@@ -1,35 +1,34 @@
-package com.hikko.scheduleapp
+package com.hikko.scheduleapp.pageEditActivities
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.LightingColorFilter
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ListView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
-import com.hikko.scheduleapp.ActivitiesDayWidget.Companion.updateWidget
+import com.hikko.scheduleapp.widgetMain.WidgetActivitiesDay.Companion.updateWidget
+import com.hikko.scheduleapp.Activity
 import com.hikko.scheduleapp.ActivityUtils.clearInputFocus
 import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
 import com.hikko.scheduleapp.ActivityUtils.getLoadedActivities
 import com.hikko.scheduleapp.ActivityUtils.saveWeekToJsonFile
 import com.hikko.scheduleapp.ActivityUtils.setLoadedActivities
-import com.hikko.scheduleapp.MainActivity.Companion.getActiveDayOfWeek
-import com.hikko.scheduleapp.adapters.EditActivityAdapter
+import com.hikko.scheduleapp.PageActivity
+import com.hikko.scheduleapp.pageMain.MainActivity
+import com.hikko.scheduleapp.pageMain.MainActivity.Companion.getActiveDayOfWeek
+import com.hikko.scheduleapp.R
+import com.hikko.scheduleapp.pageEditActivities.adapters.EditActivityAdapter
 
-class EditActivitiesOfDay : AppCompatActivity() {
+class EditActivitiesOfDay : PageActivity() {
     private var addActivityButton: View? = null
 
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_activities_of_day)
+        setContentView(R.layout.edit_activities)
         val activitiesListView = findViewById<ListView>(R.id.EditActivitiesListView)
         val tempList = getActivitiesDayOfWeek(getActiveDayOfWeek())
         activitiesOfDayList.clear()
@@ -65,13 +64,8 @@ class EditActivitiesOfDay : AppCompatActivity() {
             saveActivitiesList()
         }
 
-        if (Settings.config.isCustomThemeColor) {
-            val mainColor = Settings.config.themeColor
-            val drawableButton: Drawable? = AppCompatResources.getDrawable(applicationContext, R.drawable.buttom_blue_corner)
-            drawableButton!!.colorFilter = LightingColorFilter(Color.parseColor("#FF000000"), mainColor)
-            cancelButton.background = drawableButton
-            saveButton.background = drawableButton
-        }
+        val idLayouts: IntArray = intArrayOf(saveButton.id, cancelButton.id)
+        super.updateThemeColor(idLayouts, false)
 
     }
 

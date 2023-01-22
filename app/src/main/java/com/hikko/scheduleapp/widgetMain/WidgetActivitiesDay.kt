@@ -1,4 +1,4 @@
-package com.hikko.scheduleapp
+package com.hikko.scheduleapp.widgetMain
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -9,20 +9,23 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
+import com.hikko.scheduleapp.Activity
 import com.hikko.scheduleapp.ActivityUtils.activitiesIsLoaded
 import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
 import com.hikko.scheduleapp.ActivityUtils.getIdByDay
 import com.hikko.scheduleapp.ActivityUtils.loadAllActivities
 import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
-import com.hikko.scheduleapp.MainActivity.Companion.getActiveDayOfWeek
-import com.hikko.scheduleapp.MainActivity.Companion.setActiveDayOfWeek
-import com.hikko.scheduleapp.MainActivity.Companion.setActiveDayOfWeekId
-import com.hikko.scheduleapp.adapters.WidgetService
+import com.hikko.scheduleapp.pageMain.MainActivity.Companion.getActiveDayOfWeek
+import com.hikko.scheduleapp.pageMain.MainActivity.Companion.setActiveDayOfWeek
+import com.hikko.scheduleapp.pageMain.MainActivity.Companion.setActiveDayOfWeekId
+import com.hikko.scheduleapp.pageMain.MainActivity
+import com.hikko.scheduleapp.R
+import com.hikko.scheduleapp.widgetMain.adapters.WidgetService
 
 /**
  * Implementation of App Widget functionality.
  */
-class ActivitiesDayWidget : AppWidgetProvider() {
+class WidgetActivitiesDay : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         if (intent.action == OPEN_APP) {
@@ -41,7 +44,7 @@ class ActivitiesDayWidget : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        val views = RemoteViews(context.packageName, R.layout.activities_day_widget)
+        val views = RemoteViews(context.packageName, R.layout.widget_activities)
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId, views)
         }
@@ -82,7 +85,7 @@ class ActivitiesDayWidget : AppWidgetProvider() {
         }
 
         private fun getPendingIntent(context: Context): PendingIntent {
-            val widgetIntent = Intent(context, ActivitiesDayWidget::class.java)
+            val widgetIntent = Intent(context, WidgetActivitiesDay::class.java)
             widgetIntent.action = OPEN_APP
             //        Intent intent = new Intent(context, MainActivity.class);
             return PendingIntent.getBroadcast(
@@ -97,8 +100,8 @@ class ActivitiesDayWidget : AppWidgetProvider() {
         @JvmStatic
         fun updateWidget(context: Context) {
             val ids = AppWidgetManager.getInstance(context)
-                .getAppWidgetIds(ComponentName(context, ActivitiesDayWidget::class.java))
-            val intent = Intent(context, ActivitiesDayWidget::class.java)
+                .getAppWidgetIds(ComponentName(context, WidgetActivitiesDay::class.java))
+            val intent = Intent(context, WidgetActivitiesDay::class.java)
             intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
             val appWidgetManager = AppWidgetManager.getInstance(context)

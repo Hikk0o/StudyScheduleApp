@@ -1,4 +1,4 @@
-package com.hikko.scheduleapp.adapters
+package com.hikko.scheduleapp.pageEditActivities.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -17,7 +17,7 @@ import com.daimajia.swipe.adapters.ArraySwipeAdapter
 import com.hikko.scheduleapp.Activity
 import com.hikko.scheduleapp.ActivityUtils.clearInputFocus
 import com.hikko.scheduleapp.ActivityUtils.getLoadedActivities
-import com.hikko.scheduleapp.EditActivitiesOfDay
+import com.hikko.scheduleapp.pageEditActivities.EditActivitiesOfDay
 import com.hikko.scheduleapp.R
 
 @Suppress("UNCHECKED_CAST")
@@ -79,9 +79,9 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
         if (spinner.adapter == null) {
             val sAdapter = createFromResource(
                 view.context,
-                R.array.activityType, R.layout.spinner_item
+                R.array.activityType, R.layout.main_activity_day_item_spinner
             )
-            sAdapter.setDropDownViewResource(R.layout.spinner_item_dropdown)
+            sAdapter.setDropDownViewResource(R.layout.main_activity_day_item_spinner_dropdown)
             spinner.adapter = sAdapter
         }
         spinner.setSelection(getSpinnerIndex(spinner, activity!!.type))

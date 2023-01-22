@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/app_widget_description"
-    android:initialKeyguardLayout="@layout/activities_day_widget"
-    android:initialLayout="@layout/activities_day_widget"
+    android:initialKeyguardLayout="@layout/widget_activities"
+    android:initialLayout="@layout/widget_activities"
     android:minWidth="200dp"
     android:minHeight="110dp"
     android:resizeMode="vertical"

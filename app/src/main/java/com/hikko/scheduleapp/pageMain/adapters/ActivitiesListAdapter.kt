@@ -1,4 +1,4 @@
-package com.hikko.scheduleapp.adapters
+package com.hikko.scheduleapp.pageMain.adapters
 
 import android.content.Context
 import android.content.res.Resources

@@ -8,7 +8,7 @@
     android:background="@color/bg"
     android:visibility="visible"
     app:layout_constraintWidth_percent="0.3"
-    tools:context=".MainActivity">
+    tools:context=".pageMain.MainActivity">
 
     <TextView
         android:id="@+id/string_logo"
