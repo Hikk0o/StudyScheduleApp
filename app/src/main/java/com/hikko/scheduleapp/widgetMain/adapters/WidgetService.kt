@@ -3,22 +3,13 @@ package com.hikko.scheduleapp.widgetMain.adapters
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.LightingColorFilter
-import android.os.Build
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
-import androidx.annotation.RequiresApi
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.toBitmap
 import com.hikko.scheduleapp.Activity
 import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
 import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
 import com.hikko.scheduleapp.R
-import com.hikko.scheduleapp.Settings
-import com.hikko.scheduleapp.pageEditActivities.adapters.WidgetIntent
 
 class WidgetService : RemoteViewsService() {
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
@@ -48,8 +39,8 @@ class WidgetService : RemoteViewsService() {
         override fun getViewAt(position: Int): RemoteViews {
             val views = RemoteViews(mContext.packageName, R.layout.widget_activities_day_item)
             val v = View.inflate(mContext, R.layout.widget_activities_day_item, null)
-
-            views.setInt(R.id.widget_background, "setBackgroundResource", R.drawable.day_of_week_round_corner_active)
+            // todo
+//            views.setInt(R.id.widget_background, "setBackgroundResource", R.drawable.day_of_week_round_corner_active)
 
 //            views.setImageViewResource(R.id.widget_background, R.drawable.day_of_week_round_corner_active)
 //            val drawable = AppCompatResources.getDrawable(
@@ -80,7 +71,6 @@ class WidgetService : RemoteViewsService() {
                     views.setViewVisibility(R.id.activity_cabinet, View.VISIBLE)
                 }
             }
-//            Log.i(TAG, views.toString())
             return views
         }
 
