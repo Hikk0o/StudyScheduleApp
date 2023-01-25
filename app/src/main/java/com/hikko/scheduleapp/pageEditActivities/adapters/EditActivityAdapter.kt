@@ -100,7 +100,6 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        /*  */
         val maxLengthActivityName = view.resources.getInteger(R.integer.max_len_ActivityName)
         val maxLengthActivityCabinet = view.resources.getInteger(R.integer.max_len_ActivityCabinet)
         val inputFiltersActivityName = inputFilters(maxLengthActivityName)

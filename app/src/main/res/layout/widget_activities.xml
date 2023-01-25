@@ -2,7 +2,7 @@
     android:id="@+id/clickable_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/activity_round_corner_black"
+    android:background="@drawable/app_widget_background"
     android:padding="10sp">
 
 
