@@ -3,13 +3,22 @@ package com.hikko.scheduleapp.widgetMain.adapters
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.LightingColorFilter
+import android.graphics.pdf.PdfDocument.Page
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.toColor
 import com.hikko.scheduleapp.Activity
 import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
 import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
+import com.hikko.scheduleapp.PageActivity
 import com.hikko.scheduleapp.R
+import com.hikko.scheduleapp.Settings
+import com.hikko.scheduleapp.pageMain.MainActivity
 
 class WidgetService : RemoteViewsService() {
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
@@ -39,17 +48,10 @@ class WidgetService : RemoteViewsService() {
         override fun getViewAt(position: Int): RemoteViews {
             val views = RemoteViews(mContext.packageName, R.layout.widget_activities_day_item)
             val v = View.inflate(mContext, R.layout.widget_activities_day_item, null)
-            // todo
-//            views.setInt(R.id.widget_background, "setBackgroundResource", R.drawable.day_of_week_round_corner_active)
 
-//            views.setImageViewResource(R.id.widget_background, R.drawable.day_of_week_round_corner_active)
-//            val drawable = AppCompatResources.getDrawable(
-//                mContext,
-//                R.drawable.activity_round_corner
-//            )
-//            drawable?.colorFilter = LightingColorFilter(Color.parseColor("#FF000000"), Settings.config.themeColor)
-//            views.setImageViewBitmap(R.id.widget_background, drawable?.toBitmap(1,1,null))
-//            views.setRemoteAdapter(R.id.widget_background, Intent(mContext, WidgetIntent::class.java))
+            if (Settings.config.isCustomThemeColor) {
+                views.setInt(R.id.main_widget_background, "setColorFilter", PageActivity.colorDarken(Settings.config.themeColor.toColor()))
+            }
 
             val name = activities!![position].name
             val cabinet = activities!![position].cabinet

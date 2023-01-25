@@ -4,9 +4,9 @@ import android.graphics.Color
 import android.graphics.LightingColorFilter
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.hikko.scheduleapp.widgetMain.WidgetActivitiesDay
 
 abstract class PageActivity: AppCompatActivity() {
-    private val colorFraction = 0.27f
 
     fun updateThemeColor(layouts: IntArray, colorDarken: Boolean) {
         for (layout in layouts) updateThemeColor(layout, colorDarken)
@@ -26,17 +26,21 @@ abstract class PageActivity: AppCompatActivity() {
             view.background.clearColorFilter()
         }
         view.invalidate()
+        WidgetActivitiesDay.updateWidget(applicationContext)
     }
 
-    private fun colorDarken(color: Color): Int {
-        val hsv = FloatArray(3)
-        Color.colorToHSV(color.toArgb(), hsv)
-        if (hsv[2] > colorFraction) {
-            hsv[2] -= colorFraction
-        } else {
-            hsv[2] += colorFraction
+    companion object {
+        private const val colorFraction = 0.27f
+        fun colorDarken(color: Color): Int {
+            val hsv = FloatArray(3)
+            Color.colorToHSV(color.toArgb(), hsv)
+            if (hsv[2] > colorFraction) {
+                hsv[2] -= colorFraction
+            } else {
+                hsv[2] += colorFraction
+            }
+            return Color.valueOf(Color.HSVToColor(hsv)).toArgb()
         }
-        return Color.valueOf(Color.HSVToColor(hsv)).toArgb()
     }
 
 

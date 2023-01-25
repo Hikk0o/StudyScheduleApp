@@ -180,16 +180,15 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
         val timeFilter = arrayOfNulls<InputFilter>(1)
         timeFilter[0] =
             InputFilter { source: CharSequence, start: Int, end: Int, dest: Spanned, dstart: Int, dend: Int ->
-                if (source.isEmpty()) {
-                    return@InputFilter null
-                }
+                if (source.isEmpty()) return@InputFilter null
+
                 var result = ""
                 result += dest.toString().substring(0, dstart)
                 result += source.toString().substring(start, end)
                 result += dest.toString().substring(dend, dest.length)
-                if (result.length > 5) {
-                    return@InputFilter ""
-                }
+
+                if (result.length > 5) return@InputFilter ""
+
                 var allowEdit = true
                 var c: Char
                 if (result.isNotEmpty()) {
