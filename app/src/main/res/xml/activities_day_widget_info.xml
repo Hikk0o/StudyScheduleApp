@@ -5,6 +5,5 @@
     android:initialLayout="@layout/widget_activities"
     android:minWidth="200dp"
     android:minHeight="110dp"
-    android:resizeMode="vertical"
     android:updatePeriodMillis="10000"
     android:widgetCategory="home_screen" />

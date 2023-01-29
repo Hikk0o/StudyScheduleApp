@@ -6,17 +6,9 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.LightingColorFilter
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.toBitmap
 import com.hikko.scheduleapp.Activity
 import com.hikko.scheduleapp.ActivityUtils.activitiesIsLoaded
 import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
@@ -24,7 +16,6 @@ import com.hikko.scheduleapp.ActivityUtils.getIdByDay
 import com.hikko.scheduleapp.ActivityUtils.loadAllActivities
 import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
 import com.hikko.scheduleapp.R
-import com.hikko.scheduleapp.Settings
 import com.hikko.scheduleapp.pageMain.MainActivity
 import com.hikko.scheduleapp.pageMain.MainActivity.Companion.getActiveDayOfWeek
 import com.hikko.scheduleapp.pageMain.MainActivity.Companion.setActiveDayOfWeek
@@ -95,7 +86,7 @@ class WidgetActivitiesDay : AppWidgetProvider() {
         }
 
         private fun getPendingIntent(context: Context): PendingIntent {
-            val widgetIntent = Intent(context, WidgetActivitiesDay::class.java)
+            val widgetIntent = Intent(context, this::class.java)
             widgetIntent.action = OPEN_APP
             //        Intent intent = new Intent(context, MainActivity.class);
             return PendingIntent.getBroadcast(
