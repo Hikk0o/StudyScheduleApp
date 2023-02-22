@@ -7,11 +7,9 @@ import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.Spanned
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.view.View.OnFocusChangeListener
-import android.view.ViewGroup
+import android.view.ViewTreeObserver.OnPreDrawListener
 import android.widget.*
 import com.daimajia.swipe.adapters.ArraySwipeAdapter
 import com.hikko.scheduleapp.Activity
@@ -75,6 +73,20 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
                 deleteActivity(position)
                 false
             }
+
+        // Растянуть кнопку по всей высоте родительского элемента
+        val viewToStretch = view.findViewById<View>(R.id.buttonDeleteActivity)
+        val parentView = viewToStretch.parent as View
+        parentView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                parentView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                val parentHeight = parentView.height
+                viewToStretch.layoutParams.height = parentHeight
+                println(parentHeight)
+                viewToStretch.requestLayout()
+            }
+        })
+
         val spinner = view.findViewById<Spinner>(R.id.edit_activity_type_spinner)
         if (spinner.adapter == null) {
             val sAdapter = createFromResource(
@@ -145,6 +157,9 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
         // Установка текста после загрузки
         activityNameText.setText(activity.name)
         activityNameCabinet.setText(activity.cabinet)
+
+        addPreDrawListener(activityNameText, view)
+        addPreDrawListener(activityNameCabinet, view)
 
         // Автозаполнение текста
         activityNameText.setAdapter(
@@ -300,6 +315,40 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
                 EditActivitiesOfDay.activitiesOfDayList[position] = temp
             }
         }
+    }
+
+    private fun addPreDrawListener(textView: TextView, view: View) {
+        textView.viewTreeObserver.addOnPreDrawListener(object : OnPreDrawListener {
+            private var textViewHeight = -1
+
+            override fun onPreDraw(): Boolean {
+                if (textViewHeight == -1) {
+                    textViewHeight = textView.height
+                } else if (textView.height != textViewHeight) {
+                    // Текст перенесся на другую строку
+                    onTextWrapped(view)
+                    textViewHeight = textView.height
+                }
+                return true
+            }
+        })
+    }
+
+    private fun onTextWrapped(view: View) {
+        println("Текст был перенесен на другую строку")
+        val viewToStretch = view.findViewById<View>(R.id.buttonDeleteActivity)
+        val parentView = viewToStretch.parent as View
+
+        parentView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                parentView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                val parentHeight = parentView.height
+                viewToStretch.layoutParams.height = parentHeight
+                println(parentHeight)
+                viewToStretch.requestLayout()
+            }
+        })
+        parentView.requestLayout()
     }
 
     override fun getSwipeLayoutResourceId(position: Int): Int {

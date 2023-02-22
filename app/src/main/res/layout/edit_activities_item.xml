@@ -19,28 +19,32 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="75dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
+            android:layout_marginHorizontal="5dp"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/buttonDeleteActivity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="5sp"
-                android:paddingVertical="20sp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="5sp"
+                android:background="@drawable/buttom_red_corner"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="40dp"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:layout_gravity="center"
                     android:contentDescription="@string/cancel"
                     android:src="@drawable/ic_baseline_delete_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/red" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:tint="@color/white" />
+            </LinearLayout>
 
         </LinearLayout>
 
