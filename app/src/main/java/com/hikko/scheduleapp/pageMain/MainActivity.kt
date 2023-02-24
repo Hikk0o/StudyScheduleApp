@@ -39,12 +39,6 @@ class MainActivity : PageActivity() {
             startActivity(intent)
         }
 
-//        drawableDayOfWeek = AppCompatResources.getDrawable(applicationContext,
-//            R.drawable.day_of_week_round_corner
-//        )
-//        drawableDayOfWeekActive = AppCompatResources.getDrawable(applicationContext,
-//            R.drawable.day_of_week_round_corner_active
-//        )
 
         // Color Theme
         updateColors()

@@ -28,6 +28,7 @@ import com.hikko.scheduleapp.widgetMain.adapters.WidgetService
 class WidgetActivitiesDay : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
+        println(intent.action)
         if (intent.action == OPEN_APP) {
             setActiveDayOfWeek(localeDayOfWeek)
             setActiveDayOfWeekId(getIdByDay(getActiveDayOfWeek()))
@@ -88,14 +89,14 @@ class WidgetActivitiesDay : AppWidgetProvider() {
         private fun getPendingIntent(context: Context): PendingIntent {
             val widgetIntent = Intent(context, this::class.java)
             widgetIntent.action = OPEN_APP
-            //        Intent intent = new Intent(context, MainActivity.class);
-            return PendingIntent.getBroadcast(
-                context,
-                0,
-                widgetIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-            //        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            val intent = Intent(context, MainActivity::class.java);
+//            return PendingIntent.getBroadcast(
+//                context,
+//                0,
+//                widgetIntent,
+//                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+//            )
+            return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
 
         @JvmStatic
