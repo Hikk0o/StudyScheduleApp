@@ -6,13 +6,16 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
+import com.hikko.scheduleapp.utilClasses.DayOfEpoch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 object ActivityUtils {
     private const val TAG = "ActivityUtils"
@@ -26,16 +29,23 @@ object ActivityUtils {
         val gson = GsonBuilder()
             .setPrettyPrinting()
             .create()
-        var activitiesOfWeek: ArrayList<ArrayList<Activity>>? = ArrayList()
-        if (loadedActivities != null) {
-            activitiesOfWeek = loadedActivities
-        }
-        if (activitiesOfWeek!!.size < 7) {
-            while (activitiesOfWeek.size < 7) {
-                activitiesOfWeek.add(ArrayList())
+        val savedDaysOfEpoch: ArrayList<DayOfEpoch> = loadedDays
+
+        if (savedDaysOfEpoch.size < 30) {
+
+            var dayEpoch: Int = if (savedDaysOfEpoch.isEmpty()) {
+                localeDay
+            } else {
+                savedDaysOfEpoch.last().numberDay + 1
+            }
+
+            while (savedDaysOfEpoch.size < 30) {
+                savedDaysOfEpoch.add(DayOfEpoch(dayEpoch))
+                dayEpoch++
             }
         }
-        val json = gson.toJson(activitiesOfWeek)
+
+        val json = gson.toJson(savedDaysOfEpoch)
 
         // Create file output stream
         val outputStream: FileOutputStream
@@ -50,7 +60,7 @@ object ActivityUtils {
         }
     }
 
-    private var loadedActivities: ArrayList<ArrayList<Activity>>? = null
+    private var loadedDays: ArrayList<DayOfEpoch> = ArrayList()
 
     @JvmStatic
     fun loadAllActivities(filesDir: File) {
@@ -65,50 +75,44 @@ object ActivityUtils {
             try {
                 val content = Files.readAllBytes(file.toPath())
                 val str = String(content, StandardCharsets.UTF_8)
-                val arrType = object : TypeToken<ArrayList<List<Activity?>?>?>() {}.type
+                val arrType = object : TypeToken<ArrayList<DayOfEpoch>>() {}.type
 
-                loadedActivities = g.fromJson(str, arrType)
-                if (loadedActivities?.size == 0) {
+                loadedDays = g.fromJson(str, arrType)
+                if (loadedDays.size == 0) {
                     saveWeekToJsonFile(filesDir)
                 }
             } catch (e: IOException) {
-                loadedActivities = ArrayList()
+                loadedDays = ArrayList()
                 e.printStackTrace()
+            } catch (e: JsonSyntaxException) {
+                file.delete()
+                saveWeekToJsonFile(filesDir)
+                loadAllActivities(filesDir)
             }
         }
     }
 
     @JvmStatic
-    fun getLoadedActivities(): ArrayList<ArrayList<Activity>> {
-        return loadedActivities!!
+    fun getLoadedDays(): ArrayList<DayOfEpoch> {
+        return loadedDays
     }
 
     @JvmStatic
-    fun setLoadedActivities(editedActivities: ArrayList<ArrayList<Activity>>?) {
-        loadedActivities = editedActivities
+    fun setLoadedDays(editedDays: ArrayList<DayOfEpoch>) {
+        loadedDays = editedDays
     }
 
     @JvmStatic
-    fun getActivitiesDayOfWeek(day: Int): ArrayList<Activity>? {
-        val dayOfWeek = day - 1
+    fun getDayOfEpoch(dayOfEpoch: Int): DayOfEpoch? {
 
-        if (loadedActivities == null) {
-            if (savedFilesDir != null) {
-                loadAllActivities(savedFilesDir!!)
-            } else {
-                Log.w(TAG, "loadedActivities is null")
-                return null
-            }
-        }
+        val loadedDays: ArrayList<DayOfEpoch> = this.loadedDays
+        val filteredDays = loadedDays.filter { it.numberDay == dayOfEpoch }
 
-        val activitiesOfWeek: ArrayList<ArrayList<Activity>>? = loadedActivities
-        if (dayOfWeek > activitiesOfWeek!!.size - 1) {
-            Log.w(TAG, "dayOfWeek is > activity.size() - 1")
-            Log.w(TAG, "activitiesOfWeek.size ${activitiesOfWeek.size}")
-            Log.w(TAG, "dayOfWeek $dayOfWeek")
-            return ArrayList()
+        return if (filteredDays.isEmpty()) {
+            null
+        } else {
+            filteredDays[0]
         }
-        return activitiesOfWeek[dayOfWeek]
     }
 
     @JvmStatic
@@ -120,49 +124,17 @@ object ActivityUtils {
     }
 
     @JvmStatic
-    fun getIdByDay(id: Int): Int {
-        return when (id) {
-            1 -> R.id.day1
-            2 -> R.id.day2
-            3 -> R.id.day3
-            4 -> R.id.day4
-            5 -> R.id.day5
-            6 -> R.id.day6
-            7 -> R.id.day7
-            else -> id
-        }
-    }
-
-    @JvmStatic
-    fun getDayById(id: Int): Int {
-        return when (id) {
-            R.id.day1 -> 1
-            R.id.day2 -> 2
-            R.id.day3 -> 3
-            R.id.day4 -> 4
-            R.id.day5 -> 5
-            R.id.day6 -> 6
-            R.id.day7 -> 7
-            else -> id
-        }
-    }
-
-    fun getIdsDaysOfWeek(): IntArray {
-        return intArrayOf(R.id.day1, R.id.day2, R.id.day3, R.id.day4, R.id.day5, R.id.day6, R.id.day7)
-    }
-
-    @JvmStatic
-    val localeDayOfWeek: Int
+    val localeDay: Int
         get() {
-            val today = LocalDate.now()
-            val dayOfWeek = today.dayOfWeek
-            return dayOfWeek.value
+            val date = LocalDate.now()
+            val epoch = LocalDate.of(1970, 1, 1)
+            return ChronoUnit.DAYS.between(epoch, date).toInt() // days since epoch
         }
 
     @JvmStatic
     val activitiesIsLoaded: Boolean
         get() {
-            return loadedActivities != null
+            return true
         }
 
 

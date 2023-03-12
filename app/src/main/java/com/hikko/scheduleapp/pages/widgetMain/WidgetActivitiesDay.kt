@@ -1,4 +1,4 @@
-package com.hikko.scheduleapp.widgetMain
+package com.hikko.scheduleapp.pages.widgetMain
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -9,18 +9,16 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
-import com.hikko.scheduleapp.Activity
+import com.hikko.scheduleapp.utilClasses.Activity
 import com.hikko.scheduleapp.ActivityUtils.activitiesIsLoaded
-import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
-import com.hikko.scheduleapp.ActivityUtils.getIdByDay
+import com.hikko.scheduleapp.ActivityUtils.getDayOfEpoch
+//import com.hikko.scheduleapp.ActivityUtils.getIdByDay
 import com.hikko.scheduleapp.ActivityUtils.loadAllActivities
-import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
+import com.hikko.scheduleapp.ActivityUtils.localeDay
 import com.hikko.scheduleapp.R
-import com.hikko.scheduleapp.pageMain.MainActivity
-import com.hikko.scheduleapp.pageMain.MainActivity.Companion.getActiveDayOfWeek
-import com.hikko.scheduleapp.pageMain.MainActivity.Companion.setActiveDayOfWeek
-import com.hikko.scheduleapp.pageMain.MainActivity.Companion.setActiveDayOfWeekId
-import com.hikko.scheduleapp.widgetMain.adapters.WidgetService
+import com.hikko.scheduleapp.pages.pageMain.MainActivity
+import com.hikko.scheduleapp.pages.pageMain.MainActivity.Companion.setActiveDay
+import com.hikko.scheduleapp.pages.widgetMain.adapters.WidgetService
 
 /**
  * Implementation of App Widget functionality.
@@ -30,8 +28,8 @@ class WidgetActivitiesDay : AppWidgetProvider() {
         super.onReceive(context, intent)
         println(intent.action)
         if (intent.action == OPEN_APP) {
-            setActiveDayOfWeek(localeDayOfWeek)
-            setActiveDayOfWeekId(getIdByDay(getActiveDayOfWeek()))
+            setActiveDay(localeDay)
+//            setActiveDayOfWeekId(getIdByDay(getActiveDayOfWeek()))
             val mainActivityIntent = Intent(context, MainActivity::class.java)
             mainActivityIntent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -73,13 +71,11 @@ class WidgetActivitiesDay : AppWidgetProvider() {
             if (!activitiesIsLoaded) {
                 loadAllActivities(context.filesDir)
             }
-            val arrayList: List<Activity>? = getActivitiesDayOfWeek(localeDayOfWeek)
-            if (arrayList != null) {
-                if (arrayList.isEmpty()) {
-                    views.setViewVisibility(R.id.no_activities_text_widget, View.VISIBLE)
-                } else {
-                    views.setViewVisibility(R.id.no_activities_text_widget, View.GONE)
-                }
+            val arrayList: List<Activity> = getDayOfEpoch(localeDay)!!.activitiesList
+            if (arrayList.isEmpty()) {
+                views.setViewVisibility(R.id.no_activities_text_widget, View.VISIBLE)
+            } else {
+                views.setViewVisibility(R.id.no_activities_text_widget, View.GONE)
             }
             views.setOnClickPendingIntent(R.id.clickable_layout, getPendingIntent(context))
 
@@ -89,7 +85,7 @@ class WidgetActivitiesDay : AppWidgetProvider() {
         private fun getPendingIntent(context: Context): PendingIntent {
             val widgetIntent = Intent(context, this::class.java)
             widgetIntent.action = OPEN_APP
-            val intent = Intent(context, MainActivity::class.java);
+            val intent = Intent(context, MainActivity::class.java)
 //            return PendingIntent.getBroadcast(
 //                context,
 //                0,

@@ -1,24 +1,18 @@
-package com.hikko.scheduleapp.widgetMain.adapters
+package com.hikko.scheduleapp.pages.widgetMain.adapters
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.LightingColorFilter
-import android.graphics.pdf.PdfDocument.Page
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.toColor
-import com.hikko.scheduleapp.Activity
-import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
-import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
+import com.hikko.scheduleapp.utilClasses.Activity
+import com.hikko.scheduleapp.ActivityUtils.getDayOfEpoch
+import com.hikko.scheduleapp.ActivityUtils.localeDay
 import com.hikko.scheduleapp.PageActivity
 import com.hikko.scheduleapp.R
 import com.hikko.scheduleapp.Settings
-import com.hikko.scheduleapp.pageMain.MainActivity
 
 class WidgetService : RemoteViewsService() {
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
@@ -41,7 +35,7 @@ class WidgetService : RemoteViewsService() {
         override fun onDataSetChanged() {}
         override fun onDestroy() {}
         override fun getCount(): Int {
-            activities = getActivitiesDayOfWeek(localeDayOfWeek)
+            activities = getDayOfEpoch(localeDay)!!.activitiesList
             return activities!!.size
         }
 

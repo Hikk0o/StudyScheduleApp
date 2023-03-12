@@ -8,7 +8,7 @@
     android:background="@color/bg"
     android:visibility="visible"
     app:layout_constraintWidth_percent="0.3"
-    tools:context=".pageMain.MainActivity">
+    tools:context=".pages.pageMain.MainActivity">
 
     <TextView
         android:id="@+id/string_logo"
@@ -24,14 +24,14 @@
         android:textColor="@color/white"
         android:textSize="23sp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+        app:layout_constraintBottom_toTopOf="@+id/HorizontalScrollView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/HorizontalScrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:baselineAligned="true"
         android:fillViewport="true"
@@ -47,123 +47,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBarButtons">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/DaysListView"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:duplicateParentState="false"
-            android:listSelector="@null"
+            android:layout_height="wrap_content"
+            android:listSelector="@android:color/transparent"
             android:orientation="horizontal"
-            android:paddingStart="10sp"
-            android:paddingEnd="10sp">
+            android:scrollbars="none"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </androidx.core.widget.NestedScrollView>
 
-            <TextView
-                android:id="@+id/day1"
-                android:layout_width="60sp"
-                android:layout_height="60sp"
-                android:layout_margin="10sp"
-                android:background="@drawable/day_of_week_round_corner"
-                android:fontFamily="@font/montserrat_medium"
-                android:gravity="center"
-                android:onClick="changeCurrentWeek"
-                android:shadowColor="#DA0E0E"
-                android:text="@string/day1"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textIsSelectable="false" />
-
-            <TextView
-                android:id="@+id/day2"
-                android:layout_width="60sp"
-                android:layout_height="60sp"
-                android:layout_margin="10sp"
-                android:background="@drawable/day_of_week_round_corner"
-                android:fontFamily="@font/montserrat_medium"
-                android:gravity="center"
-                android:onClick="changeCurrentWeek"
-                android:shadowColor="#DA0E0E"
-                android:text="@string/day2"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textIsSelectable="false" />
-
-            <TextView
-                android:id="@+id/day3"
-                android:layout_width="60sp"
-                android:layout_height="60sp"
-                android:layout_margin="10sp"
-                android:background="@drawable/day_of_week_round_corner"
-                android:fontFamily="@font/montserrat_medium"
-                android:gravity="center"
-                android:onClick="changeCurrentWeek"
-                android:shadowColor="#DA0E0E"
-                android:text="@string/day3"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textIsSelectable="false"
-                tools:ignore="TextContrastCheck" />
-
-            <TextView
-                android:id="@+id/day4"
-                android:layout_width="60sp"
-                android:layout_height="60sp"
-                android:layout_margin="10sp"
-                android:background="@drawable/day_of_week_round_corner"
-                android:fontFamily="@font/montserrat_medium"
-                android:gravity="center"
-                android:onClick="changeCurrentWeek"
-                android:shadowColor="#DA0E0E"
-                android:text="@string/day4"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textIsSelectable="false" />
-
-            <TextView
-                android:id="@+id/day5"
-                android:layout_width="60sp"
-                android:layout_height="60sp"
-                android:layout_margin="10sp"
-                android:background="@drawable/day_of_week_round_corner"
-                android:fontFamily="@font/montserrat_medium"
-                android:gravity="center"
-                android:onClick="changeCurrentWeek"
-                android:shadowColor="#DA0E0E"
-                android:text="@string/day5"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textIsSelectable="false" />
-
-            <TextView
-                android:id="@+id/day6"
-                android:layout_width="60sp"
-                android:layout_height="60sp"
-                android:layout_margin="10sp"
-                android:background="@drawable/day_of_week_round_corner"
-                android:fontFamily="@font/montserrat_medium"
-                android:gravity="center"
-                android:onClick="changeCurrentWeek"
-                android:shadowColor="#DA0E0E"
-                android:text="@string/day6"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textIsSelectable="false"
-                tools:ignore="TextContrastCheck" />
-
-            <TextView
-                android:id="@+id/day7"
-                android:layout_width="60sp"
-                android:layout_height="60sp"
-                android:layout_margin="10sp"
-                android:background="@drawable/day_of_week_round_corner"
-                android:fontFamily="@font/montserrat_medium"
-                android:gravity="center"
-                android:onClick="changeCurrentWeek"
-                android:shadowColor="#DA0E0E"
-                android:text="@string/day7"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textIsSelectable="false" />
-        </LinearLayout>
-    </HorizontalScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -175,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+        app:layout_constraintTop_toBottomOf="@+id/HorizontalScrollView"
         app:layout_constraintVertical_bias="0.0">
 
         <ListView

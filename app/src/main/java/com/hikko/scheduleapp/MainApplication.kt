@@ -2,7 +2,7 @@ package com.hikko.scheduleapp
 
 import android.app.Application
 import android.util.Log
-import com.hikko.scheduleapp.widgetMain.WidgetActivitiesDay
+import com.hikko.scheduleapp.pages.widgetMain.WidgetActivitiesDay
 
 class MainApplication : Application() {
 

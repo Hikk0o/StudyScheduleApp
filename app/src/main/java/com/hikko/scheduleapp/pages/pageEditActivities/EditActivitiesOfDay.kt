@@ -1,25 +1,27 @@
-package com.hikko.scheduleapp.pageEditActivities
+package com.hikko.scheduleapp.pages.pageEditActivities
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ListView
 import android.widget.Toast
-import com.hikko.scheduleapp.widgetMain.WidgetActivitiesDay.Companion.updateWidget
-import com.hikko.scheduleapp.Activity
+import com.hikko.scheduleapp.pages.widgetMain.WidgetActivitiesDay.Companion.updateWidget
+import com.hikko.scheduleapp.utilClasses.Activity
 import com.hikko.scheduleapp.ActivityUtils.clearInputFocus
-import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
-import com.hikko.scheduleapp.ActivityUtils.getLoadedActivities
+import com.hikko.scheduleapp.ActivityUtils.getDayOfEpoch
+import com.hikko.scheduleapp.ActivityUtils.getLoadedDays
 import com.hikko.scheduleapp.ActivityUtils.saveWeekToJsonFile
-import com.hikko.scheduleapp.ActivityUtils.setLoadedActivities
+import com.hikko.scheduleapp.ActivityUtils.setLoadedDays
+import com.hikko.scheduleapp.utilClasses.DayOfEpoch
 import com.hikko.scheduleapp.PageActivity
-import com.hikko.scheduleapp.pageMain.MainActivity
-import com.hikko.scheduleapp.pageMain.MainActivity.Companion.getActiveDayOfWeek
+import com.hikko.scheduleapp.pages.pageMain.MainActivity
+import com.hikko.scheduleapp.pages.pageMain.MainActivity.Companion.getActiveDay
 import com.hikko.scheduleapp.R
-import com.hikko.scheduleapp.pageEditActivities.adapters.EditActivityAdapter
+import com.hikko.scheduleapp.pages.pageEditActivities.adapters.EditActivityAdapter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class EditActivitiesOfDay : PageActivity() {
     private var addActivityButton: View? = null
@@ -30,10 +32,10 @@ class EditActivitiesOfDay : PageActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.edit_activities)
         val activitiesListView = findViewById<ListView>(R.id.EditActivitiesListView)
-        val tempList = getActivitiesDayOfWeek(getActiveDayOfWeek())
+        val tempList = getDayOfEpoch(getActiveDay())
         activitiesOfDayList.clear()
         if (tempList != null) {
-            for (activity in tempList) {
+            for (activity in tempList.activitiesList) {
                 activitiesOfDayList.add(activity.clone())
             }
         }
@@ -112,7 +114,7 @@ class EditActivitiesOfDay : PageActivity() {
     }
 
     private fun saveActivitiesList() {
-        val editedActivitiesOfWeek: ArrayList<ArrayList<Activity>> = getLoadedActivities()
+        val editedActivitiesOfWeek: ArrayList<DayOfEpoch> = getLoadedDays()
         val activities = ArrayList<Activity>()
         for (activity in activitiesOfDayList) {
             val start = activity.startTime
@@ -130,10 +132,13 @@ class EditActivitiesOfDay : PageActivity() {
 
         activities.sortBy { it.startTime }
 
-        editedActivitiesOfWeek[getActiveDayOfWeek()-1] = activities
-        setLoadedActivities(editedActivitiesOfWeek)
+        val objectForReplace = editedActivitiesOfWeek.firstNotNullOf { dayOfEpoch -> dayOfEpoch.takeIf { it.numberDay == getActiveDay() } }
+        val editedDayOfEpoch = DayOfEpoch(getActiveDay())
+        editedDayOfEpoch.activitiesList = activities
 
-        Log.i(TAG, (editedActivitiesOfWeek[getActiveDayOfWeek()-1] == activities).toString())
+        Collections.replaceAll(editedActivitiesOfWeek, objectForReplace, editedDayOfEpoch)
+        setLoadedDays(editedActivitiesOfWeek)
+
         saveWeekToJsonFile(applicationContext.filesDir)
         updateWidget(applicationContext)
         goBackToMainActivity()

@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.graphics.LightingColorFilter
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.hikko.scheduleapp.widgetMain.WidgetActivitiesDay
+import com.hikko.scheduleapp.pages.widgetMain.WidgetActivitiesDay
 
 abstract class PageActivity: AppCompatActivity() {
 

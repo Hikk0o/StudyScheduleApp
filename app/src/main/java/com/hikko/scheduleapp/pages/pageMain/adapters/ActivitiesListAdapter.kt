@@ -1,4 +1,4 @@
-package com.hikko.scheduleapp.pageMain.adapters
+package com.hikko.scheduleapp.pages.pageMain.adapters
 
 import android.content.Context
 import android.content.res.Resources
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.hikko.scheduleapp.Activity
+import com.hikko.scheduleapp.utilClasses.Activity
 import com.hikko.scheduleapp.R
 
 class ActivitiesListAdapter(
@@ -15,8 +15,11 @@ class ActivitiesListAdapter(
     private val resourceLayout: Int,
     data: List<Activity>,
     res: Resources
-) : ArrayAdapter<Activity?>(
-    mContext, resourceLayout, data
+)
+    : ArrayAdapter<Activity?>(
+    mContext,
+    resourceLayout,
+    data
 ) {
     init {
         for (activity in data) {

@@ -1,4 +1,4 @@
-package com.hikko.scheduleapp.pageEditActivities.adapters
+package com.hikko.scheduleapp.pages.pageEditActivities.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,10 +12,10 @@ import android.view.View.OnFocusChangeListener
 import android.view.ViewTreeObserver.OnPreDrawListener
 import android.widget.*
 import com.daimajia.swipe.adapters.ArraySwipeAdapter
-import com.hikko.scheduleapp.Activity
+import com.hikko.scheduleapp.utilClasses.Activity
 import com.hikko.scheduleapp.ActivityUtils.clearInputFocus
-import com.hikko.scheduleapp.ActivityUtils.getLoadedActivities
-import com.hikko.scheduleapp.pageEditActivities.EditActivitiesOfDay
+import com.hikko.scheduleapp.ActivityUtils.getLoadedDays
+import com.hikko.scheduleapp.pages.pageEditActivities.EditActivitiesOfDay
 import com.hikko.scheduleapp.R
 
 @Suppress("UNCHECKED_CAST")
@@ -32,8 +32,8 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
     init {
         mContext = context
         this.activities = activities
-        for (week in getLoadedActivities()) {
-            for (activity in week) {
+        for (dayOfEpoch in getLoadedDays()) {
+            for (activity in dayOfEpoch.activitiesList) {
                 val activityName = activity.name
                 val activityCabinet = activity.cabinet
                 val startTime = activity.startTime

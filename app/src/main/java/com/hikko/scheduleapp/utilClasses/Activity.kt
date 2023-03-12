@@ -1,4 +1,4 @@
-package com.hikko.scheduleapp
+package com.hikko.scheduleapp.utilClasses
 
 // Пара
 class Activity : Cloneable {

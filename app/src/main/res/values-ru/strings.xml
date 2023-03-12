@@ -2,13 +2,13 @@
 <resources>
     <string name="app_name">Расписание</string>
     <string name="logo">Расписание</string>
-    <string name="day1">ПН</string>
-    <string name="day2">ВТ</string>
-    <string name="day3">СР</string>
-    <string name="day4">ЧТ</string>
-    <string name="day5">ПТ</string>
-    <string name="day6">СБ</string>
-    <string name="day7">ВС</string>
+    <string name="day1">пн</string>
+    <string name="day2">вт</string>
+    <string name="day3">ср</string>
+    <string name="day4">чт</string>
+    <string name="day5">пт</string>
+    <string name="day6">сб</string>
+    <string name="day7">вс</string>
     <string name="no_activities">Нет пар</string>
     <string name="activity_create_start_time">Начало в</string>
     <string name="activity_create_end_time">Конец в</string>

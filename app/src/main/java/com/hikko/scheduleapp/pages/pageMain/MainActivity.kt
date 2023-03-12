@@ -1,24 +1,28 @@
-package com.hikko.scheduleapp.pageMain
+package com.hikko.scheduleapp.pages.pageMain
 
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
 import android.os.Bundle
 import android.view.View
-import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hikko.scheduleapp.*
 import com.hikko.scheduleapp.ActivityUtils.activitiesIsLoaded
-import com.hikko.scheduleapp.ActivityUtils.getActivitiesDayOfWeek
-import com.hikko.scheduleapp.ActivityUtils.getDayById
-import com.hikko.scheduleapp.ActivityUtils.getIdByDay
+import com.hikko.scheduleapp.ActivityUtils.getDayOfEpoch
+import com.hikko.scheduleapp.ActivityUtils.getLoadedDays
 import com.hikko.scheduleapp.ActivityUtils.loadAllActivities
-import com.hikko.scheduleapp.ActivityUtils.localeDayOfWeek
-import com.hikko.scheduleapp.pageEditActivities.EditActivitiesOfDay
-import com.hikko.scheduleapp.pageMain.adapters.ActivitiesListAdapter
+import com.hikko.scheduleapp.ActivityUtils.localeDay
+import com.hikko.scheduleapp.pages.pageEditActivities.EditActivitiesOfDay
+import com.hikko.scheduleapp.pages.pageMain.adapters.ActivitiesListAdapter
+import com.hikko.scheduleapp.pages.pageMain.adapters.DaysListAdapter
+import com.hikko.scheduleapp.utilClasses.Activity
+import com.hikko.scheduleapp.utilClasses.DayOfEpoch
 import com.skydoves.colorpickerview.ColorEnvelope
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.flag.BubbleFlag
@@ -28,10 +32,30 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
 class MainActivity : PageActivity() {
 
+    companion object {
+        private var activeDay = localeDay
+        private var activeDayId = 0
+
+        private var loadedDays = getLoadedDays()
+        @JvmStatic
+        fun getActiveDay(): Int {
+            return activeDay
+        }
+
+        @JvmStatic
+        fun setActiveDay(dayOfWeek: Int) {
+            activeDay = dayOfWeek
+        }
+
+        @JvmStatic
+        fun setActiveDayOfWeekId(dayOfWeekId: Int) {
+            activeDayId = dayOfWeekId
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-        val view = findViewById<View>(activeDayOfWeekId)
 
         val button = findViewById<View>(R.id.editActivitiesButton)
         button.setOnClickListener {
@@ -39,11 +63,23 @@ class MainActivity : PageActivity() {
             startActivity(intent)
         }
 
+        println(activeDay)
 
         // Color Theme
-        updateColors()
+//        updateColors()
+        // Set current day of week
+        changeCurrentDay()
 
-        changeCurrentWeek(view)
+        val daysList: List<DayOfEpoch> = loadedDays
+        val daysListView = findViewById<RecyclerView>(R.id.DaysListView)
+        daysListView.setHasFixedSize(true)
+        val adapterDaysList = DaysListAdapter(
+            this, R.layout.main_activity_day_of_month, daysList, this.resources
+        )
+        daysListView.adapter = adapterDaysList
+        val linearLayoutManager = LinearLayoutManager(this)
+        linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        daysListView.layoutManager = linearLayoutManager
 
         findViewById<ImageView>(R.id.buttonRgbSelector).setOnClickListener {
             showColorPickerDialog()
@@ -58,54 +94,34 @@ class MainActivity : PageActivity() {
         startActivity(startMain)
     }
 
-    fun changeCurrentWeek(v: View) {
-        val activeDrawable = findViewById<View>(activeDayOfWeekId).background
-        findViewById<View>(activeDayOfWeekId).background = v.background
-        v.background = activeDrawable
+    fun changeCurrentDay() {
+        val activeDrawable = ResourcesCompat.getDrawable(resources, R.drawable.day_of_week_round_corner_active, null)
+        val inactiveDrawable = ResourcesCompat.getDrawable(resources, R.drawable.day_of_week_round_corner_active, null)
+//        findViewById<View>(activeDayId).background = v.background
+//        v.background = activeDrawable
 
-        activeDayOfWeekId = v.id
-        activeDayOfWeek = getDayById(activeDayOfWeekId)
-        val horizontalScrollView = findViewById<HorizontalScrollView>(R.id.horizontalScrollView)
-        horizontalScrollView.post { horizontalScrollView.smoothScrollTo(v.x.toInt() - 300, 0) }
+//        activeDayId = v.id
+//        activeDay = getDayById(activeDayId)
+
+//        val horizontalScrollView = findViewById<HorizontalScrollView>(R.id.horizontalScrollView)
+//        horizontalScrollView.post { horizontalScrollView.smoothScrollTo(v.x.toInt() - 300, 0) }
         if (!activitiesIsLoaded) {
             loadAllActivities(filesDir)
         }
-        val arrayList: List<Activity>? = getActivitiesDayOfWeek(activeDayOfWeek)
+        val activitiesList: List<Activity> = getDayOfEpoch(activeDay)!!.activitiesList
         val noActivitiesText = findViewById<TextView>(R.id.no_activities_text)
-        if (arrayList != null) {
-            if (arrayList.isEmpty()) {
-                noActivitiesText.visibility = View.VISIBLE
-            } else {
-                noActivitiesText.visibility = View.GONE
-            }
+        if (activitiesList.isEmpty()) {
+            noActivitiesText.visibility = View.VISIBLE
+        } else {
+            noActivitiesText.visibility = View.GONE
         }
         val activitiesListView = findViewById<ListView>(R.id.ActivitiesListView)
-        val adapter = ActivitiesListAdapter(
-            this, R.layout.main_activity_day_item, arrayList!!,
-            this.resources
+        val adapterActivitiesList = ActivitiesListAdapter(
+            this, R.layout.main_activity_day_item, activitiesList, this.resources
         )
-        activitiesListView.adapter = adapter
+        activitiesListView.adapter = adapterActivitiesList
         activitiesListView.divider = null
         activitiesListView.isVerticalScrollBarEnabled = false
-    }
-
-    companion object {
-        private var activeDayOfWeek = localeDayOfWeek
-        private var activeDayOfWeekId = getIdByDay(activeDayOfWeek)
-        @JvmStatic
-        fun getActiveDayOfWeek(): Int {
-            return activeDayOfWeek
-        }
-
-        @JvmStatic
-        fun setActiveDayOfWeek(dayOfWeek: Int) {
-            activeDayOfWeek = dayOfWeek
-        }
-
-        @JvmStatic
-        fun setActiveDayOfWeekId(dayOfWeekId: Int) {
-            activeDayOfWeekId = dayOfWeekId
-        }
     }
 
     private fun showColorPickerDialog() {
@@ -137,18 +153,14 @@ class MainActivity : PageActivity() {
 
     private fun updateColors() {
          if (Settings.config.isCustomThemeColor) {
-             val idsOfDaysLayouts: IntArray = ActivityUtils.getIdsDaysOfWeek()
-             super.updateThemeColor(idsOfDaysLayouts, true)
-             super.updateThemeColor(activeDayOfWeekId, false)
+             super.updateThemeColor(activeDayId, false)
          } else {
              resetColors()
          }
     }
 
     private fun resetColors() {
-        val idsOfDaysLayouts: IntArray = ActivityUtils.getIdsDaysOfWeek()
-        super.updateThemeColor(idsOfDaysLayouts, true)
-        val activeDay = findViewById<View>(activeDayOfWeekId)
+        val activeDay = findViewById<View>(activeDayId)
         activeDay.background = AppCompatResources.getDrawable(
             applicationContext,
             R.drawable.day_of_week_round_corner_active
