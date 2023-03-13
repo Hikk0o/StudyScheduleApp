@@ -1,12 +1,16 @@
 package com.hikko.scheduleapp.pages.pageMain.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.hikko.scheduleapp.ActivityUtils.localeDay
 import com.hikko.scheduleapp.R
 import com.hikko.scheduleapp.utilClasses.DayOfEpoch
 import java.time.LocalDate
@@ -18,14 +22,19 @@ class DaysListAdapter(
     private val res: Resources
     ) : RecyclerView.Adapter<DaysListAdapter.ViewHolder>() {
 
+    private var firstLoad: Boolean = true
+    private lateinit var activeDayView: View
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // Your holder should contain and initialize a member variable
         // for any view that will be set as you render a row
         val month: TextView = itemView.findViewById(R.id.month_name)
         val dayOfMonth: TextView = itemView.findViewById(R.id.day_of_month)
         val dayOfWeek: TextView = itemView.findViewById(R.id.day_of_week)
-
-    }
+        val dayButton: ConstraintLayout = itemView.findViewById(R.id.day)
+        val res: Resources = itemView.resources
+        val activeDrawable = ResourcesCompat.getDrawable(res, R.drawable.day_of_week_round_corner_active, null)
+        val inactiveDrawable = ResourcesCompat.getDrawable(res, R.drawable.day_of_week_round_corner, null)}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = mContext
@@ -41,7 +50,17 @@ class DaysListAdapter(
     }
 
     override fun onBindViewHolder(holder: DaysListAdapter.ViewHolder, position: Int) {
+
+        if (firstLoad) {
+            if (mData[position].numberDay == localeDay) {
+                holder.dayButton.background = holder.activeDrawable
+                firstLoad = false
+                activeDayView = holder.dayButton
+            }
+        }
+
         val numberDay = mData[position].numberDay
+
         val epoch = LocalDate.of(1970, 1, 1)
         val date = epoch.plusDays(numberDay.toLong())
         val monthNames = arrayOf(
@@ -64,6 +83,20 @@ class DaysListAdapter(
         val dayOfMonth = holder.dayOfMonth
         dayOfMonth.text = date.dayOfMonth.toString()
 
+
+        val button = holder.dayButton
+        button.setOnClickListener {
+            val intent = Intent("CHANGE_CURRENT_DAY")
+            intent.putExtra("dayId", numberDay)
+            mContext.sendBroadcast(intent)
+            activeDayView.background = holder.inactiveDrawable
+            holder.dayButton.background = holder.activeDrawable
+            activeDayView = holder.dayButton
+//            val activeDrawable = ResourcesCompat.getDrawable(resources, R.drawable.day_of_week_round_corner_active, null)
+//            val inactiveDrawable = ResourcesCompat.getDrawable(resources, R.drawable.day_of_week_round_corner, null)
+//        val horizontalScrollView = findViewById<HorizontalScrollView>(R.id.horizontalScrollView)
+//        horizontalScrollView.post { horizontalScrollView.smoothScrollTo(v.x.toInt() - 300, 0) }
+        }
         val dayOfWeek = holder.dayOfWeek
         dayOfWeek.text = getStrDayOfWeek(date.dayOfWeek.value).uppercase()
     }

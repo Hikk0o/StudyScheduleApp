@@ -1,9 +1,9 @@
 package com.hikko.scheduleapp.pages.pageMain
 
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.graphics.*
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ListView
@@ -34,6 +34,7 @@ class MainActivity : PageActivity() {
 
     companion object {
         private var activeDay = localeDay
+        private var TAG = "MainActivity"
         private var activeDayId = 0
 
         private var loadedDays = getLoadedDays()
@@ -57,6 +58,17 @@ class MainActivity : PageActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
+        registerReceiver(object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent != null) {
+                    val dayId: Int = intent.getIntExtra("dayId", 0)
+                    Log.i(TAG, dayId.toString())
+                    changeCurrentDay(dayId)
+                }
+            }
+        }, IntentFilter("CHANGE_CURRENT_DAY"))
+
+
         val button = findViewById<View>(R.id.editActivitiesButton)
         button.setOnClickListener {
             val intent = Intent(this, EditActivitiesOfDay::class.java)
@@ -68,7 +80,7 @@ class MainActivity : PageActivity() {
         // Color Theme
 //        updateColors()
         // Set current day of week
-        changeCurrentDay()
+        changeCurrentDay(activeDay)
 
         val daysList: List<DayOfEpoch> = loadedDays
         val daysListView = findViewById<RecyclerView>(R.id.DaysListView)
@@ -86,6 +98,8 @@ class MainActivity : PageActivity() {
         }
     }
 
+
+
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val startMain = Intent(Intent.ACTION_MAIN)
@@ -94,21 +108,21 @@ class MainActivity : PageActivity() {
         startActivity(startMain)
     }
 
-    fun changeCurrentDay() {
+    fun changeCurrentDay(dayId: Int) {
         val activeDrawable = ResourcesCompat.getDrawable(resources, R.drawable.day_of_week_round_corner_active, null)
         val inactiveDrawable = ResourcesCompat.getDrawable(resources, R.drawable.day_of_week_round_corner_active, null)
 //        findViewById<View>(activeDayId).background = v.background
 //        v.background = activeDrawable
 
 //        activeDayId = v.id
-//        activeDay = getDayById(activeDayId)
+        activeDay = dayId
 
 //        val horizontalScrollView = findViewById<HorizontalScrollView>(R.id.horizontalScrollView)
 //        horizontalScrollView.post { horizontalScrollView.smoothScrollTo(v.x.toInt() - 300, 0) }
         if (!activitiesIsLoaded) {
             loadAllActivities(filesDir)
         }
-        val activitiesList: List<Activity> = getDayOfEpoch(activeDay)!!.activitiesList
+        val activitiesList: List<Activity> = getDayOfEpoch(dayId)!!.activitiesList
         val noActivitiesText = findViewById<TextView>(R.id.no_activities_text)
         if (activitiesList.isEmpty()) {
             noActivitiesText.visibility = View.VISIBLE

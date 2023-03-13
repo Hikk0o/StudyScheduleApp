@@ -80,6 +80,17 @@ object ActivityUtils {
                 loadedDays = g.fromJson(str, arrType)
                 if (loadedDays.size == 0) {
                     saveWeekToJsonFile(filesDir)
+                    loadAllActivities(filesDir)
+                    return
+                }
+                if (loadedDays.last().numberDay - localeDay < 30) {
+
+                    var dayEpoch: Int = loadedDays.last().numberDay + 1
+
+                    while (loadedDays.last().numberDay - localeDay < 30) {
+                        loadedDays.add(DayOfEpoch(dayEpoch))
+                        dayEpoch++
+                    }
                 }
             } catch (e: IOException) {
                 loadedDays = ArrayList()
@@ -104,7 +115,6 @@ object ActivityUtils {
 
     @JvmStatic
     fun getDayOfEpoch(dayOfEpoch: Int): DayOfEpoch? {
-
         val loadedDays: ArrayList<DayOfEpoch> = this.loadedDays
         val filteredDays = loadedDays.filter { it.numberDay == dayOfEpoch }
 
@@ -128,7 +138,7 @@ object ActivityUtils {
         get() {
             val date = LocalDate.now()
             val epoch = LocalDate.of(1970, 1, 1)
-            return ChronoUnit.DAYS.between(epoch, date).toInt() // days since epoch
+            return ChronoUnit.DAYS.between(epoch, date).toInt()
         }
 
     @JvmStatic
