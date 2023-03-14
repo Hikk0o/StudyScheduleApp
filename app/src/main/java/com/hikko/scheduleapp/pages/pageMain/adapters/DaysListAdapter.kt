@@ -22,7 +22,7 @@ class DaysListAdapter(
     private val res: Resources
     ) : RecyclerView.Adapter<DaysListAdapter.ViewHolder>() {
 
-    private var firstLoad: Boolean = true
+    private var activeDayId: Int = localeDay
     private lateinit var activeDayView: View
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -50,16 +50,15 @@ class DaysListAdapter(
     }
 
     override fun onBindViewHolder(holder: DaysListAdapter.ViewHolder, position: Int) {
-
-        if (firstLoad) {
-            if (mData[position].numberDay == localeDay) {
-                holder.dayButton.background = holder.activeDrawable
-                firstLoad = false
-                activeDayView = holder.dayButton
-            }
-        }
+        holder.setIsRecyclable(false)
 
         val numberDay = mData[position].numberDay
+
+        if (numberDay == activeDayId) {
+            holder.dayButton.background = holder.activeDrawable
+            activeDayView = holder.dayButton
+        }
+
 
         val epoch = LocalDate.of(1970, 1, 1)
         val date = epoch.plusDays(numberDay.toLong())
@@ -88,14 +87,17 @@ class DaysListAdapter(
         button.setOnClickListener {
             val intent = Intent("CHANGE_CURRENT_DAY")
             intent.putExtra("dayId", numberDay)
+            intent.putExtra("dayIndex", position)
             mContext.sendBroadcast(intent)
             activeDayView.background = holder.inactiveDrawable
             holder.dayButton.background = holder.activeDrawable
+
             activeDayView = holder.dayButton
-//            val activeDrawable = ResourcesCompat.getDrawable(resources, R.drawable.day_of_week_round_corner_active, null)
-//            val inactiveDrawable = ResourcesCompat.getDrawable(resources, R.drawable.day_of_week_round_corner, null)
+            activeDayId = numberDay
+
 //        val horizontalScrollView = findViewById<HorizontalScrollView>(R.id.horizontalScrollView)
 //        horizontalScrollView.post { horizontalScrollView.smoothScrollTo(v.x.toInt() - 300, 0) }
+
         }
         val dayOfWeek = holder.dayOfWeek
         dayOfWeek.text = getStrDayOfWeek(date.dayOfWeek.value).uppercase()

@@ -3,13 +3,11 @@ package com.hikko.scheduleapp.pages.pageMain
 import android.content.*
 import android.graphics.*
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hikko.scheduleapp.*
@@ -58,17 +56,6 @@ class MainActivity : PageActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                if (intent != null) {
-                    val dayId: Int = intent.getIntExtra("dayId", 0)
-                    Log.i(TAG, dayId.toString())
-                    changeCurrentDay(dayId)
-                }
-            }
-        }, IntentFilter("CHANGE_CURRENT_DAY"))
-
-
         val button = findViewById<View>(R.id.editActivitiesButton)
         button.setOnClickListener {
             val intent = Intent(this, EditActivitiesOfDay::class.java)
@@ -80,7 +67,7 @@ class MainActivity : PageActivity() {
         // Color Theme
 //        updateColors()
         // Set current day of week
-        changeCurrentDay(activeDay)
+        changeCurrentDay(activeDay, null)
 
         val daysList: List<DayOfEpoch> = loadedDays
         val daysListView = findViewById<RecyclerView>(R.id.DaysListView)
@@ -92,6 +79,16 @@ class MainActivity : PageActivity() {
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         daysListView.layoutManager = linearLayoutManager
+
+        registerReceiver(object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent != null) {
+                    val dayId: Int = intent.getIntExtra("dayId", 0)
+                    val dayIndex: Int = intent.getIntExtra("dayIndex", 0)
+                    changeCurrentDay(dayId, dayIndex)
+                }
+            }
+        }, IntentFilter("CHANGE_CURRENT_DAY"))
 
         findViewById<ImageView>(R.id.buttonRgbSelector).setOnClickListener {
             showColorPickerDialog()
@@ -108,20 +105,24 @@ class MainActivity : PageActivity() {
         startActivity(startMain)
     }
 
-    fun changeCurrentDay(dayId: Int) {
-        val activeDrawable = ResourcesCompat.getDrawable(resources, R.drawable.day_of_week_round_corner_active, null)
-        val inactiveDrawable = ResourcesCompat.getDrawable(resources, R.drawable.day_of_week_round_corner_active, null)
-//        findViewById<View>(activeDayId).background = v.background
-//        v.background = activeDrawable
-
-//        activeDayId = v.id
+    fun changeCurrentDay(dayId: Int, dayIndex: Int?) {
         activeDay = dayId
 
-//        val horizontalScrollView = findViewById<HorizontalScrollView>(R.id.horizontalScrollView)
-//        horizontalScrollView.post { horizontalScrollView.smoothScrollTo(v.x.toInt() - 300, 0) }
+        val daysListView = findViewById<RecyclerView>(R.id.DaysListView)
+        val index =
+            dayIndex ?: (loadedDays.indexOf(loadedDays.filter { it.numberDay == dayId }[0]) or 0)
+
+        // Smooth scroll to item
+        val offset = 230
+        val layoutManager = daysListView.layoutManager as LinearLayoutManager
+        val finalScrollPosition =
+            layoutManager.findViewByPosition(index)?.left ?: 0
+        daysListView.smoothScrollBy(finalScrollPosition - offset, 0)
+
         if (!activitiesIsLoaded) {
             loadAllActivities(filesDir)
         }
+
         val activitiesList: List<Activity> = getDayOfEpoch(dayId)!!.activitiesList
         val noActivitiesText = findViewById<TextView>(R.id.no_activities_text)
         if (activitiesList.isEmpty()) {
