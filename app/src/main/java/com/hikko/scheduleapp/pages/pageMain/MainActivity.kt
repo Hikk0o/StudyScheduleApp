@@ -1,6 +1,7 @@
 package com.hikko.scheduleapp.pages.pageMain
 
 import android.annotation.SuppressLint
+import android.appwidget.AppWidgetManager
 import android.content.*
 import android.graphics.*
 import android.os.Bundle
@@ -9,7 +10,9 @@ import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.hikko.scheduleapp.*
 import com.hikko.scheduleapp.ActivityUtils.activitiesIsLoaded
 import com.hikko.scheduleapp.ActivityUtils.getDayOfEpoch
@@ -40,11 +43,6 @@ class MainActivity : PageActivity() {
         fun getActiveDay(): Int {
             return activeDay
         }
-
-        @JvmStatic
-        fun setActiveDay(dayOfWeek: Int) {
-            activeDay = dayOfWeek
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,10 +55,10 @@ class MainActivity : PageActivity() {
             startActivity(intent)
         }
 
-        println(activeDay)
-
-        // Set current day of week
-        changeCurrentDay(activeDay, null)
+        val intent = intent
+        if (intent.hasExtra("FROM_WIDGET")) {
+            activeDay = localeDay
+        }
 
         val daysList: List<DayOfEpoch> = loadedDays
         val daysListView = findViewById<RecyclerView>(R.id.DaysListView)
@@ -72,6 +70,16 @@ class MainActivity : PageActivity() {
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         daysListView.layoutManager = linearLayoutManager
+        daysListView.post {
+            val smoothScroller: SmoothScroller =
+                object : LinearSmoothScroller(this.applicationContext) {
+                    override fun getHorizontalSnapPreference(): Int {
+                        return SNAP_TO_START
+                    }
+                }
+            smoothScroller.targetPosition = loadedDays.indexOf(loadedDays.filter { it.numberDay == activeDay }[0])
+            (daysListView.layoutManager as LinearLayoutManager).startSmoothScroll(smoothScroller)
+        }
 
         registerReceiver(object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
@@ -86,6 +94,9 @@ class MainActivity : PageActivity() {
         findViewById<ImageView>(R.id.buttonRgbSelector).setOnClickListener {
             showColorPickerDialog()
         }
+
+        // Set current day of week
+        changeCurrentDay(getActiveDay(), null)
     }
 
 
@@ -102,15 +113,15 @@ class MainActivity : PageActivity() {
         activeDay = dayId
 
         val daysListView = findViewById<RecyclerView>(R.id.DaysListView)
-        val index =
-            dayIndex ?: (loadedDays.indexOf(loadedDays.filter { it.numberDay == dayId }[0]) or 0)
+        val index = dayIndex ?: loadedDays.indexOf(loadedDays.filter { it.numberDay == dayId }[0])
 
         // Smooth scroll to item
         val offset = 230
         val layoutManager = daysListView.layoutManager as LinearLayoutManager
         val finalScrollPosition =
             layoutManager.findViewByPosition(index)?.left ?: 0
-        daysListView.smoothScrollBy(finalScrollPosition - offset, 0)
+
+        daysListView.post { daysListView.smoothScrollBy(finalScrollPosition - offset, 0) }
 
         if (!activitiesIsLoaded) {
             loadAllActivities(filesDir)

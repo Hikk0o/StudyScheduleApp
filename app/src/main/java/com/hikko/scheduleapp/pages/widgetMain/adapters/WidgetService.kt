@@ -35,7 +35,7 @@ class WidgetService : RemoteViewsService() {
         override fun onDataSetChanged() {}
         override fun onDestroy() {}
         override fun getCount(): Int {
-            activities = getDayOfEpoch(localeDay)!!.activitiesList
+            activities = getDayOfEpoch(localeDay).activitiesList
             return activities!!.size
         }
 

@@ -32,7 +32,7 @@
         <TextView
             android:id="@+id/no_activities_text_widget"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
@@ -43,7 +43,7 @@
             android:textAlignment="gravity"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <ListView
             android:id="@+id/ActivitiesListView_widget"
@@ -56,6 +56,7 @@
             android:listSelector="@android:color/transparent">
 
         </ListView>
+
     </LinearLayout>
 
 </RelativeLayout>

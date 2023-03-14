@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hikko.scheduleapp.ActivityUtils.localeDay
 import com.hikko.scheduleapp.R
 import com.hikko.scheduleapp.Utils.updateThemeColor
+import com.hikko.scheduleapp.pages.pageMain.MainActivity.Companion.getActiveDay
 import com.hikko.scheduleapp.utilClasses.DayOfEpoch
 import java.time.LocalDate
 
@@ -23,8 +24,8 @@ class DaysListAdapter(
     private val res: Resources
     ) : RecyclerView.Adapter<DaysListAdapter.ViewHolder>() {
 
-    private var activeDayId: Int = localeDay
-    private lateinit var activeDayView: View
+    private var activeDayId: Int = getActiveDay()
+    private var activeDayView: View? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // Holder should contain and initialize a member variable
@@ -94,9 +95,12 @@ class DaysListAdapter(
             intent.putExtra("dayId", numberDay)
             intent.putExtra("dayIndex", position)
             mContext.sendBroadcast(intent)
-            activeDayView.background = holder.inactiveDrawable
+
+            if (activeDayView != null) {
+                activeDayView!!.background = holder.inactiveDrawable
+                updateThemeColor(activeDayView!!, true)
+            }
             holder.dayButton.background = holder.activeDrawable
-            updateThemeColor(activeDayView, true)
             updateThemeColor(holder.dayButton, false)
 
             activeDayView = holder.dayButton

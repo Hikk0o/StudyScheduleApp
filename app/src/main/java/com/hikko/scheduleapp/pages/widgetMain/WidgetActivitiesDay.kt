@@ -16,24 +16,22 @@ import com.hikko.scheduleapp.ActivityUtils.loadAllActivities
 import com.hikko.scheduleapp.ActivityUtils.localeDay
 import com.hikko.scheduleapp.R
 import com.hikko.scheduleapp.pages.pageMain.MainActivity
-import com.hikko.scheduleapp.pages.pageMain.MainActivity.Companion.setActiveDay
 import com.hikko.scheduleapp.pages.widgetMain.adapters.WidgetService
 
 /**
  * Implementation of App Widget functionality.
  */
 class WidgetActivitiesDay : AppWidgetProvider() {
-    override fun onReceive(context: Context, intent: Intent) {
-        super.onReceive(context, intent)
-        println(intent.action)
-        if (intent.action == OPEN_APP) {
-            setActiveDay(localeDay)
-            val mainActivityIntent = Intent(context, MainActivity::class.java)
-            mainActivityIntent.flags =
-                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            context.startActivity(mainActivityIntent)
-        }
-    }
+//    override fun onReceive(context: Context, intent: Intent) {
+//        super.onReceive(context, intent)
+//        println(intent.action)
+//        if (intent.action == OPEN_APP) {
+//            val mainActivityIntent = Intent(context, MainActivity::class.java)
+//            mainActivityIntent.flags =
+//                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//            context.startActivity(mainActivityIntent)
+//        }
+//    }
 
     override fun onUpdate(
         context: Context,
@@ -75,15 +73,15 @@ class WidgetActivitiesDay : AppWidgetProvider() {
             } else {
                 views.setViewVisibility(R.id.no_activities_text_widget, View.GONE)
             }
-            views.setOnClickPendingIntent(R.id.clickable_layout, getPendingIntent(context))
+            views.setOnClickPendingIntent(R.id.clickable_layout, openMainActivity(context))
+            views.setOnClickPendingIntent(R.id.widget_background, openMainActivity(context))
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
 
-        private fun getPendingIntent(context: Context): PendingIntent {
-            val widgetIntent = Intent(context, this::class.java)
-            widgetIntent.action = OPEN_APP
+        private fun openMainActivity(context: Context): PendingIntent {
             val intent = Intent(context, MainActivity::class.java)
+            intent.putExtra("FROM_WIDGET", true)
             return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
 
