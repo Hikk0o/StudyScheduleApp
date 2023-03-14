@@ -1,5 +1,6 @@
 package com.hikko.scheduleapp.pages.pageMain
 
+import android.annotation.SuppressLint
 import android.content.*
 import android.graphics.*
 import android.os.Bundle
@@ -7,7 +8,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hikko.scheduleapp.*
@@ -19,6 +19,7 @@ import com.hikko.scheduleapp.ActivityUtils.localeDay
 import com.hikko.scheduleapp.pages.pageEditActivities.EditActivitiesOfDay
 import com.hikko.scheduleapp.pages.pageMain.adapters.ActivitiesListAdapter
 import com.hikko.scheduleapp.pages.pageMain.adapters.DaysListAdapter
+import com.hikko.scheduleapp.pages.widgetMain.WidgetActivitiesDay
 import com.hikko.scheduleapp.utilClasses.Activity
 import com.hikko.scheduleapp.utilClasses.DayOfEpoch
 import com.skydoves.colorpickerview.ColorEnvelope
@@ -33,7 +34,6 @@ class MainActivity : PageActivity() {
     companion object {
         private var activeDay = localeDay
         private var TAG = "MainActivity"
-        private var activeDayId = 0
 
         private var loadedDays = getLoadedDays()
         @JvmStatic
@@ -44,11 +44,6 @@ class MainActivity : PageActivity() {
         @JvmStatic
         fun setActiveDay(dayOfWeek: Int) {
             activeDay = dayOfWeek
-        }
-
-        @JvmStatic
-        fun setActiveDayOfWeekId(dayOfWeekId: Int) {
-            activeDayId = dayOfWeekId
         }
     }
 
@@ -64,8 +59,6 @@ class MainActivity : PageActivity() {
 
         println(activeDay)
 
-        // Color Theme
-//        updateColors()
         // Set current day of week
         changeCurrentDay(activeDay, null)
 
@@ -123,7 +116,7 @@ class MainActivity : PageActivity() {
             loadAllActivities(filesDir)
         }
 
-        val activitiesList: List<Activity> = getDayOfEpoch(dayId)!!.activitiesList
+        val activitiesList: List<Activity> = getDayOfEpoch(dayId).activitiesList
         val noActivitiesText = findViewById<TextView>(R.id.no_activities_text)
         if (activitiesList.isEmpty()) {
             noActivitiesText.visibility = View.VISIBLE
@@ -154,7 +147,7 @@ class MainActivity : PageActivity() {
             .setNegativeButton(applicationContext.getText(R.string.reset)) { _: DialogInterface, _: Int ->
                 run {
                     Settings.config.isCustomThemeColor = false
-                    resetColors()
+                    updateColors()
                 }
             }
             .attachAlphaSlideBar(false)
@@ -166,20 +159,10 @@ class MainActivity : PageActivity() {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun updateColors() {
-         if (Settings.config.isCustomThemeColor) {
-             super.updateThemeColor(activeDayId, false)
-         } else {
-             resetColors()
-         }
-    }
-
-    private fun resetColors() {
-        val activeDay = findViewById<View>(activeDayId)
-        activeDay.background = AppCompatResources.getDrawable(
-            applicationContext,
-            R.drawable.day_of_week_round_corner_active
-        )
-
+        val daysListView = findViewById<RecyclerView>(R.id.DaysListView)
+        daysListView.adapter?.notifyDataSetChanged()
+        WidgetActivitiesDay.updateWidget(applicationContext)
     }
 }

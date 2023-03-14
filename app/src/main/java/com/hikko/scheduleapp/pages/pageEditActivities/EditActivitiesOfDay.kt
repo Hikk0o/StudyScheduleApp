@@ -34,10 +34,8 @@ class EditActivitiesOfDay : PageActivity() {
         val activitiesListView = findViewById<ListView>(R.id.EditActivitiesListView)
         val tempList = getDayOfEpoch(getActiveDay())
         activitiesOfDayList.clear()
-        if (tempList != null) {
-            for (activity in tempList.activitiesList) {
-                activitiesOfDayList.add(activity.clone())
-            }
+        for (activity in tempList.activitiesList) {
+            activitiesOfDayList.add(activity.clone())
         }
         updateActivitiesListView()
 

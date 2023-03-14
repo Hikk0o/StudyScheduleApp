@@ -12,7 +12,6 @@ import android.widget.RemoteViews
 import com.hikko.scheduleapp.utilClasses.Activity
 import com.hikko.scheduleapp.ActivityUtils.activitiesIsLoaded
 import com.hikko.scheduleapp.ActivityUtils.getDayOfEpoch
-//import com.hikko.scheduleapp.ActivityUtils.getIdByDay
 import com.hikko.scheduleapp.ActivityUtils.loadAllActivities
 import com.hikko.scheduleapp.ActivityUtils.localeDay
 import com.hikko.scheduleapp.R
@@ -29,7 +28,6 @@ class WidgetActivitiesDay : AppWidgetProvider() {
         println(intent.action)
         if (intent.action == OPEN_APP) {
             setActiveDay(localeDay)
-//            setActiveDayOfWeekId(getIdByDay(getActiveDayOfWeek()))
             val mainActivityIntent = Intent(context, MainActivity::class.java)
             mainActivityIntent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -71,7 +69,7 @@ class WidgetActivitiesDay : AppWidgetProvider() {
             if (!activitiesIsLoaded) {
                 loadAllActivities(context.filesDir)
             }
-            val arrayList: List<Activity> = getDayOfEpoch(localeDay)!!.activitiesList
+            val arrayList: List<Activity> = getDayOfEpoch(localeDay).activitiesList
             if (arrayList.isEmpty()) {
                 views.setViewVisibility(R.id.no_activities_text_widget, View.VISIBLE)
             } else {
@@ -86,12 +84,6 @@ class WidgetActivitiesDay : AppWidgetProvider() {
             val widgetIntent = Intent(context, this::class.java)
             widgetIntent.action = OPEN_APP
             val intent = Intent(context, MainActivity::class.java)
-//            return PendingIntent.getBroadcast(
-//                context,
-//                0,
-//                widgetIntent,
-//                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-//            )
             return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
 

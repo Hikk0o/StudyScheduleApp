@@ -114,12 +114,12 @@ object ActivityUtils {
     }
 
     @JvmStatic
-    fun getDayOfEpoch(dayOfEpoch: Int): DayOfEpoch? {
+    fun getDayOfEpoch(dayOfEpoch: Int): DayOfEpoch {
         val loadedDays: ArrayList<DayOfEpoch> = this.loadedDays
         val filteredDays = loadedDays.filter { it.numberDay == dayOfEpoch }
 
         return if (filteredDays.isEmpty()) {
-            null
+            DayOfEpoch(-1)
         } else {
             filteredDays[0]
         }

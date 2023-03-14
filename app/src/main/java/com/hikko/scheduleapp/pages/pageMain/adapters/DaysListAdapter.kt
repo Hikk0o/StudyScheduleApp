@@ -12,6 +12,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.hikko.scheduleapp.ActivityUtils.localeDay
 import com.hikko.scheduleapp.R
+import com.hikko.scheduleapp.Utils.updateThemeColor
 import com.hikko.scheduleapp.utilClasses.DayOfEpoch
 import java.time.LocalDate
 
@@ -26,7 +27,7 @@ class DaysListAdapter(
     private lateinit var activeDayView: View
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // Your holder should contain and initialize a member variable
+        // Holder should contain and initialize a member variable
         // for any view that will be set as you render a row
         val month: TextView = itemView.findViewById(R.id.month_name)
         val dayOfMonth: TextView = itemView.findViewById(R.id.day_of_month)
@@ -56,7 +57,11 @@ class DaysListAdapter(
 
         if (numberDay == activeDayId) {
             holder.dayButton.background = holder.activeDrawable
+            updateThemeColor(holder.dayButton, false)
             activeDayView = holder.dayButton
+        } else {
+            holder.dayButton.background = holder.inactiveDrawable
+            updateThemeColor(holder.dayButton, true)
         }
 
 
@@ -91,12 +96,11 @@ class DaysListAdapter(
             mContext.sendBroadcast(intent)
             activeDayView.background = holder.inactiveDrawable
             holder.dayButton.background = holder.activeDrawable
+            updateThemeColor(activeDayView, true)
+            updateThemeColor(holder.dayButton, false)
 
             activeDayView = holder.dayButton
             activeDayId = numberDay
-
-//        val horizontalScrollView = findViewById<HorizontalScrollView>(R.id.horizontalScrollView)
-//        horizontalScrollView.post { horizontalScrollView.smoothScrollTo(v.x.toInt() - 300, 0) }
 
         }
         val dayOfWeek = holder.dayOfWeek
