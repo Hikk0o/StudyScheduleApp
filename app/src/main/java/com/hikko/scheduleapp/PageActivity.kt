@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.LightingColorFilter
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.hikko.scheduleapp.pages.widgetMain.WidgetActivitiesDay
 
 abstract class PageActivity: AppCompatActivity() {
 
@@ -26,7 +25,7 @@ abstract class PageActivity: AppCompatActivity() {
             view.background.clearColorFilter()
         }
         view.invalidate()
-        WidgetActivitiesDay.updateWidget(applicationContext)
+//        WidgetActivitiesDay.updateWidget(applicationContext, "PageActivity updateThemeColor")
     }
 
     companion object {

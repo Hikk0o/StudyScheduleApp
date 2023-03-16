@@ -139,7 +139,7 @@ class EditActivitiesOfDay : PageActivity() {
         setLoadedDays(editedActivitiesOfWeek)
 
         saveWeekToJsonFile(applicationContext.filesDir)
-        updateWidget(applicationContext)
+        updateWidget(applicationContext, "EditActivitiesOfDay saveActivitiesList")
         goBackToMainActivity()
     }
 

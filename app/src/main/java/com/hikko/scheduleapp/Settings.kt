@@ -9,6 +9,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+import kotlin.concurrent.thread
 
 object Settings {
     private const val TAG = "AppSettings"
@@ -41,16 +42,17 @@ object Settings {
     }
 
     private fun saveConfigToStorage() {
-        Log.i(TAG, config.themeColor.toString())
-        val configFile = File(savedFilesDir, "config.json")
-        val gson = GsonBuilder()
-            .setPrettyPrinting()
-            .create()
+        thread {
+            val configFile = File(savedFilesDir, "config.json")
+            val gson = GsonBuilder()
+                .setPrettyPrinting()
+                .create()
 
-        val outputStream = FileOutputStream(configFile)
-        // todo
-        outputStream.write(gson.toJson(config).toByteArray(StandardCharsets.UTF_8))
-        outputStream.close()
+            val outputStream = FileOutputStream(configFile)
+
+            outputStream.write(gson.toJson(config).toByteArray(StandardCharsets.UTF_8))
+            outputStream.close()
+        }
     }
 
     class Config {
@@ -61,14 +63,13 @@ object Settings {
         }
 
         var isCustomThemeColor: Boolean = false
-        set(value) {
-            field = value
-            saveConfigToStorage()
+
+        fun setThemeColor(color: Color) {
+            themeColor = color.toArgb()
         }
 
-        fun setThemeColor(color: Color, savedToStorage: Boolean) {
-            themeColor = color.toArgb()
-            if (savedToStorage) saveConfigToStorage()
+        fun saveConfig() {
+            saveConfigToStorage()
         }
     }
 }

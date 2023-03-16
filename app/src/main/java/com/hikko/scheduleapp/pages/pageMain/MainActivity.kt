@@ -1,7 +1,6 @@
 package com.hikko.scheduleapp.pages.pageMain
 
 import android.annotation.SuppressLint
-import android.appwidget.AppWidgetManager
 import android.content.*
 import android.graphics.*
 import android.os.Bundle
@@ -150,14 +149,16 @@ class MainActivity : PageActivity() {
             .setPreferenceName("ColorPickerDialog")
             .setPositiveButton(applicationContext.getText(R.string.save), ColorEnvelopeListener { colorEnvelope: ColorEnvelope, _: Boolean ->
                 run {
-                    Settings.config.setThemeColor(Color.valueOf(colorEnvelope.color), true)
+                    Settings.config.setThemeColor(Color.valueOf(colorEnvelope.color))
                     Settings.config.isCustomThemeColor = true
+                    Settings.config.saveConfig()
                     updateColors()
                 }
             })
             .setNegativeButton(applicationContext.getText(R.string.reset)) { _: DialogInterface, _: Int ->
                 run {
                     Settings.config.isCustomThemeColor = false
+                    Settings.config.saveConfig()
                     updateColors()
                 }
             }
@@ -174,6 +175,6 @@ class MainActivity : PageActivity() {
     private fun updateColors() {
         val daysListView = findViewById<RecyclerView>(R.id.DaysListView)
         daysListView.adapter?.notifyDataSetChanged()
-        WidgetActivitiesDay.updateWidget(applicationContext)
+        WidgetActivitiesDay.updateWidget(applicationContext, "MainActivity updateColors")
     }
 }

@@ -22,17 +22,6 @@ import com.hikko.scheduleapp.pages.widgetMain.adapters.WidgetService
  * Implementation of App Widget functionality.
  */
 class WidgetActivitiesDay : AppWidgetProvider() {
-//    override fun onReceive(context: Context, intent: Intent) {
-//        super.onReceive(context, intent)
-//        println(intent.action)
-//        if (intent.action == OPEN_APP) {
-//            val mainActivityIntent = Intent(context, MainActivity::class.java)
-//            mainActivityIntent.flags =
-//                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//            context.startActivity(mainActivityIntent)
-//        }
-//    }
-
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
@@ -77,6 +66,7 @@ class WidgetActivitiesDay : AppWidgetProvider() {
             views.setOnClickPendingIntent(R.id.widget_background, openMainActivity(context))
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.ActivitiesListView_widget)
         }
 
         private fun openMainActivity(context: Context): PendingIntent {
@@ -86,14 +76,16 @@ class WidgetActivitiesDay : AppWidgetProvider() {
         }
 
         @JvmStatic
-        fun updateWidget(context: Context) {
+        fun updateWidget(context: Context, fromFun: String) {
+            println("Update widget from fun '$fromFun'")
+
             val ids = AppWidgetManager.getInstance(context)
                 .getAppWidgetIds(ComponentName(context, WidgetActivitiesDay::class.java))
             val intent = Intent(context, WidgetActivitiesDay::class.java)
+
             intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
-            val appWidgetManager = AppWidgetManager.getInstance(context)
-            appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.ActivitiesListView_widget)
+
             context.sendBroadcast(intent)
         }
     }

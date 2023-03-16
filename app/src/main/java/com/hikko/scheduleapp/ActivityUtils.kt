@@ -16,53 +16,55 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
+import kotlin.concurrent.thread
 
 object ActivityUtils {
     private const val TAG = "ActivityUtils"
     private var savedFilesDir: File? = null
 
-    @JvmStatic
+    @Synchronized
     fun saveWeekToJsonFile(filesDir: File) {
-        Log.i(TAG, "Save week to Json file...")
-        savedFilesDir = filesDir
-        val week = File(filesDir, "week.json")
-        val gson = GsonBuilder()
-            .setPrettyPrinting()
-            .create()
-        val savedDaysOfEpoch: ArrayList<DayOfEpoch> = loadedDays
+        thread {
+            Log.i(TAG, "Save week to Json file...")
+            savedFilesDir = filesDir
+            val week = File(filesDir, "week.json")
+            val gson = GsonBuilder()
+                .setPrettyPrinting()
+                .create()
+            val savedDaysOfEpoch: ArrayList<DayOfEpoch> = loadedDays
 
-        if (savedDaysOfEpoch.size < 30) {
+            if (savedDaysOfEpoch.size < 30) {
 
-            var dayEpoch: Int = if (savedDaysOfEpoch.isEmpty()) {
-                localeDay
-            } else {
-                savedDaysOfEpoch.last().numberDay + 1
+                var dayEpoch: Int = if (savedDaysOfEpoch.isEmpty()) {
+                    localeDay
+                } else {
+                    savedDaysOfEpoch.last().numberDay + 1
+                }
+
+                while (savedDaysOfEpoch.size < 30) {
+                    savedDaysOfEpoch.add(DayOfEpoch(dayEpoch))
+                    dayEpoch++
+                }
             }
 
-            while (savedDaysOfEpoch.size < 30) {
-                savedDaysOfEpoch.add(DayOfEpoch(dayEpoch))
-                dayEpoch++
+            val json = gson.toJson(savedDaysOfEpoch)
+
+            // Create file output stream
+            val outputStream: FileOutputStream
+            try {
+                outputStream = FileOutputStream(week)
+                // Write a line to the file
+                outputStream.write(json.toByteArray(StandardCharsets.UTF_8))
+                // Close the file output stream
+                outputStream.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
-        }
-
-        val json = gson.toJson(savedDaysOfEpoch)
-
-        // Create file output stream
-        val outputStream: FileOutputStream
-        try {
-            outputStream = FileOutputStream(week)
-            // Write a line to the file
-            outputStream.write(json.toByteArray(StandardCharsets.UTF_8))
-            // Close the file output stream
-            outputStream.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
         }
     }
 
     private var loadedDays: ArrayList<DayOfEpoch> = ArrayList()
 
-    @JvmStatic
     fun loadAllActivities(filesDir: File) {
         savedFilesDir = filesDir
         Log.i(TAG, "Load all activities...")
@@ -92,6 +94,18 @@ object ActivityUtils {
                         dayEpoch++
                     }
                 }
+                // If first day is older than 7 days
+                // if (localeDay (f.e. 100) - numDay (f.e. 93) >= 7) => delete this day
+                val diffDays = localeDay - loadedDays.first().numberDay
+                val limitDiffDays = 7
+                if (diffDays > limitDiffDays) {
+                    val range = diffDays - limitDiffDays
+                    for (i in 0 until range) {
+                        loadedDays.removeFirst()
+                        saveWeekToJsonFile(filesDir)
+                    }
+                }
+
             } catch (e: IOException) {
                 loadedDays = ArrayList()
                 e.printStackTrace()
@@ -103,17 +117,14 @@ object ActivityUtils {
         }
     }
 
-    @JvmStatic
     fun getLoadedDays(): ArrayList<DayOfEpoch> {
         return loadedDays
     }
 
-    @JvmStatic
     fun setLoadedDays(editedDays: ArrayList<DayOfEpoch>) {
         loadedDays = editedDays
     }
 
-    @JvmStatic
     fun getDayOfEpoch(dayOfEpoch: Int): DayOfEpoch {
         val loadedDays: ArrayList<DayOfEpoch> = this.loadedDays
         val filteredDays = loadedDays.filter { it.numberDay == dayOfEpoch }
@@ -125,7 +136,6 @@ object ActivityUtils {
         }
     }
 
-    @JvmStatic
     fun clearInputFocus(v: View, context: Context): Boolean {
         v.clearFocus()
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -133,7 +143,6 @@ object ActivityUtils {
         return false
     }
 
-    @JvmStatic
     val localeDay: Int
         get() {
             val date = LocalDate.now()
@@ -141,7 +150,6 @@ object ActivityUtils {
             return ChronoUnit.DAYS.between(epoch, date).toInt()
         }
 
-    @JvmStatic
     val activitiesIsLoaded: Boolean
         get() {
             return true
