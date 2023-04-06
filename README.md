@@ -20,16 +20,16 @@ Android app for student
 - **Виджет для рабочего стола с актуальными парами.**
 
 ## Preview
-#### Добавление и редактирование пары
+### Добавление и редактирование пары
 <div>
 <img src="https://user-images.githubusercontent.com/78872275/230485047-320e2515-a8ee-408d-9936-299dcb8b90bb.gif" width="280">
 <img src="https://user-images.githubusercontent.com/78872275/230485040-f55db0e5-401b-4511-845f-aa129bbcaeaf.gif" width="280">
 </div>
 
-#### Удаление пары
+### Удаление пары
 <img src="https://user-images.githubusercontent.com/78872275/230485035-51cd992d-617e-4c2a-904b-22d92c256e57.gif" width="280">
 
-#### Изменение темы приложения
+### Изменение темы приложения
 <img src="https://user-images.githubusercontent.com/78872275/230485046-4f0cd1b4-ee3d-4c27-8e11-54b253ebeafc.gif" width="280">
 
 ## License
