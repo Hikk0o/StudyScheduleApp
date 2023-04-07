@@ -1,5 +1,5 @@
 # Study schedule for Android [![License](https://img.shields.io/badge/License-GPL--3.0-brightgreen)](https://opensource.org/license/gpl-3-0/) ![Version](https://img.shields.io/badge/Version-1.0-blue) ![SDK](https://img.shields.io/badge/minSdk-26-orange)
-Android app for student
+Android app for students
 
 ## Setup
 
