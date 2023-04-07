@@ -3,7 +3,7 @@ Android app for student
 
 ## Setup
 
-[![Download](https://img.shields.io/badge/-Download_.APK-brightgreen?style=for-the-badge&logo=setup)](https://github.com/Hikk0o/ScheduleApp/releases)
+[![Download](https://img.shields.io/badge/-Download_.APK-blue?style=for-the-badge&logo=setup)](https://github.com/Hikk0o/ScheduleApp/releases)
 
 ## Features
 
