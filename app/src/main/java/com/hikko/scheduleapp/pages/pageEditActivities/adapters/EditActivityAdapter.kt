@@ -38,6 +38,7 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
                 val activityCabinet = activity.cabinet
                 val startTime = activity.startTime
                 val endTime = activity.endTime
+
                 if (activityName.isNotEmpty() && !nameAutofillHints.contains(activityName)) {
                     nameAutofillHints.add(activityName)
                 }
@@ -61,7 +62,11 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
             val vi: LayoutInflater = LayoutInflater.from(mContext)
             view = vi.inflate(resourceLayout, null)!!
         }
+        var previousActivity: Activity? = null
+        if (position > 0) previousActivity = getItem(position - 1) as Activity
+
         val activity = getItem(position) as Activity?
+
         view.findViewById<View>(R.id.SwipeLayout)
             .setOnTouchListener { _: View?, _: MotionEvent? ->
                 clearInputFocus(
@@ -82,7 +87,6 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
                 parentView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 val parentHeight = parentView.height
                 viewToStretch.layoutParams.height = parentHeight
-                println(parentHeight)
                 viewToStretch.requestLayout()
             }
         })
@@ -192,6 +196,23 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
             )
         )
 
+        if (inputStartTime.text.isEmpty() && inputEndTime.text.isEmpty() && position > 0) {
+            if (previousActivity != null && previousActivity.startTime.isNotEmpty()) {
+                if (startTimeAutofillHints.contains(previousActivity.startTime)) {
+                    val index = startTimeAutofillHints.indexOf(previousActivity.startTime)
+                    if (index + 1 < startTimeAutofillHints.size) {
+                        inputStartTime.setText(startTimeAutofillHints[index + 1])
+                        inputEndTime.setText(endTimeAutofillHints[index + 1])
+
+                        val temp = EditActivitiesOfDay.activitiesOfDayList[position]
+                        temp.startTime = inputStartTime.text.toString()
+                        temp.endTime = inputEndTime.text.toString()
+                        EditActivitiesOfDay.activitiesOfDayList[position] = temp
+                    }
+                }
+            }
+        }
+
         val timeFilter = arrayOfNulls<InputFilter>(1)
         timeFilter[0] =
             InputFilter { source: CharSequence, start: Int, end: Int, dest: Spanned, dstart: Int, dend: Int ->
@@ -245,7 +266,22 @@ class EditActivityAdapter(context: EditActivitiesOfDay, private val resourceLayo
                     }
                 }
                 if (s.length == 5) {
-                    if (inputStartTime.isFocused) inputEndTime.requestFocus()
+                    if (inputStartTime.isFocused) {
+                        println(s.toString())
+                        println(startTimeAutofillHints.contains(s.toString()))
+                        if (startTimeAutofillHints.contains(s.toString())) {
+                            val index = startTimeAutofillHints.indexOf(s.toString())
+                            if (inputEndTime.text.isEmpty()) {
+                                inputEndTime.setText(endTimeAutofillHints[index])
+
+                                val temp = EditActivitiesOfDay.activitiesOfDayList[position]
+                                temp.endTime = inputEndTime.text.toString()
+                                EditActivitiesOfDay.activitiesOfDayList[position] = temp
+                            }
+                        }
+                        inputEndTime.requestFocus()
+                        inputEndTime.setSelection(inputEndTime.text.length)
+                    }
                 }
             }
 
